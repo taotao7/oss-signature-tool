@@ -1,13 +1,13 @@
-import React, {useState} from "react";
-import RuleBox from "./rule";
-import DatePicker from "./datePicker";
-import Signature from "./signature";
-import HeadersInput from "./headerInput";
-import ResourceInput from "./resource";
-import {Form, Input, Select} from "@alicloud/console-components";
-import styles from "./index.module.less";
+import React, { useState } from 'react';
+import RuleBox from './rule';
+import DatePicker from './datePicker';
+import Signature from './signature';
+import HeadersInput from './headerInput';
+import ResourceInput from './resource';
+import { Form, Input, Select } from '@alicloud/console-components';
+import styles from './index.module.less';
 
-import "@alicloud/console-components/dist/xconsole.css";
+import '@alicloud/console-components/dist/xconsole.css';
 
 interface IFormValue {
   AccessKeyId: string;
@@ -17,40 +17,39 @@ interface IFormValue {
   ContentMD5?: string;
 }
 
-const {Option} = Select;
+const { Option } = Select;
 const FormItem = Form.Item;
 
-const methods = ["GET", "POST", "PUT", "DELETE", "HEAD"];
+const methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
 
-export type SignatureType = {
-  hide?: boolean
+export interface SignatureType {
+  hide?: boolean;
 }
 export default (props: SignatureType) => {
-  const {hide = false} = props
+  const { hide = false } = props;
   const [formValue, setFormValue] = useState<IFormValue>({
-    AccessKeyId: "",
-    AccessKeySecret: "",
-    Method: "",
+    AccessKeyId: '',
+    AccessKeySecret: '',
+    Method: '',
   });
   const [visible, setVisible] = useState<boolean>(false);
-  const [dateField, setDateField] = useState<string>("");
+  const [dateField, setDateField] = useState<string>('');
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
 
-
   const itemConfig = [
     {
-      label: "AccessKeyId",
-      content: <Input placeholder="必填" name="AccessKeyId"/>,
+      label: 'AccessKeyId',
+      content: <Input placeholder="必填" name="AccessKeyId" />,
       required: true,
     },
     {
-      label: "AccessKeySecret",
+      label: 'AccessKeySecret',
       required: true,
-      content: <Input placeholder="必填" name="AccessKeySecret"/>,
+      content: <Input placeholder="必填" name="AccessKeySecret" />,
     },
     {
-      label: "VERB",
+      label: 'VERB',
       required: true,
       content: (
         <Select placeholder="请求的Method" name="Method" defaultValue="GET">
@@ -63,7 +62,7 @@ export default (props: SignatureType) => {
       ),
     },
     {
-      label: "Content-MD5",
+      label: 'Content-MD5',
       content: (
         <Input
           placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
@@ -72,8 +71,8 @@ export default (props: SignatureType) => {
       ),
     },
     {
-      label: "Content-Type",
-      name: "ContentType",
+      label: 'Content-Type',
+      name: 'ContentType',
       content: (
         <Input
           placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
@@ -100,7 +99,7 @@ export default (props: SignatureType) => {
 
   return (
     <>
-      {!hide && <RuleBox/>}
+      {!hide && <RuleBox />}
       <div className={styles.content}>
         <Form useLabelForErrorMessage>
           {itemConfig.map((i, k) => (
@@ -108,24 +107,15 @@ export default (props: SignatureType) => {
               {i.content}
             </FormItem>
           ))}
-          <DatePicker
-            onDateFieldChange={onDateFieldChange}
-            dateField={dateField}
-          />
-          <HeadersInput dateField={dateField} setHeadersData={setHeadersData}/>
-          <ResourceInput setResourceData={setResourceData}/>
+          <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
+          <HeadersInput dateField={dateField} setHeadersData={setHeadersData} />
+          <ResourceInput setResourceData={setResourceData} />
           <FormItem>
             <Form.Submit validate type="primary" onClick={submit}>
               提交
             </Form.Submit>
             <Form.Reset
-              names={[
-                "AccessKeyId",
-                "AccessKeySecret",
-                "METHOD",
-                "ContentMD5",
-                "ContentType",
-              ]}
+              names={['AccessKeyId', 'AccessKeySecret', 'METHOD', 'ContentMD5', 'ContentType']}
             >
               清空
             </Form.Reset>

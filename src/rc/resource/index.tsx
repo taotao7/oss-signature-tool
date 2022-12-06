@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form, Input } from "@alicloud/console-components";
+import React, { useState, useEffect } from 'react';
+import { Button, Form, Input } from '@alicloud/console-components';
 
 const FormItem = Form.Item;
 
-type ResourceDataType = {
+interface ResourceDataType {
   index: number;
   key: string;
   value: string;
   disabled?: boolean;
-};
+}
 
 export default (props: { setResourceData: Function }) => {
   const { setResourceData } = props;
@@ -19,14 +19,14 @@ export default (props: { setResourceData: Function }) => {
     const templateData = [
       {
         index: 0,
-        key: "bucket",
-        value: "",
+        key: 'bucket',
+        value: '',
         disabled: true,
       },
       {
         index: 1,
-        key: "object",
-        value: "",
+        key: 'object',
+        value: '',
         disabled: true,
       },
     ];
@@ -39,8 +39,8 @@ export default (props: { setResourceData: Function }) => {
       ...value,
       {
         index,
-        key: "",
-        value: "",
+        key: '',
+        value: '',
       },
     ]);
   };
@@ -70,8 +70,8 @@ export default (props: { setResourceData: Function }) => {
       {value.map((i, k) => (
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
+            display: 'flex',
+            flexDirection: 'row',
           }}
           key={k}
         >
@@ -79,21 +79,19 @@ export default (props: { setResourceData: Function }) => {
             defaultValue={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
-              onChange("key", i.index, v);
+              onChange('key', i.index, v);
             }}
           />
           <Input
             value={i.value}
             defaultValue={i.value}
-            style={{ width: "30vw" }}
+            style={{ width: '30vw' }}
             onChange={(v) => {
-              onChange("value", i.index, v);
+              onChange('value', i.index, v);
             }}
           />
           <Button onClick={() => add(value.length)}>+</Button>
-          {!["object", "bucket"].includes(i.key) && (
-            <Button onClick={() => del(i.index)}>-</Button>
-          )}
+          {!['object', 'bucket'].includes(i.key) && <Button onClick={() => del(i.index)}>-</Button>}
         </div>
       ))}
     </FormItem>

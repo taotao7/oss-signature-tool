@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Dialog } from "@alicloud/console-components";
-import { authorization as getAuth } from "./assitant";
-import { toGMT } from "../utils";
-import styles from "./index.module.less";
+import React, { useEffect, useState } from 'react';
+import { Dialog } from '@alicloud/console-components';
+import { authorization as getAuth } from './assitant';
+import { toGMT } from '../utils';
+import styles from './index.module.less';
 
 export default (props: any) => {
-  const { visible, onCancel, formValue, headersData, resourceData, dateField } =
-    props;
+  const { visible, onCancel, formValue, headersData, resourceData, dateField } = props;
   const { AccessKeyId, AccessKeySecret } = formValue;
-  const [canonicalString, setCanonicalString] = useState("");
-  const [authorization, setAuthorization] = useState("");
+  const [canonicalString, setCanonicalString] = useState('');
+  const [authorization, setAuthorization] = useState('');
 
   // 实际渲染
   // const authorization = getAuth(AccessKeyId, AccessKeySecret, canonicalString);
   useEffect(() => {
-    if (
-      resourceData.length > 0 &&
-      dateField &&
-      AccessKeySecret &&
-      AccessKeyId
-    ) {
+    if (resourceData.length > 0 && dateField && AccessKeySecret && AccessKeyId) {
       const canon = formatForm({
         ...formValue,
         Date: toGMT(dateField),
@@ -42,31 +36,22 @@ export default (props: any) => {
   };
 
   const formatResource = (resourceArr: any) => {
-    let resource = "/";
-    const bucket = resourceArr.find((_:any) => _.key === "bucket").value;
-    const object = resourceArr.find((_:any) => _.key === "object").value;
+    let resource = '/';
+    const bucket = resourceArr.find((_: any) => _.key === 'bucket').value;
+    const object = resourceArr.find((_: any) => _.key === 'object').value;
     const rest = resourceArr
-      .filter((_:any) => !["bucket", "object"].includes(_.key) && _.key.trim())
-      .map((_:any) => `${_.key}${_.value.trim() ? `=${_.value.trim()}` : ""}`)
-      .join("&");
+      .filter((_: any) => !['bucket', 'object'].includes(_.key) && _.key.trim())
+      .map((_: any) => `${_.key}${_.value.trim() ? `=${_.value.trim()}` : ''}`)
+      .join('&');
 
     if (bucket || object) {
-      resource = `${resource}${bucket}/${object || ""}${
-        rest ? `?${rest}` : ""
-      }`;
+      resource = `${resource}${bucket}/${object || ''}${rest ? `?${rest}` : ''}`;
     }
     return resource;
   };
 
   const formatForm = (obj: any) => {
-    const {
-      Method,
-      ContentMD5,
-      ContentType,
-      Date,
-      headers = [],
-      resource = [],
-    } = obj;
+    const { Method, ContentMD5, ContentType, Date, headers = [], resource = [] } = obj;
     const canonicalizArr = [
       Method,
       ContentMD5,
@@ -76,15 +61,15 @@ export default (props: any) => {
       formatResource(resource),
     ];
 
-    return canonicalizArr.join("\n");
+    return canonicalizArr.join('\n');
   };
 
   return (
     <Dialog
-      style={{ width: "800px" }}
+      style={{ width: '800px' }}
       title="签名信息"
       visible={visible}
-      closeMode={visible ? ["close", "esc", "mask"] : ["close", "esc"]}
+      closeMode={visible ? ['close', 'esc', 'mask'] : ['close', 'esc']}
       onOk={onCancel}
       onCancel={onCancel}
       onClose={onCancel}

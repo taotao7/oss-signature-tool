@@ -1,31 +1,30 @@
-import crypto from "crypto-js";
-import is from "is";
+import crypto from 'crypto-js';
+import is from 'is';
 
-export function authorization(accessKeyId:string, accessKeySecret:string, canonicalString:string) {
-  return `OSS ${accessKeyId}:${computeSignature(
-    accessKeySecret,
-    canonicalString
-  )}`;
+export function authorization(
+  accessKeyId: string,
+  accessKeySecret: string,
+  canonicalString: string,
+) {
+  return `OSS ${accessKeyId}:${computeSignature(accessKeySecret, canonicalString)}`;
 }
 
 // 计算签名
-export function computeSignature(accessKeySecret:string, canonicalString:string) {
-  return crypto.enc.Base64.stringify(
-    crypto.HmacSHA1(canonicalString, accessKeySecret)
-  );
+export function computeSignature(accessKeySecret: string, canonicalString: string) {
+  return crypto.enc.Base64.stringify(crypto.HmacSHA1(canonicalString, accessKeySecret));
 }
 
-export function buildCanonicalizedResource(resourcePath:string, parameters:any) {
+export function buildCanonicalizedResource(resourcePath: string, parameters: any) {
   let canonicalizedResource = `${resourcePath}`;
-  let separatorString = "?";
+  let separatorString = '?';
 
-  if (is.string(parameters) && parameters.trim() !== "") {
+  if (is.string(parameters) && parameters.trim() !== '') {
     canonicalizedResource += separatorString + parameters;
   } else if (is.array(parameters)) {
     parameters.sort();
-    canonicalizedResource += separatorString + parameters.join("&");
+    canonicalizedResource += separatorString + parameters.join('&');
   } else if (parameters) {
-    const compareFunc = (entry1:any, entry2:any) => {
+    const compareFunc = (entry1: any, entry2: any) => {
       if (entry1[0] > entry2[0]) {
         return 1;
       } else if (entry1[0] < entry2[0]) {
@@ -33,12 +32,12 @@ export function buildCanonicalizedResource(resourcePath:string, parameters:any) 
       }
       return 0;
     };
-    const processFunc = (key:string) => {
+    const processFunc = (key: string) => {
       canonicalizedResource += separatorString + key;
       if (parameters[key]) {
         canonicalizedResource += `=${parameters[key]}`;
       }
-      separatorString = "&";
+      separatorString = '&';
     };
     Object.keys(parameters).sort(compareFunc).forEach(processFunc);
   }
@@ -46,18 +45,23 @@ export function buildCanonicalizedResource(resourcePath:string, parameters:any) 
   return canonicalizedResource;
 }
 
-export function buildCanonicalString(method:string, resourcePath:string, request:any, expires:string) {
+export function buildCanonicalString(
+  method: string,
+  resourcePath: string,
+  request: any,
+  expires: string,
+) {
   request = request || {};
   const headers = request.headers || {};
-  const OSS_PREFIX = "x-oss-";
-  const ossHeaders:string[] = [];
+  const OSS_PREFIX = 'x-oss-';
+  const ossHeaders: string[] = [];
   const headersToSign = {};
 
   let signContent = [
     method.toUpperCase(),
-    headers["Content-Md5"] || "",
-    headers["Content-Type"] || headers["Content-Type".toLowerCase()],
-    expires || headers["x-oss-date"],
+    headers['Content-Md5'] || '',
+    headers['Content-Type'] || headers['Content-Type'.toLowerCase()],
+    expires || headers['x-oss-date'],
   ];
 
   Object.keys(headers).forEach((key) => {
@@ -77,9 +81,7 @@ export function buildCanonicalString(method:string, resourcePath:string, request
 
   signContent = signContent.concat(ossHeaders);
 
-  signContent.push(
-    buildCanonicalizedResource(resourcePath, request.parameters)
-  );
+  signContent.push(buildCanonicalizedResource(resourcePath, request.parameters));
 
-  return signContent.join("\n");
+  return signContent.join('\n');
 }

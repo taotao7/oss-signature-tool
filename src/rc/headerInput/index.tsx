@@ -1,27 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {Button, Form, Input} from "@alicloud/console-components";
-import {toGMT} from "../utils";
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input } from '@alicloud/console-components';
+import { toGMT } from '../utils';
 
 const FormItem = Form.Item;
 
-type HeaderInputType = {
+interface HeaderInputType {
   dateField: string;
   setHeadersData: Function;
-};
+}
 
-type InputType = {
+interface InputType {
   index: number;
   key: string;
   value: string;
   disabled?: boolean;
-};
+}
 
 export default (props: HeaderInputType) => {
-  const {dateField, setHeadersData} = props;
+  const { dateField, setHeadersData } = props;
   const [value, setValue] = useState<InputType[]>([
     {
       index: 0,
-      key: "date",
+      key: 'date',
       value: dateField,
       disabled: true,
     },
@@ -41,8 +41,8 @@ export default (props: HeaderInputType) => {
       ...value,
       {
         index,
-        key: "",
-        value: "",
+        key: '',
+        value: '',
       },
     ]);
   };
@@ -72,8 +72,8 @@ export default (props: HeaderInputType) => {
       {value.map((i, k) => (
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
+            display: 'flex',
+            flexDirection: 'row',
           }}
           key={k}
         >
@@ -82,20 +82,20 @@ export default (props: HeaderInputType) => {
             defaultValue={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
-              onChange("key", k, v);
+              onChange('key', k, v);
             }}
           />
           <Input
             disabled={i?.disabled}
             value={i.value}
             defaultValue={i.value}
-            style={{width: "30vw"}}
+            style={{ width: '30vw' }}
             onChange={(v) => {
-              onChange("value", k, v);
+              onChange('value', k, v);
             }}
           />
           <Button onClick={() => add(k + 1)}>+</Button>
-          {i.key !== "date" && <Button onClick={() => del(i.index)}>-</Button>}
+          {i.key !== 'date' && <Button onClick={() => del(i.index)}>-</Button>}
         </div>
       ))}
     </FormItem>

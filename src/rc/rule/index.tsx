@@ -1,6 +1,6 @@
-import React from "react";
-import { Message } from "@alicloud/console-components";
-import styles from "./index.module.less";
+import React from 'react';
+import { Message } from '@alicloud/console-components';
+import styles from './index.module.less';
 
 export default () => (
   <Message type="notice">
