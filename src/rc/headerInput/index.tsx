@@ -51,7 +51,8 @@ export default (props: HeaderInputType) => {
     // 不能删除date
     if (index !== 0) {
       const filterValue = value.filter((i, k) => k !== index);
-      setValue(filterValue);
+      console.log('123---->', filterValue);
+      setValue([...filterValue]);
     }
   };
 
@@ -79,7 +80,7 @@ export default (props: HeaderInputType) => {
         >
           <Input
             innerBefore="x-oss-"
-            defaultValue={i.key}
+            value={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
               onChange('key', k, v);
@@ -94,8 +95,8 @@ export default (props: HeaderInputType) => {
               onChange('value', k, v);
             }}
           />
-          <Button onClick={() => add(k + 1)}>+</Button>
-          {i.key !== 'date' && <Button onClick={() => del(i.index)}>-</Button>}
+          <Button onClick={() => add(value.length)}>+</Button>
+          {i.key !== 'date' && <Button onClick={() => del(k)}>-</Button>}
         </div>
       ))}
     </FormItem>

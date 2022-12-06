@@ -76,10 +76,10 @@ export default (props: { setResourceData: Function }) => {
           key={k}
         >
           <Input
-            defaultValue={i.key}
+            value={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
-              onChange('key', i.index, v);
+              onChange('key', k, v);
             }}
           />
           <Input
@@ -87,11 +87,11 @@ export default (props: { setResourceData: Function }) => {
             defaultValue={i.value}
             style={{ width: '30vw' }}
             onChange={(v) => {
-              onChange('value', i.index, v);
+              onChange('value', k, v);
             }}
           />
           <Button onClick={() => add(value.length)}>+</Button>
-          {!['object', 'bucket'].includes(i.key) && <Button onClick={() => del(i.index)}>-</Button>}
+          {!['object', 'bucket'].includes(i.key) && <Button onClick={() => del(k)}>-</Button>}
         </div>
       ))}
     </FormItem>
