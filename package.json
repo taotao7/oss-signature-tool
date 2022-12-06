@@ -2,7 +2,7 @@
   "name": "@ali/signature-tool",
   "main": "src/index.ts",
   "module": "src/index.ts",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

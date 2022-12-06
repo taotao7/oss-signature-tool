@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog } from '@alicloud/console-components';
-import { authorization as getAuth } from './assitant';
-import { toGMT } from '../utils';
+import React, {useEffect, useState} from 'react';
+import {Dialog} from '@alicloud/console-components';
+import {authorization as getAuth} from './assitant';
+import {getFromStorage, toGMT} from '../../utils';
+import {historyType} from "../../StandardSignature";
 import styles from './index.module.less';
 
+
 export default (props: any) => {
-  const { visible, onCancel, formValue, headersData, resourceData, dateField } = props;
-  const { AccessKeyId, AccessKeySecret } = formValue;
+  const {visible, onCancel, formValue, headersData, resourceData, dateField,setHistoryLog} = props;
+  const {AccessKeyId, AccessKeySecret} = formValue;
   const [canonicalString, setCanonicalString] = useState('');
   const [authorization, setAuthorization] = useState('');
 
@@ -20,8 +22,20 @@ export default (props: any) => {
         headers: headersData,
         resource: resourceData,
       });
+      const auth = getAuth(AccessKeyId, AccessKeySecret, canon)
       setCanonicalString(canon);
-      setAuthorization(getAuth(AccessKeyId, AccessKeySecret, canon));
+      setAuthorization(auth);
+      // local storage
+      let history: historyType[] | [] = getFromStorage('auth')
+      if (history) {
+        history = [...history,
+          {
+            timeStamp: new Date().valueOf(),
+            auth
+          }
+        ]
+        setHistoryLog(history)
+      }
     }
   }, [headersData, resourceData, formValue]);
 
@@ -51,7 +65,7 @@ export default (props: any) => {
   };
 
   const formatForm = (obj: any) => {
-    const { Method, ContentMD5, ContentType, Date, headers = [], resource = [] } = obj;
+    const {Method, ContentMD5, ContentType, Date, headers = [], resource = []} = obj;
     const canonicalizArr = [
       Method,
       ContentMD5,
@@ -66,7 +80,7 @@ export default (props: any) => {
 
   return (
     <Dialog
-      style={{ width: '800px' }}
+      style={{width: '800px'}}
       title="签名信息"
       visible={visible}
       closeMode={visible ? ['close', 'esc', 'mask'] : ['close', 'esc']}

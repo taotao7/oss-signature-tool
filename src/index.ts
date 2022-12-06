@@ -1,4 +1,9 @@
-import SignatureTool from './rc';
+import StandardSignature from './rc/StandardSignature';
+import PostObjectSignature from './rc/PostObjectSignature';
+import SignatureUrl from './rc/SignatureUrl';
 
-export type { SignatureType } from './rc';
-export default SignatureTool;
+import tabs from './rc';
+
+export type { StandardSignatureType } from './rc/StandardSignature';
+export { StandardSignature, PostObjectSignature, SignatureUrl };
+export default tabs;

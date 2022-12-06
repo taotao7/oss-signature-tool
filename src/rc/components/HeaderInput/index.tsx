@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input } from '@alicloud/console-components';
-import { toGMT } from '../utils';
+import { toGMT } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -51,7 +51,6 @@ export default (props: HeaderInputType) => {
     // 不能删除date
     if (index !== 0) {
       const filterValue = value.filter((i, k) => k !== index);
-      console.log('123---->', filterValue);
       setValue([...filterValue]);
     }
   };

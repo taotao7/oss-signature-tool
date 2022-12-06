@@ -1,136 +1,37 @@
-import React, { useState } from 'react';
-import RuleBox from './rule';
-import DatePicker from './datePicker';
-import Signature from './signature';
-import HeadersInput from './headerInput';
-import ResourceInput from './resource';
-import { Form, Input, Select } from '@alicloud/console-components';
-import styles from './index.module.less';
-
+import React from 'react';
+import StandardSignature from './StandardSignature';
+import PostObjectSignature from './PostObjectSignature';
+import SignatureUrl from './SignatureUrl';
+import { Tab } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/xconsole.css';
 
-interface IFormValue {
-  AccessKeyId: string;
-  AccessKeySecret: string;
-  Method: string;
-  ContentType?: string;
-  ContentMD5?: string;
-}
 
-const { Option } = Select;
-const FormItem = Form.Item;
+const tabs = [
+  {
+    tab: '标准签名',
+    key: 'standard',
+    content: <StandardSignature />,
+  },
+  {
+    tab: 'postObject签名',
+    key: 'post',
+    content: <PostObjectSignature />,
+  },
+  {
+    tab: '获取签名链接',
+    key: 'sigUrl',
+    content: <SignatureUrl />,
+  },
+];
 
-const methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
-
-export interface SignatureType {
-  hide?: boolean;
-}
-export default (props: SignatureType) => {
-  const { hide = false } = props;
-  const [formValue, setFormValue] = useState<IFormValue>({
-    AccessKeyId: '',
-    AccessKeySecret: '',
-    Method: '',
-  });
-  const [visible, setVisible] = useState<boolean>(false);
-  const [dateField, setDateField] = useState<string>('');
-  const [headersData, setHeadersData] = useState([]);
-  const [resourceData, setResourceData] = useState([]);
-
-  const itemConfig = [
-    {
-      label: 'AccessKeyId',
-      content: <Input placeholder="必填" name="AccessKeyId" />,
-      required: true,
-    },
-    {
-      label: 'AccessKeySecret',
-      required: true,
-      content: <Input placeholder="必填" name="AccessKeySecret" />,
-    },
-    {
-      label: 'VERB',
-      required: true,
-      content: (
-        <Select placeholder="请求的Method" name="Method" defaultValue="GET">
-          {methods.map((_) => (
-            <Option key={_} value={_}>
-              {_}
-            </Option>
-          ))}
-        </Select>
-      ),
-    },
-    {
-      label: 'Content-MD5',
-      content: (
-        <Input
-          placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
-          name="ContentMD5"
-        />
-      ),
-    },
-    {
-      label: 'Content-Type',
-      name: 'ContentType',
-      content: (
-        <Input
-          placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
-          name="ContentType"
-        />
-      ),
-    },
-  ];
-
-  const submit = (v: IFormValue, e: any) => {
-    if (!e) {
-      setFormValue(v);
-      setVisible(true);
-    }
-  };
-
-  const onCancel = () => {
-    setVisible(false);
-  };
-
-  const onDateFieldChange = (v: string) => {
-    setDateField(v);
-  };
-
+export default () => {
   return (
-    <>
-      {!hide && <RuleBox />}
-      <div className={styles.content}>
-        <Form useLabelForErrorMessage>
-          {itemConfig.map((i, k) => (
-            <FormItem label={i.label} required={i.required} key={k}>
-              {i.content}
-            </FormItem>
-          ))}
-          <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
-          <HeadersInput dateField={dateField} setHeadersData={setHeadersData} />
-          <ResourceInput setResourceData={setResourceData} />
-          <FormItem>
-            <Form.Submit validate type="primary" onClick={submit}>
-              提交
-            </Form.Submit>
-            <Form.Reset
-              names={['AccessKeyId', 'AccessKeySecret', 'METHOD', 'ContentMD5', 'ContentType']}
-            >
-              清空
-            </Form.Reset>
-          </FormItem>
-        </Form>
-      </div>
-
-      <Signature
-        visible={visible}
-        onCancel={onCancel}
-        formValue={formValue}
-        dateField={dateField}
-        headersData={headersData}
-        resourceData={resourceData}
-      />
-    </>
+    <Tab shape="wrapped">
+      {tabs.map((i ) => (
+        <Tab.Item key={i.key} title={i.tab}>
+          {i.content}
+        </Tab.Item>
+      ))}
+    </Tab>
   );
 };
