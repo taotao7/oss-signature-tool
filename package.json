@@ -9,22 +9,23 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "f2elint-scan": "f2elint scan",
-    "f2elint-fix": "f2elint fix"
+    "f2elint-fix": "f2elint fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@alicloud/console-components": "^1.5.10",
     "crypto-js": "^4.1.1",
     "is": "^3.3.0",
     "moment": "^2.29.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/is": "^0.0.21",
     "@types/node": "^18.11.11",
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
+    "@types/react": "^16.0.36",
+    "@types/react-dom": "^16.0.3",
     "@vitejs/plugin-react": "^2.2.0",
     "f2elint": "^2.2.1",
     "husky": "^8.0.2",
