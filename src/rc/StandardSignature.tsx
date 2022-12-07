@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import RuleBox from './components/Rule';
 import DatePicker from './components/DatePicker';
 import Signature from './components/Signature';
 import HeadersInput from './components/HeaderInput';
 import ResourceInput from './components/Resource';
-import SignatureHistory from "./components/SignatureHistory";
-import SignatureStep from "./components/SignatureStep";
-import {Form, Input, Select} from '@alicloud/console-components';
+import SignatureHistory from './components/SignatureHistory';
+import SignatureStep from './components/SignatureStep';
+import { Form, Input, Select } from '@alicloud/console-components';
 import styles from './index.module.less';
-import {getFromStorage} from "./utils";
-
+import { getFromStorage } from './utils';
 
 interface IFormValue {
   AccessKeyId: string;
@@ -19,7 +18,7 @@ interface IFormValue {
   ContentMD5?: string;
 }
 
-const {Option} = Select;
+const { Option } = Select;
 const FormItem = Form.Item;
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
@@ -31,11 +30,11 @@ export interface StandardSignatureType {
 export interface historyType {
   timeStamp: number;
   auth: string;
+  canon: string;
 }
 
-
 export default (props: StandardSignatureType) => {
-  const {hide = false} = props;
+  const { hide = false } = props;
   const [formValue, setFormValue] = useState<IFormValue>({
     AccessKeyId: '',
     AccessKeySecret: '',
@@ -45,23 +44,22 @@ export default (props: StandardSignatureType) => {
   const [dateField, setDateField] = useState<string>('');
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
-  const [historyLog, setHistoryLog] = useState<historyType[]>([])
-
+  const [historyLog, setHistoryLog] = useState<historyType[]>([]);
 
   useEffect(() => {
-    console.log('123---->', getFromStorage('auth'))
-  }, [localStorage.getItem('signatureHistory')])
+    setHistoryLog(getFromStorage('auth'));
+  }, [localStorage.getItem('auth')]);
 
   const itemConfig = [
     {
       label: 'AccessKeyId',
-      content: <Input placeholder="必填" name="AccessKeyId"/>,
+      content: <Input placeholder="必填" name="AccessKeyId" />,
       required: true,
     },
     {
       label: 'AccessKeySecret',
       required: true,
-      content: <Input placeholder="必填" name="AccessKeySecret"/>,
+      content: <Input placeholder="必填" name="AccessKeySecret" />,
     },
     {
       label: 'VERB',
@@ -114,7 +112,7 @@ export default (props: StandardSignatureType) => {
 
   return (
     <>
-      {!hide && <RuleBox/>}
+      {!hide && <RuleBox />}
       <div className={styles.layout}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
@@ -123,9 +121,9 @@ export default (props: StandardSignatureType) => {
                 {i.content}
               </FormItem>
             ))}
-            <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField}/>
-            <HeadersInput dateField={dateField} setHeadersData={setHeadersData}/>
-            <ResourceInput setResourceData={setResourceData}/>
+            <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
+            <HeadersInput dateField={dateField} setHeadersData={setHeadersData} />
+            <ResourceInput setResourceData={setResourceData} />
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>
                 提交
@@ -150,10 +148,10 @@ export default (props: StandardSignatureType) => {
         />
         <div className={styles.view}>
           <div className={styles.history}>
-            <SignatureHistory history={historyLog}/>
+            <SignatureHistory history={historyLog} />
           </div>
           <div className={styles.step}>
-            <SignatureStep/>
+            <SignatureStep />
           </div>
         </div>
       </div>

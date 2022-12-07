@@ -5,13 +5,13 @@ export const toGMT = (v: string) => {
 };
 
 export const saveToStorage = (key: string, v: any) => {
-  window.localStorage.setItem(key, JSON.stringify(v))
-}
+  window.localStorage.setItem(key, JSON.stringify(v));
+};
 
 export const getFromStorage = (key: string): any[] => {
-  const local = window.localStorage.getItem(key)
+  const local = window.localStorage.getItem(key);
   if (local) {
-    return JSON.parse(local)
+    return JSON.parse(JSON.parse(local));
   }
-  return []
-}
+  return [];
+};
