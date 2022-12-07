@@ -6,7 +6,7 @@ import { historyType } from '../../StandardSignature';
 import styles from './index.module.less';
 
 export default (props: any) => {
-  const { visible, onCancel, formValue, headersData, resourceData, dateField } = props;
+  const { visible, onCancel, formValue, headersData, resourceData, dateField, prefix } = props;
   const { AccessKeyId, AccessKeySecret } = formValue;
   const [canonicalString, setCanonicalString] = useState('');
   const [authorization, setAuthorization] = useState('');
@@ -68,14 +68,14 @@ export default (props: any) => {
 
   const onClickButton = () => {
     // local storage
-    const history: historyType[] | [] = getFromStorage('auth');
+    const history: historyType[] | [] = getFromStorage(`sig-${prefix}`);
     if (history instanceof Array) {
       history.push({
         timeStamp: new Date().valueOf(),
         auth: authorization,
         canon: canonicalString,
       });
-      saveToStorage('auth', JSON.stringify(history));
+      saveToStorage(`sig-${prefix}`, JSON.stringify(history));
     }
     // close dialog
     onCancel();

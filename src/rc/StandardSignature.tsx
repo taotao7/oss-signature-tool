@@ -47,8 +47,8 @@ export default (props: StandardSignatureType) => {
   const [historyLog, setHistoryLog] = useState<historyType[]>([]);
 
   useEffect(() => {
-    setHistoryLog(getFromStorage('auth'));
-  }, [localStorage.getItem('auth')]);
+    setHistoryLog(getFromStorage('sig-standard'));
+  }, [localStorage.getItem('sig-standard')]);
 
   const itemConfig = [
     {
@@ -145,6 +145,7 @@ export default (props: StandardSignatureType) => {
           headersData={headersData}
           resourceData={resourceData}
           setHistoryLog={setHistoryLog}
+          prefix="standard"
         />
         <div className={styles.view}>
           <div className={styles.history}>
