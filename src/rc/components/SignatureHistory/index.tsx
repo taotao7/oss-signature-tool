@@ -17,7 +17,7 @@ export default (props: SignatureHistoryType) => {
         {history.map((i) => (
           <Card
             title={`记录时间: ${moment(i.timeStamp).format('YYYY-MM-DD HH:mm:ss')}`}
-            className={styles.cardPadding}
+            className={styles.card}
             showHeadDivider
           >
             CanonicalString:

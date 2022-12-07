@@ -68,7 +68,7 @@ export default (props: any) => {
 
   const onClickButton = () => {
     // local storage
-    let history: historyType[] | [] = getFromStorage('auth');
+    const history: historyType[] | [] = getFromStorage('auth');
     if (history instanceof Array) {
       history.push({
         timeStamp: new Date().valueOf(),

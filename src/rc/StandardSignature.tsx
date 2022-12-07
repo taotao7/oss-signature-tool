@@ -34,7 +34,7 @@ export interface historyType {
 }
 
 export default (props: StandardSignatureType) => {
-  const { hide = false } = props;
+  const { hide = true } = props;
   const [formValue, setFormValue] = useState<IFormValue>({
     AccessKeyId: '',
     AccessKeySecret: '',
