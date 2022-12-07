@@ -15,3 +15,7 @@ export const getFromStorage = (key: string): any[] => {
   }
   return [];
 };
+
+export const clearStorage = (key: string) => {
+  window.localStorage.removeItem(key);
+};

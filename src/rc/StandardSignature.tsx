@@ -23,18 +23,26 @@ const FormItem = Form.Item;
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
 
-export interface StandardSignatureType {
+export interface IStandardSignature {
   hide?: boolean;
 }
 
-export interface historyType {
+export interface IHistory {
   timeStamp: number;
   auth: string;
   canon: string;
+  AccessKeyId: string;
+  AccessKeySecret: string;
 }
 
-export default (props: StandardSignatureType) => {
-  const { hide = true } = props;
+export interface ISigProcessData {
+  canon: string;
+  AccessKeyId: string;
+  AccessKeySecret: string;
+}
+
+export default (props: IStandardSignature) => {
+  const { hide = false } = props;
   const [formValue, setFormValue] = useState<IFormValue>({
     AccessKeyId: '',
     AccessKeySecret: '',
@@ -44,11 +52,18 @@ export default (props: StandardSignatureType) => {
   const [dateField, setDateField] = useState<string>('');
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
-  const [historyLog, setHistoryLog] = useState<historyType[]>([]);
+  const [historyLog, setHistoryLog] = useState<IHistory[]>([]);
+  const [sigProcessData, setSigProcessData] = useState<ISigProcessData>({});
+  const [logIndex, setLogIndex] = useState<number>(0);
 
   useEffect(() => {
-    setHistoryLog(getFromStorage('sig-standard'));
-  }, [localStorage.getItem('sig-standard')]);
+    const logs = getFromStorage('sig-standard');
+    setHistoryLog(logs);
+    if (logs.length > 0) {
+      // display first log process
+      setSigProcessData(logs[logIndex]);
+    }
+  }, [localStorage.getItem('sig-standard'), logIndex]);
 
   const itemConfig = [
     {
@@ -128,6 +143,7 @@ export default (props: StandardSignatureType) => {
               <Form.Submit validate type="primary" onClick={submit}>
                 提交
               </Form.Submit>
+              {'  '}
               <Form.Reset
                 names={['AccessKeyId', 'AccessKeySecret', 'METHOD', 'ContentMD5', 'ContentType']}
               >
@@ -145,14 +161,22 @@ export default (props: StandardSignatureType) => {
           headersData={headersData}
           resourceData={resourceData}
           setHistoryLog={setHistoryLog}
+          setSigProcessData={setSigProcessData}
+          setLogIndex={setLogIndex}
           prefix="standard"
         />
         <div className={styles.view}>
           <div className={styles.history}>
-            <SignatureHistory history={historyLog} />
+            <SignatureHistory
+              history={historyLog}
+              prefix="standard"
+              setHistoryLog={setHistoryLog}
+              setLogIndex={setLogIndex}
+              logIndex={logIndex}
+            />
           </div>
           <div className={styles.step}>
-            <SignatureStep />
+            <SignatureStep sigProcessData={sigProcessData} />
           </div>
         </div>
       </div>

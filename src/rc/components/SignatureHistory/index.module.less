@@ -1,3 +1,13 @@
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .title {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+}
+
 .container {
   height: 32vh;
   overflow-y: scroll;
@@ -7,9 +17,17 @@
     background-color: #cdd0cd;
     border-radius: 4px;
   }
-  .card {
+  .defaultCard {
     margin-bottom: 10px;
-
+    :global {
+      .next-card-body {
+        padding-top: 0px;
+      }
+    }
+  }
+  .activeCard {
+    margin-bottom: 10px;
+    border: cornflowerblue solid 1px;
     :global {
       .next-card-body {
         padding-top: 0px;

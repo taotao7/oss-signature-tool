@@ -2,26 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { Dialog } from '@alicloud/console-components';
 import { authorization as getAuth } from './assitant';
 import { getFromStorage, saveToStorage, toGMT } from '../../utils';
-import { historyType } from '../../StandardSignature';
+import { IHistory } from '../../StandardSignature';
 import styles from './index.module.less';
 
 export default (props: any) => {
-  const { visible, onCancel, formValue, headersData, resourceData, dateField, prefix } = props;
+  const {
+    visible,
+    onCancel,
+    formValue,
+    headersData,
+    resourceData,
+    dateField,
+    prefix,
+    setSigProcessData,
+    setLogIndex,
+  } = props;
   const { AccessKeyId, AccessKeySecret } = formValue;
   const [canonicalString, setCanonicalString] = useState('');
   const [authorization, setAuthorization] = useState('');
 
   // 实际渲染
-  // const authorization = getAuth(AccessKeyId, AccessKeySecret, canonicalString);
   useEffect(() => {
     if (resourceData.length > 0 && dateField && AccessKeySecret && AccessKeyId) {
       const canon = formatForm({
         ...formValue,
         Date: toGMT(dateField),
-        headers: headersData,
-        resource: resourceData,
+        headers: formatHeaders(headersData),
+        resource: formatResource(resourceData),
       });
       const auth = getAuth(AccessKeyId, AccessKeySecret, canon);
+      setSigProcessData({ canon, AccessKeyId, AccessKeySecret });
       setCanonicalString(canon);
       setAuthorization(auth);
     }
@@ -53,28 +63,24 @@ export default (props: any) => {
   };
 
   const formatForm = (obj: any) => {
-    const { Method, ContentMD5, ContentType, Date, headers = [], resource = [] } = obj;
-    const canonicalizArr = [
-      Method,
-      ContentMD5,
-      ContentType,
-      Date,
-      ...formatHeaders(headers),
-      formatResource(resource),
-    ];
+    const { Method, ContentMD5, ContentType, Date, headers, resource } = obj;
+    const canonicalizArr = [Method, ContentMD5, ContentType, Date, ...headers, resource];
 
     return canonicalizArr.join('\n');
   };
 
   const onClickButton = () => {
-    // local storage
-    const history: historyType[] | [] = getFromStorage(`sig-${prefix}`);
+    // save log to local storage
+    const history: IHistory[] | [] = getFromStorage(`sig-${prefix}`);
     if (history instanceof Array) {
-      history.push({
+      history.unshift({
         timeStamp: new Date().valueOf(),
         auth: authorization,
         canon: canonicalString,
+        AccessKeyId,
+        AccessKeySecret,
       });
+      setLogIndex(0);
       saveToStorage(`sig-${prefix}`, JSON.stringify(history));
     }
     // close dialog
