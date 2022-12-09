@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog } from '@alicloud/console-components';
 import { authorization as getAuth } from './assitant';
 import { getFromStorage, saveToStorage, toGMT } from '../../utils';
-import { IHistory } from '../../StandardSignature';
+import { HistoryLog } from '../../types';
 import styles from './index.module.less';
 
 export default (props: any) => {
@@ -71,7 +71,7 @@ export default (props: any) => {
 
   const onClickButton = () => {
     // save log to local storage
-    const history: IHistory[] | [] = getFromStorage(`sig-${prefix}`);
+    const history: HistoryLog[] | [] = getFromStorage(`sig-${prefix}`);
     if (history instanceof Array) {
       history.unshift({
         timeStamp: new Date().valueOf(),

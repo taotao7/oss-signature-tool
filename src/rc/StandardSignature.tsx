@@ -8,42 +8,15 @@ import SignatureHistory from './components/SignatureHistory';
 import SignatureStep from './components/SignatureStep';
 import { Form, Input, Select } from '@alicloud/console-components';
 import styles from './index.module.less';
-import { getFromStorage } from './utils';
-
-interface IFormValue {
-  AccessKeyId: string;
-  AccessKeySecret: string;
-  Method: string;
-  ContentType?: string;
-  ContentMD5?: string;
-}
+import { getFromStorage, methods } from './utils';
+import { FormValue, HistoryLog, SigProcessData, PageIndex } from './types';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 
-const methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
-
-export interface IStandardSignature {
-  hide?: boolean;
-}
-
-export interface IHistory {
-  timeStamp: number;
-  auth: string;
-  canon: string;
-  AccessKeyId: string;
-  AccessKeySecret: string;
-}
-
-export interface ISigProcessData {
-  canon: string;
-  AccessKeyId: string;
-  AccessKeySecret: string;
-}
-
-export default (props: IStandardSignature) => {
+export default (props: PageIndex) => {
   const { hide = false } = props;
-  const [formValue, setFormValue] = useState<IFormValue>({
+  const [formValue, setFormValue] = useState<FormValue>({
     AccessKeyId: '',
     AccessKeySecret: '',
     Method: '',
@@ -52,8 +25,12 @@ export default (props: IStandardSignature) => {
   const [dateField, setDateField] = useState<string>('');
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
-  const [historyLog, setHistoryLog] = useState<IHistory[]>([]);
-  const [sigProcessData, setSigProcessData] = useState<ISigProcessData>({});
+  const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
+  const [sigProcessData, setSigProcessData] = useState<SigProcessData>({
+    canon: '',
+    AccessKeySecret: '',
+    AccessKeyId: '',
+  });
   const [logIndex, setLogIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -110,7 +87,7 @@ export default (props: IStandardSignature) => {
     },
   ];
 
-  const submit = (v: IFormValue, e: any) => {
+  const submit = (v: FormValue, e: any) => {
     if (!e) {
       setFormValue(v);
       setVisible(true);
@@ -127,7 +104,7 @@ export default (props: IStandardSignature) => {
 
   return (
     <>
-      {!hide && <RuleBox />}
+      {!hide && <RuleBox types="standard" />}
       <div className={styles.layout}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
@@ -176,7 +153,7 @@ export default (props: IStandardSignature) => {
             />
           </div>
           <div className={styles.step}>
-            <SignatureStep sigProcessData={sigProcessData} />
+            <SignatureStep sigProcessData={sigProcessData} prefix="standard" />
           </div>
         </div>
       </div>

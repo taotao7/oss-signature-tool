@@ -3,22 +3,28 @@
   display: flex;
   flex-direction: row;
   .form {
-    width: 58vw;
+    width: 55vw;
   }
   .view {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 38vw;
+    width: 42vw;
     margin-left: 30px;
     //border: 1px aqua solid;
     .history {
-      max-height: 32vh;
+      max-height: 35vh;
       position: relative;
     }
     .step {
       margin-top: 50px;
-      max-height: 32vh;
+      max-height: 35vh;
+      overflow: scroll;
     }
   }
+}
+
+.hint {
+  margin-left: 5px;
+  color: darkgray;
 }

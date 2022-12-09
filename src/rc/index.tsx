@@ -5,7 +5,6 @@ import SignatureUrl from './SignatureUrl';
 import { Tab } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/xconsole.css';
 
-
 const tabs = [
   {
     tab: '标准签名',
@@ -13,7 +12,7 @@ const tabs = [
     content: <StandardSignature />,
   },
   {
-    tab: 'postObject签名',
+    tab: 'PostObject签名',
     key: 'post',
     content: <PostObjectSignature />,
   },
@@ -26,8 +25,9 @@ const tabs = [
 
 export default () => {
   return (
+    // TODO记得删除默认activeKey
     <Tab shape="wrapped">
-      {tabs.map((i ) => (
+      {tabs.map((i) => (
         <Tab.Item key={i.key} title={i.tab}>
           {i.content}
         </Tab.Item>

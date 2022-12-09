@@ -19,3 +19,5 @@ export const getFromStorage = (key: string): any[] => {
 export const clearStorage = (key: string) => {
   window.localStorage.removeItem(key);
 };
+
+export const methods: string[] = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
