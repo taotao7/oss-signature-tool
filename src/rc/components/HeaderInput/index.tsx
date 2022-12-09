@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Input } from '@alicloud/console-components';
-import { toGMT } from '../../utils';
+import React, {useEffect, useState} from 'react';
+import {Button, Form, Input} from '@alicloud/console-components';
+import {toGMT} from '../../utils';
 
 const FormItem = Form.Item;
 
 interface HeaderInputType {
-  dateField: string;
+  dateField?: string;
   setHeadersData: Function;
+  prefix: string
 }
 
 interface InputType {
@@ -14,18 +15,27 @@ interface InputType {
   key: string;
   value: string;
   disabled?: boolean;
+
 }
 
 export default (props: HeaderInputType) => {
-  const { dateField, setHeadersData } = props;
-  const [value, setValue] = useState<InputType[]>([
-    {
-      index: 0,
-      key: 'date',
-      value: dateField,
-      disabled: true,
-    },
-  ]);
+  const {dateField='', setHeadersData, prefix} = props;
+  const [value, setValue] = useState<InputType[]>(prefix !== 'standard' ?
+    [
+      {
+        index: 0,
+        key: '',
+        value:'',
+      },
+    ]
+    : [
+      {
+        index: 0,
+        key: 'date',
+        value: dateField,
+        disabled: true,
+      },
+    ]);
 
   useEffect(() => {
     if (dateField) {
@@ -89,7 +99,7 @@ export default (props: HeaderInputType) => {
             disabled={i?.disabled}
             value={i.value}
             defaultValue={i.value}
-            style={{ width: '30vw' }}
+            style={{width: '30vw'}}
             onChange={(v) => {
               onChange('value', k, v);
             }}

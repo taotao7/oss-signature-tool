@@ -4,7 +4,7 @@ import crypto from 'crypto-js';
 import JsonEditor from './components/JsonEditor';
 import SignatureHistory from './components/SignatureHistory';
 import SignatureStep from './components/SignatureStep';
-import { DatePicker, Form, Input } from '@alicloud/console-components';
+import { DatePicker, Form, Input, Dialog } from '@alicloud/console-components';
 import styles from './index.module.less';
 import { getFromStorage, saveToStorage } from './utils';
 import { FormValue, HistoryLog, PageIndex, SigProcessData } from './types';
@@ -17,26 +17,19 @@ export default (props: PageIndex) => {
   const { hide = false } = props;
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [logIndex, setLogIndex] = useState<number>(0);
+  const [visible, setVisible] = useState<boolean>(false);
   const [sigProcessData, setSigProcessData] = useState<SigProcessData>({
     canon: '',
     AccessKeySecret: '',
     AccessKeyId: '',
     auth: '',
   });
-
   const [expirationDate, setExpirationDate] = useState<string>(moment().toISOString());
   const [policyData, setPolicyData] = useState<string>(
     JSON.stringify(
       {
         expiration: expirationDate,
-        conditions: [
-          { bucket: 'example' },
-          ['content-length-range', 1, 10],
-          ['eq', '$success_action_status', '201'],
-          ['starts-with', '$key', 'user/eric/'],
-          ['in', '$content-type', ['image/jpg', 'image/png']],
-          ['not-in', '$cache-control', ['no-cache']],
-        ],
+        conditions: [['content-length-range', 0, 1048576000]],
       },
       null,
       4,
@@ -73,19 +66,6 @@ export default (props: PageIndex) => {
       required: true,
       content: <Input placeholder="必填" name="AccessKeySecret" />,
     },
-    // {
-    //   label: 'VERB',
-    //   required: true,
-    //   content: (
-    //     <Select placeholder="请求的Method" name="Method" defaultValue="POST">
-    //       {methods.map((_) => (
-    //         <Option key={_} value={_}>
-    //           {_}
-    //         </Option>
-    //       ))}
-    //     </Select>
-    //   ),
-    // },
     {
       label: (
         <>
@@ -105,9 +85,9 @@ export default (props: PageIndex) => {
     },
   ];
 
-  const PostObjectSignature = (v: any): string => {
+  const PostObjectSignature = (v: any) => {
     const history: HistoryLog[] = getFromStorage('sig-postObject');
-    const canon = JSON.stringify(policyData);
+    const canon = policyData;
     const auth = crypto.enc.Base64.stringify(
       crypto.HmacSHA1(
         crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policyData)),
@@ -122,22 +102,20 @@ export default (props: PageIndex) => {
       AccessKeySecret: v.AccessKeySecret,
     });
     setLogIndex(0);
+    setSigProcessData(history[0]);
     saveToStorage('sig-postObject', JSON.stringify(history));
-
-    // signature
-    return auth;
   };
 
   const submit = (v: FormValue, e: any) => {
     if (!e) {
       PostObjectSignature(v);
+      setVisible(true);
     }
   };
 
-  //
-  // const onCancel = () => {
-  //   setVisible(false);
-  // };
+  const onCancel = () => {
+    setVisible(false);
+  };
 
   return (
     <>
@@ -179,6 +157,25 @@ export default (props: PageIndex) => {
             <SignatureStep sigProcessData={sigProcessData} prefix="postObject" />
           </div>
         </div>
+        <Dialog
+          visible={visible}
+          style={{ width: '800px' }}
+          height="55vh"
+          title="签名信息"
+          closeMode={visible ? ['close', 'esc', 'mask'] : ['close', 'esc']}
+          onOk={onCancel}
+          onCancel={onCancel}
+          onClose={onCancel}
+        >
+          {sigProcessData?.auth && (
+            <div className={styles.diaLogContent}>
+              <h3>policy:</h3>
+              <pre>{sigProcessData.canon}</pre>
+              <h3>authorization:</h3>
+              <pre>{sigProcessData.auth}</pre>
+            </div>
+          )}
+        </Dialog>
       </div>
     </>
   );

@@ -5,6 +5,9 @@ export interface FormValue {
   ContentType?: string;
   ContentMD5?: string;
   Policy?: string;
+  Expiration?: string;
+  Region?: string;
+  STSToken?: string;
 }
 
 export interface PageIndex {
@@ -23,5 +26,5 @@ export interface SigProcessData {
   canon: string;
   AccessKeyId: string;
   AccessKeySecret: string;
-  auth?:string;
+  auth?: string;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SigProcessData } from '../../types';
-import { computeSignature } from '../Signature/assitant';
+import { computeSignature } from '../../utils';
 import styles from './index.module.less';
 import crypto from 'crypto-js';
 
@@ -39,9 +39,9 @@ export default (props: ISignatureStep) => {
             <div>
               当前签名字段(canonicalString): <pre>{canon}</pre>
               签名调用函数
-              <span>
+              <div>
                 Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
-              </span>
+              </div>
               <pre> Signature={signature}</pre>
               Authorization=&apos;OSS &apos; + AccessKeyId + &apos;:&apos; + Signature
               <pre>

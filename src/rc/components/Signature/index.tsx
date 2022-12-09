@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog } from '@alicloud/console-components';
-import { authorization as getAuth } from './assitant';
-import { getFromStorage, saveToStorage, toGMT } from '../../utils';
-import { HistoryLog } from '../../types';
+import React, {useEffect, useState} from 'react';
+import {Dialog} from '@alicloud/console-components';
+import {
+  authorization as getAuth,
+  formatForm,
+  formatHeaders,
+  formatResource,
+  getFromStorage,
+  saveToStorage,
+  toGMT
+} from '../../utils';
+import {HistoryLog} from '../../types';
 import styles from './index.module.less';
 
 export default (props: any) => {
@@ -17,7 +24,7 @@ export default (props: any) => {
     setSigProcessData,
     setLogIndex,
   } = props;
-  const { AccessKeyId, AccessKeySecret } = formValue;
+  const {AccessKeyId, AccessKeySecret} = formValue;
   const [canonicalString, setCanonicalString] = useState('');
   const [authorization, setAuthorization] = useState('');
 
@@ -31,43 +38,12 @@ export default (props: any) => {
         resource: formatResource(resourceData),
       });
       const auth = getAuth(AccessKeyId, AccessKeySecret, canon);
-      setSigProcessData({ canon, AccessKeyId, AccessKeySecret });
+      setSigProcessData({canon, AccessKeyId, AccessKeySecret});
       setCanonicalString(canon);
       setAuthorization(auth);
     }
   }, [headersData, resourceData, formValue]);
 
-  const formatHeaders = (headersArr: any) => {
-    return [...headersArr]
-      .sort((a, b) => {
-        if (a.key > b.key) return 1;
-        else if (a.key < b.key) return -1;
-        return 0;
-      })
-      .map((_) => `x-oss-${_.key.toLowerCase()}:${_.value}`);
-  };
-
-  const formatResource = (resourceArr: any) => {
-    let resource = '/';
-    const bucket = resourceArr.find((_: any) => _.key === 'bucket').value;
-    const object = resourceArr.find((_: any) => _.key === 'object').value;
-    const rest = resourceArr
-      .filter((_: any) => !['bucket', 'object'].includes(_.key) && _.key.trim())
-      .map((_: any) => `${_.key}${_.value.trim() ? `=${_.value.trim()}` : ''}`)
-      .join('&');
-
-    if (bucket || object) {
-      resource = `${resource}${bucket}/${object || ''}${rest ? `?${rest}` : ''}`;
-    }
-    return resource;
-  };
-
-  const formatForm = (obj: any) => {
-    const { Method, ContentMD5, ContentType, Date, headers, resource } = obj;
-    const canonicalizArr = [Method, ContentMD5, ContentType, Date, ...headers, resource];
-
-    return canonicalizArr.join('\n');
-  };
 
   const onClickButton = () => {
     // save log to local storage
@@ -89,14 +65,14 @@ export default (props: any) => {
 
   return (
     <Dialog
-      style={{ width: '800px' }}
+      style={{width: '800px'}}
       title="签名信息"
       visible={visible}
       closeMode={visible ? ['close', 'esc', 'mask'] : ['close', 'esc']}
       onOk={onClickButton}
       onCancel={onClickButton}
       onClose={onClickButton}
-      height="60vh"
+      height="55vh"
     >
       <div>
         <h3>canonicalString:</h3>

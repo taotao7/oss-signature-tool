@@ -14,6 +14,52 @@ import { FormValue, HistoryLog, SigProcessData, PageIndex } from './types';
 const { Option } = Select;
 const FormItem = Form.Item;
 
+
+const itemConfig = [
+  {
+    label: 'AccessKeyId',
+    content: <Input placeholder="必填" name="AccessKeyId" />,
+    required: true,
+  },
+  {
+    label: 'AccessKeySecret',
+    required: true,
+    content: <Input placeholder="必填" name="AccessKeySecret" />,
+  },
+  {
+    label: 'VERB',
+    required: true,
+    content: (
+      <Select placeholder="请求的Method" name="Method" defaultValue="GET">
+        {methods.map((_) => (
+          <Option key={_} value={_}>
+            {_}
+          </Option>
+        ))}
+      </Select>
+    ),
+  },
+  {
+    label: 'Content-MD5',
+    content: (
+      <Input
+        placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
+        name="ContentMD5"
+      />
+    ),
+  },
+  {
+    label: 'Content-Type',
+    name: 'ContentType',
+    content: (
+      <Input
+        placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
+        name="ContentType"
+      />
+    ),
+  },
+];
+
 export default (props: PageIndex) => {
   const { hide = false } = props;
   const [formValue, setFormValue] = useState<FormValue>({
@@ -42,50 +88,6 @@ export default (props: PageIndex) => {
     }
   }, [localStorage.getItem('sig-standard'), logIndex]);
 
-  const itemConfig = [
-    {
-      label: 'AccessKeyId',
-      content: <Input placeholder="必填" name="AccessKeyId" />,
-      required: true,
-    },
-    {
-      label: 'AccessKeySecret',
-      required: true,
-      content: <Input placeholder="必填" name="AccessKeySecret" />,
-    },
-    {
-      label: 'VERB',
-      required: true,
-      content: (
-        <Select placeholder="请求的Method" name="Method" defaultValue="GET">
-          {methods.map((_) => (
-            <Option key={_} value={_}>
-              {_}
-            </Option>
-          ))}
-        </Select>
-      ),
-    },
-    {
-      label: 'Content-MD5',
-      content: (
-        <Input
-          placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
-          name="ContentMD5"
-        />
-      ),
-    },
-    {
-      label: 'Content-Type',
-      name: 'ContentType',
-      content: (
-        <Input
-          placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
-          name="ContentType"
-        />
-      ),
-    },
-  ];
 
   const submit = (v: FormValue, e: any) => {
     if (!e) {
@@ -114,7 +116,7 @@ export default (props: PageIndex) => {
               </FormItem>
             ))}
             <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
-            <HeadersInput dateField={dateField} setHeadersData={setHeadersData} />
+            <HeadersInput dateField={dateField} setHeadersData={setHeadersData} prefix="standard" />
             <ResourceInput setResourceData={setResourceData} />
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>

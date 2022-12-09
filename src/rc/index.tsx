@@ -25,8 +25,7 @@ const tabs = [
 
 export default () => {
   return (
-    // TODO记得删除默认activeKey
-    <Tab shape="wrapped">
+    <Tab shape="wrapped" activeKey="sigUrl">
       {tabs.map((i) => (
         <Tab.Item key={i.key} title={i.tab}>
           {i.content}
