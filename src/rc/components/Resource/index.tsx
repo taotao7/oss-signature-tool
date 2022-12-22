@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Input } from '@alicloud/console-components';
+import React, { SetStateAction, useState, useEffect } from 'react';
+import { Form, Input, Icon } from '@alicloud/console-components';
+import { formItemLayout } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -10,8 +11,8 @@ interface ResourceDataType {
   disabled?: boolean;
 }
 
-export default (props: { setResourceData: Function }) => {
-  const { setResourceData } = props;
+export default (props: { setResourceData: SetStateAction<any>; required: boolean }) => {
+  const { setResourceData, required = false } = props;
 
   const [value, setValue] = useState<ResourceDataType[]>([]);
 
@@ -48,8 +49,9 @@ export default (props: { setResourceData: Function }) => {
   const del = (index: number) => {
     // 不能删除date
     if (index !== 0) {
-      const filterValue = value.filter((i, k) => k !== index);
+      const filterValue = value.filter((_, k) => k !== index);
       setValue(filterValue);
+      setResourceData([...filterValue]);
     }
   };
 
@@ -66,12 +68,13 @@ export default (props: { setResourceData: Function }) => {
   };
 
   return (
-    <FormItem label="Canonicalized Resource">
+    <FormItem label="Canonicalized Resource" {...formItemLayout} required={required}>
       {value.map((i, k) => (
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
+            marginBottom: '10px',
           }}
           key={k}
         >
@@ -90,10 +93,18 @@ export default (props: { setResourceData: Function }) => {
               onChange('value', k, v);
             }}
           />
-          <Button onClick={() => add(value.length)}>+</Button>
-          {!['object', 'bucket'].includes(i.key) && <Button onClick={() => del(k)}>-</Button>}
+          {!['object', 'bucket'].includes(i.key) && (
+            <Icon
+              type="delete"
+              onClick={() => del(k)}
+              style={{ marginRight: '10px', marginLeft: '10px' }}
+            />
+          )}
         </div>
       ))}
+      <div onClick={() => add(value.length)} style={{ color: '#3581d2', width: '50px' }}>
+        +添加
+      </div>
     </FormItem>
   );
 };

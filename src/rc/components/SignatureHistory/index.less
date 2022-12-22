@@ -9,9 +9,9 @@
 }
 
 .container {
-  height: 35vh;
+  position: relative;
+  height: 80vh;
   overflow-y: scroll;
-  //border: gray solid 1px;
   pre {
     background-color: #eef2f6;
     border-radius: 4px;
@@ -26,13 +26,15 @@
       }
     }
   }
-  .activeCard {
-    margin-bottom: 10px;
-    border: cornflowerblue solid 1px;
-    :global {
-      .next-card-body {
-        padding-top: 0px;
-      }
-    }
+}
+
+
+.contentContainer {
+
+  pre {
+    background-color: #eef2f6;
+    border-radius: 4px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
   }
 }

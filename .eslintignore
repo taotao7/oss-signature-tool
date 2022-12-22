@@ -4,6 +4,7 @@ dist/
 es/
 lib/
 node_modules/
+src/intl/
 **/*.min.js
 **/*-min.js
 **/*.bundle.js

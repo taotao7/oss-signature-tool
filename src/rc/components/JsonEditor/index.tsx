@@ -1,7 +1,8 @@
 import AceEditor from 'react-ace';
-import {Balloon, Form, Icon} from '@alicloud/console-components';
+import { Balloon, Form, Icon } from '@alicloud/console-components';
 import React from 'react';
-import styles from './index.module.less'
+import './index.less';
+import {formItemLayout} from '../../utils'
 
 const FormItem = Form.Item;
 
@@ -11,22 +12,33 @@ interface JsonEditor {
 }
 
 export default (props: JsonEditor) => {
-  const {onPolicyChange, policyData} = props;
+  const { onPolicyChange, policyData } = props;
 
   return (
-    <FormItem label={(<div className={styles.label}>Policy
-      <Balloon
-        closable={false}
-        triggerType="hover"
-        trigger={<Icon className={styles.icon} type="help_fill" size="small"
-                       onClick={() => {
-                         window.open('https://help.aliyun.com/document_detail/31988.html')
-                       }}
-        />}
-      >
-        点击查看更多Policy选项
-      </Balloon>
-    </div>)}>
+    <FormItem
+      label={
+        <div className="label">
+          Policy
+          <Balloon
+            closable={false}
+            triggerType="hover"
+            trigger={
+              <Icon
+                className="icon"
+                type="help_fill"
+                size="small"
+                onClick={() => {
+                  window.open('https://help.aliyun.com/document_detail/31988.html');
+                }}
+              />
+            }
+          >
+            点击查看更多Policy选项
+          </Balloon>
+        </div>
+      }
+      {...formItemLayout}
+    >
       <AceEditor
         mode="json"
         onChange={onPolicyChange}
@@ -38,7 +50,7 @@ export default (props: JsonEditor) => {
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
-          enableSnippets: true,
+          enableSnippets: true
         }}
       />
     </FormItem>

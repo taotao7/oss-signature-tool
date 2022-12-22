@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
   },
+  define: {
+    global: 'window',
+  },
   // build: {
   //     lib: {
   //         entry: resolve(__dirname, 'src/rc/index.tsx'),

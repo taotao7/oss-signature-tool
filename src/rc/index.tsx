@@ -25,7 +25,7 @@ const tabs = [
 
 export default () => {
   return (
-    <Tab shape="wrapped" activeKey="sigUrl">
+    <Tab shape="wrapped">
       {tabs.map((i) => (
         <Tab.Item key={i.key} title={i.tab}>
           {i.content}

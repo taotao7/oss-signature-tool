@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import moment from 'moment';
 import crypto from 'crypto-js';
 import is from 'is';
@@ -50,7 +51,7 @@ export const formatResource = (resourceArr: any) => {
 };
 
 export const formatForm = (obj: any) => {
-  const {Method, ContentMD5, ContentType, Date, headers=[], resource} = obj;
+  const { Method, ContentMD5, ContentType, Date, headers = [], resource } = obj;
   const canonicalizArr = [Method, ContentMD5, ContentType, Date, ...headers, resource];
 
   return canonicalizArr.join('\n');
@@ -140,7 +141,25 @@ export function buildCanonicalString(
   return signContent.join('\n');
 }
 
+export const buildUrl = (
+  accessKeyId: string,
+  bucket: string,
+  region: string,
+  signature: number,
+  resource: string,
+  expires: string,
+  securityToken: string,
+  query: string,
+) => {
+  return encodeURI(
+    `https://${bucket}.${region}.aliyuncs.com/${resource}?OSSAccessKeyId=${accessKeyId}&Expires=${expires}&Signature=${signature}${
+      securityToken ? '&security-token=' + securityToken : ''
+    }${query ? query : ''}`,
+  );
+};
 
-export const buildUrl = (accessKeyId: string, bucket: string, region: string, signature: number, resource: string, expires: string, securityToken: string) => {
-  console.log(`https://${bucket}.${region}.aliyuncs.com/${resource}?OSSAccessKeyId=${accessKeyId}&Expires=${expires}&Signature=${signature}${securityToken?'&security-token='+securityToken:''}&x-oss-traffic-limit=245760`)
-}
+export const formItemLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 },
+  labelTextAlign: 'left',
+};

@@ -11,18 +11,20 @@
     "f2elint-fix": "f2elint fix"
   },
   "dependencies": {
+    "@ali/intl-factory": "^0.0.10",
     "@alicloud/console-components": "^1.5.10",
+    "@alife/mcms_oss-console_package-recommend-tool": "^0.0.1",
     "crypto-js": "^4.1.1",
     "is": "^3.3.0",
     "moment": "^2.29.4",
     "react": "^16.2.0",
     "react-ace": "^10.1.0",
-    "react-dom": "^16.2.1"
+    "react-dom": "^16.2.1",
+    "react-intl": "^2.7.2"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/is": "^0.0.21",
-    "@types/node": "^18.11.11",
     "@types/react": "^16.0.36",
     "@types/react-dom": "^16.0.3",
     "@vitejs/plugin-react": "^2.2.0",

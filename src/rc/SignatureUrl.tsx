@@ -1,130 +1,175 @@
-import React, {useState} from 'react';
-import {DatePicker, Dialog, Form, Input, Select} from '@alicloud/console-components';
-import {buildUrl, computeSignature, formatForm, formatResource, methods} from './utils';
-import {FormValue} from './types';
-import ResourceInput from "./components/Resource";
-import moment from "moment";
+import React, { useState, useEffect } from 'react';
+import { Dialog, Form, Input, NumberPicker } from '@alicloud/console-components';
+import Split from './components/Split';
+import {
+  buildUrl,
+  computeSignature,
+  formatForm,
+  formatResource,
+  formItemLayout,
+  formatHeaders,
+  saveToStorage,
+  getFromStorage,
+} from './utils';
+import { FormValue, HistoryLog } from './types';
+import ResourceInput from './components/Resource';
+import HeadersInput from './components/HeaderInput';
+import SignatureHistory from './components/SignatureHistory';
+import intl from '../intl';
+import './index.less';
+import moment from 'moment';
 
-const {Option} = Select;
 const FormItem = Form.Item;
 
-const itemConfig = [
-  {
-    label: 'AccessKeyId',
-    content: <Input placeholder="必填" name="AccessKeyId"/>,
-    required: true,
-  },
-  {
-    label: 'AccessKeySecret',
-    required: true,
-    content: <Input placeholder="必填" name="AccessKeySecret"/>,
-  },
-  {
-    label: 'Bucket Region',
-    required: true,
-    content: <Input placeholder="必填" name="Region"/>,
-  },
-  {
-    label: 'VERB',
-    required: true,
-    content: (
-      <Select placeholder="请求的Method" name="Method" defaultValue="GET">
-        {methods.map((_) => (
-          <Option key={_} value={_}>
-            {_}
-          </Option>
-        ))}
-      </Select>
-    ),
-  },
-  {
-    label: 'Content-MD5',
-    content: (
-      <Input
-        placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
-        name="ContentMD5"
-      />
-    ),
-  },
-  {
-    label: 'Content-Type',
-    name: 'ContentType',
-    content: (
-      <Input
-        placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
-        name="ContentType"
-      />
-    ),
-  },
-  {
-    label: 'Expiration Time',
-    required: true,
-    content: <DatePicker placeholder="必填" name="Expiration" showTime/>,
-  },
-  {
-    label: "Security-Token",
-    content: <Input placeholder="如果是STS服务生成的请输入STSToken" name="STSToken"/>,
-  }
-];
-
 export default () => {
-
-
   const [resourceData, setResourceData] = useState([]);
-  const submit = (v: FormValue, e: any) => {
+  const [headersData, setHeadersData] = useState([]);
+  const [expireTime, setExpriretime] = useState<number>(300);
+  const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
+
+  useEffect(() => {
+    const logs = getFromStorage('sig-sigUrl');
+    setHistoryLog(logs);
+  }, []);
+
+  // signature
+  const sig = (canon: string, sk: string): string => {
+    return computeSignature(sk, canon);
+  };
+
+  const submit = (v: FormValue, e: any): any => {
     if (!e) {
       // @ts-ignore
       if (!resourceData[0].value || !resourceData[1].value) {
         return Dialog.alert({
           title: '警告',
-          content: <>必须填写bucket 和 object名称</>
-        })
+          content: <>必须填写bucket 和 object名称</>,
+        });
       }
-      const resource = formatResource(resourceData)
+
+      const resource = formatResource(resourceData);
+      const headers = formatHeaders(headersData);
+      const date = moment().unix() + expireTime;
+
       const canonicalString = formatForm({
         ...v,
-        Date: moment(v.Expiration).unix(),
-        resource
-      })
-      console.log('123---->', resource)
-      const signature = computeSignature(v.AccessKeySecret, canonicalString)
-      // @ts-ignore
-      buildUrl(v.AccessKeyId, resourceData[0].value, v.Region, signature, resourceData[1].value, moment(v.Expiration).unix(), v.STSToken)
+        Method: 'GET',
+        Date: date,
+        headers,
+        resource,
+      });
 
+      const signature = sig(canonicalString, v.AccessKeySecret);
 
+      if (signature.includes('+')) {
+        return submit(v, null);
+      }
+      const queryArr = resourceData.filter((i) => !['bucket', 'object'].includes(i.key));
+      const query = queryArr.map((i) => `&${i.key}=${i.value}`).join('');
+
+      const url = buildUrl(
+        v.AccessKeyId,
+        resourceData[0].value,
+        v.Region,
+        signature,
+        resourceData[1].value,
+        date,
+        v.STSToken,
+        query,
+      );
+
+      const history: HistoryLog[] | [] = historyLog;
+      if (history instanceof Array) {
+        history.unshift({
+          timeStamp: new Date().valueOf(),
+          canon: canonicalString,
+          url,
+        });
+        setHistoryLog(history);
+        saveToStorage(`sig-sigUrl`, JSON.stringify(history));
+      }
     }
+  };
+
+  const onExpireTimeChange = (v) => {
+    setExpriretime(v);
   };
 
   return (
     <>
-      <Form useLabelForErrorMessage>
-        {itemConfig.map((i, k) => (
-          <FormItem label={i.label} required={i.required} key={k}>
-            {i.content}
-          </FormItem>
-        ))}
+      <div className="layout">
+        <div className="form">
+          <Form useLabelForErrorMessage>
+            <Split title="密钥">
+              <FormItem {...formItemLayout} label="AccessKeyId" required>
+                <Input placeholder={intl('common.must')} name="AccessKeyId" />
+              </FormItem>
 
-        <ResourceInput setResourceData={setResourceData}/>
+              <FormItem {...formItemLayout} label="AccessKeySecret" required>
+                <Input placeholder={intl('common.must')} name="AccessKeySecret" />
+              </FormItem>
+            </Split>
 
-        <FormItem>
-          <Form.Submit validate type="primary" onClick={submit}>
-            提交
-          </Form.Submit>
-          {'  '}
-          <Form.Reset
-            names={[
-              'AccessKeyId',
-              'AccessKeySecret',
-              'METHOD',
-              'Expiration',
-              'Region',
-              'STSToken'
-            ]}
-          >
-            清空
-          </Form.Reset>
-        </FormItem>
-      </Form>
+            <Split title="其他必填">
+              <FormItem {...formItemLayout} label="Bucket Region" required>
+                <Input placeholder={intl('common.must')} name="Region" />
+              </FormItem>
+
+              <FormItem {...formItemLayout} label="过期时间(s)" required help="默认5分钟">
+                <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
+              </FormItem>
+
+              <ResourceInput setResourceData={setResourceData} required prefix="sigUrl" />
+            </Split>
+
+            <Split title="其他可选">
+              <FormItem
+                {...formItemLayout}
+                label="Content-MD5"
+                help="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
+              >
+                <Input name="ContentMD5" />
+              </FormItem>
+
+              <FormItem
+                {...formItemLayout}
+                label="Content-Type"
+                help="请求内容的类型，例如: application/octet-stream，也可以为空"
+              >
+                <Input name="ContentType" />
+              </FormItem>
+
+              <FormItem
+                {...formItemLayout}
+                label="Security-Token"
+                help="如果是STS服务生成的请输入STSToken"
+              >
+                <Input name="STSToken" />
+              </FormItem>
+
+              <HeadersInput setHeadersData={setHeadersData} prefix="sigUrl" />
+            </Split>
+
+            <FormItem>
+              <Form.Submit validate type="primary" onClick={submit}>
+                提交
+              </Form.Submit>
+              {'  '}
+              <Form.Reset
+                names={['AccessKeyId', 'AccessKeySecret', 'Expiration', 'Region', 'STSToken']}
+              >
+                清空
+              </Form.Reset>
+            </FormItem>
+          </Form>
+        </div>
+
+        <div className="view">
+          <div className="history">
+            <SignatureHistory history={historyLog} prefix="sigUrl" setHistoryLog={setHistoryLog} />
+          </div>
+        </div>
+      </div>
     </>
   );
 };

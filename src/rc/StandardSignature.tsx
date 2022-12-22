@@ -1,103 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import RuleBox from './components/Rule';
 import DatePicker from './components/DatePicker';
-import Signature from './components/Signature';
 import HeadersInput from './components/HeaderInput';
 import ResourceInput from './components/Resource';
 import SignatureHistory from './components/SignatureHistory';
-import SignatureStep from './components/SignatureStep';
 import { Form, Input, Select } from '@alicloud/console-components';
-import styles from './index.module.less';
-import { getFromStorage, methods } from './utils';
-import { FormValue, HistoryLog, SigProcessData, PageIndex } from './types';
+import Split from './components/Split';
+import {
+  methods,
+  formItemLayout,
+  authorization as getAuth,
+  formatForm,
+  formatHeaders,
+  formatResource,
+  getFromStorage,
+  saveToStorage,
+  computeSignature,
+  toGMT,
+} from './utils';
+import { FormValue, HistoryLog, PageIndex } from './types';
+import './index.less';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 
-
-const itemConfig = [
-  {
-    label: 'AccessKeyId',
-    content: <Input placeholder="必填" name="AccessKeyId" />,
-    required: true,
-  },
-  {
-    label: 'AccessKeySecret',
-    required: true,
-    content: <Input placeholder="必填" name="AccessKeySecret" />,
-  },
-  {
-    label: 'VERB',
-    required: true,
-    content: (
-      <Select placeholder="请求的Method" name="Method" defaultValue="GET">
-        {methods.map((_) => (
-          <Option key={_} value={_}>
-            {_}
-          </Option>
-        ))}
-      </Select>
-    ),
-  },
-  {
-    label: 'Content-MD5',
-    content: (
-      <Input
-        placeholder="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
-        name="ContentMD5"
-      />
-    ),
-  },
-  {
-    label: 'Content-Type',
-    name: 'ContentType',
-    content: (
-      <Input
-        placeholder="请求内容的类型，例如: application/octet-stream，也可以为空"
-        name="ContentType"
-      />
-    ),
-  },
-];
-
 export default (props: PageIndex) => {
-  const { hide = false } = props;
-  const [formValue, setFormValue] = useState<FormValue>({
-    AccessKeyId: '',
-    AccessKeySecret: '',
-    Method: '',
-  });
-  const [visible, setVisible] = useState<boolean>(false);
-  const [dateField, setDateField] = useState<string>('');
+  const { hide = true } = props;
+  const [dateField, setDateField] = useState<string>(new Date().toUTCString());
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [sigProcessData, setSigProcessData] = useState<SigProcessData>({
-    canon: '',
-    AccessKeySecret: '',
-    AccessKeyId: '',
-  });
-  const [logIndex, setLogIndex] = useState<number>(0);
 
   useEffect(() => {
     const logs = getFromStorage('sig-standard');
     setHistoryLog(logs);
-    if (logs.length > 0) {
-      // display first log process
-      setSigProcessData(logs[logIndex]);
-    }
-  }, [localStorage.getItem('sig-standard'), logIndex]);
-
+  }, []);
 
   const submit = (v: FormValue, e: any) => {
     if (!e) {
-      setFormValue(v);
-      setVisible(true);
-    }
-  };
+      // render to process
+      const canon = formatForm({
+        ...v,
+        Date: toGMT(dateField),
+        headers: formatHeaders(headersData),
+        resource: formatResource(resourceData),
+      });
+      const auth = getAuth(v.AccessKeyId, v.AccessKeySecret, canon);
+      const signature = computeSignature(v.AccessKeySecret, canon);
 
-  const onCancel = () => {
-    setVisible(false);
+      const history: HistoryLog[] | [] = historyLog;
+      if (history instanceof Array) {
+        history.unshift({
+          timeStamp: new Date().valueOf(),
+          auth,
+          canon,
+          signature,
+          AccessKeyId: v.AccessKeyId,
+          AccessKeySecret: v.AccessKeySecret,
+        });
+        setHistoryLog(history);
+        saveToStorage(`sig-standard`, JSON.stringify(history));
+      }
+    }
   };
 
   const onDateFieldChange = (v: string) => {
@@ -107,17 +71,54 @@ export default (props: PageIndex) => {
   return (
     <>
       {!hide && <RuleBox types="standard" />}
-      <div className={styles.layout}>
-        <div className={styles.form}>
+      <div className="layout">
+        <div className="form">
           <Form useLabelForErrorMessage>
-            {itemConfig.map((i, k) => (
-              <FormItem label={i.label} required={i.required} key={k}>
-                {i.content}
+            <Split title="密钥">
+              <FormItem label="AccessKeyId" required {...formItemLayout}>
+                <Input placeholder="必填" name="AccessKeyId" />
               </FormItem>
-            ))}
-            <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
-            <HeadersInput dateField={dateField} setHeadersData={setHeadersData} prefix="standard" />
-            <ResourceInput setResourceData={setResourceData} />
+              <FormItem label="AccessKeySecret" required {...formItemLayout}>
+                <Input placeholder="必填" name="AccessKeySecret" />
+              </FormItem>
+            </Split>
+
+            <Split title="参数">
+              <FormItem label="VERB" required {...formItemLayout}>
+                <Select placeholder="请求方法" name="Method" defaultValue="GET">
+                  {methods.map((v) => (
+                    <Option key={v} value={v}>
+                      {v}
+                    </Option>
+                  ))}
+                </Select>
+              </FormItem>
+              <FormItem
+                label="Content-MD5"
+                {...formItemLayout}
+                help="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
+              >
+                <Input name="ContentMD5" />
+              </FormItem>
+              <FormItem
+                label="ContentType"
+                {...formItemLayout}
+                help="请求内容的类型，例如: application/octet-stream，也可以为空"
+              >
+                <Input name="ContentType" />
+              </FormItem>
+            </Split>
+
+            <Split title="其他" hide>
+              <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
+              <HeadersInput
+                dateField={dateField}
+                setHeadersData={setHeadersData}
+                prefix="standard"
+              />
+              <ResourceInput setResourceData={setResourceData} />
+            </Split>
+
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>
                 提交
@@ -132,30 +133,13 @@ export default (props: PageIndex) => {
           </Form>
         </div>
 
-        <Signature
-          visible={visible}
-          onCancel={onCancel}
-          formValue={formValue}
-          dateField={dateField}
-          headersData={headersData}
-          resourceData={resourceData}
-          setHistoryLog={setHistoryLog}
-          setSigProcessData={setSigProcessData}
-          setLogIndex={setLogIndex}
-          prefix="standard"
-        />
-        <div className={styles.view}>
-          <div className={styles.history}>
+        <div className="view">
+          <div className="history">
             <SignatureHistory
               history={historyLog}
               prefix="standard"
               setHistoryLog={setHistoryLog}
-              setLogIndex={setLogIndex}
-              logIndex={logIndex}
             />
-          </div>
-          <div className={styles.step}>
-            <SignatureStep sigProcessData={sigProcessData} prefix="standard" />
           </div>
         </div>
       </div>

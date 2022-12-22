@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Form, Input} from '@alicloud/console-components';
-import {toGMT} from '../../utils';
+import React, { SetStateAction, useEffect, useState } from 'react';
+import { Form, Input, Icon } from '@alicloud/console-components';
+import { toGMT, formItemLayout } from '../../utils';
 
 const FormItem = Form.Item;
 
 interface HeaderInputType {
   dateField?: string;
-  setHeadersData: Function;
-  prefix: string
+  setHeadersData: SetStateAction<any>;
+  prefix: string;
 }
 
 interface InputType {
@@ -15,31 +15,33 @@ interface InputType {
   key: string;
   value: string;
   disabled?: boolean;
-
 }
 
 export default (props: HeaderInputType) => {
-  const {dateField='', setHeadersData, prefix} = props;
-  const [value, setValue] = useState<InputType[]>(prefix !== 'standard' ?
-    [
-      {
-        index: 0,
-        key: '',
-        value:'',
-      },
-    ]
-    : [
-      {
-        index: 0,
-        key: 'date',
-        value: dateField,
-        disabled: true,
-      },
-    ]);
+  const { dateField = '', setHeadersData, prefix } = props;
+  const [value, setValue] = useState<InputType[]>(
+    !['standard'].includes(prefix)
+      ? [
+          {
+            index: 0,
+            key: '',
+            value: '',
+          },
+        ]
+      : [
+          {
+            index: 0,
+            key: 'date',
+            value: dateField,
+            disabled: true,
+          },
+        ],
+  );
 
   useEffect(() => {
     if (dateField) {
       const tempValue = value;
+
       tempValue[0].value = toGMT(dateField);
       setValue([...tempValue]);
       setHeadersData([...tempValue]);
@@ -62,11 +64,13 @@ export default (props: HeaderInputType) => {
     if (index !== 0) {
       const filterValue = value.filter((i, k) => k !== index);
       setValue([...filterValue]);
+      setHeadersData([...filterValue]);
     }
   };
 
   const onChange = (type: string, index: number, v: string) => {
     const tempValue = [...value];
+
     tempValue.forEach((i) => {
       if (i.index === index) {
         // @ts-ignore
@@ -78,17 +82,18 @@ export default (props: HeaderInputType) => {
   };
 
   return (
-    <FormItem label="Canonicalized Headers">
+    <FormItem label="Canonicalized Headers" {...formItemLayout}>
       {value.map((i, k) => (
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
+            marginBottom: '10px',
           }}
           key={k}
         >
           <Input
-            innerBefore="x-oss-"
+            addonTextBefore="x-oss-"
             value={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
@@ -99,15 +104,29 @@ export default (props: HeaderInputType) => {
             disabled={i?.disabled}
             value={i.value}
             defaultValue={i.value}
-            style={{width: '30vw'}}
+            style={{ width: '30vw' }}
             onChange={(v) => {
               onChange('value', k, v);
             }}
           />
-          <Button onClick={() => add(value.length)}>+</Button>
-          {i.key !== 'date' && <Button onClick={() => del(k)}>-</Button>}
+          {i.key !== 'date' && prefix !== 'sigUrl' && (
+            <Icon
+              type="delete"
+              onClick={() => del(k)}
+              style={{ marginRight: '10px', marginLeft: '10px' }}
+            />
+          )}
         </div>
       ))}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          add(value.length);
+        }}
+        style={{ color: '#3581d2', width: '50px' }}
+      >
+        +添加
+      </div>
     </FormItem>
   );
 };
