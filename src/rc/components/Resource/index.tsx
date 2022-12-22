@@ -11,7 +11,7 @@ interface ResourceDataType {
   disabled?: boolean;
 }
 
-export default (props: { setResourceData: SetStateAction<any>; required: boolean }) => {
+export default (props: { setResourceData: SetStateAction<any>; required?: boolean }) => {
   const { setResourceData, required = false } = props;
 
   const [value, setValue] = useState<ResourceDataType[]>([]);

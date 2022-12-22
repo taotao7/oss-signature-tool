@@ -15,7 +15,7 @@ const onActiveStyle = (action: string, type: string) => {
     return {
       // borderColor: 'blue',
       borderWidth: '1px',
-      background: '#F3F3F3'
+      background: '#F3F3F3',
     };
   }
 };

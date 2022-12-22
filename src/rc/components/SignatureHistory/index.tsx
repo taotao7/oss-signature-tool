@@ -14,7 +14,7 @@ interface SignatureHistoryType {
 export default (props: SignatureHistoryType) => {
   const { history, prefix, setHistoryLog } = props;
 
-  const clearHistory = (timeStamp) => {
+  const clearHistory = (timeStamp: number) => {
     const tempHistory: HistoryLog[] = history.filter((i) => i.timeStamp !== timeStamp);
     saveToStorage(`sig-${prefix}`, JSON.stringify(tempHistory));
     setHistoryLog(tempHistory);
@@ -166,5 +166,5 @@ export default (props: SignatureHistoryType) => {
     );
   }
 
-  return '<></>';
+  return <>not have</>;
 };

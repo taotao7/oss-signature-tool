@@ -21,6 +21,7 @@ export interface HistoryLog {
   AccessKeyId?: string;
   AccessKeySecret?: string;
   url?: string;
+  signature?: string;
 }
 
 export interface SigProcessData {
@@ -28,4 +29,9 @@ export interface SigProcessData {
   AccessKeyId: string;
   AccessKeySecret: string;
   auth?: string;
+}
+
+export interface ResourceData {
+  key: string;
+  value: string;
 }

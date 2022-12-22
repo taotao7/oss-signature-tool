@@ -145,9 +145,9 @@ export const buildUrl = (
   accessKeyId: string,
   bucket: string,
   region: string,
-  signature: number,
+  signature: any,
   resource: string,
-  expires: string,
+  expires: any,
   securityToken: string,
   query: string,
 ) => {
@@ -161,5 +161,5 @@ export const buildUrl = (
 export const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
-  labelTextAlign: 'left',
+  labelTextAlign: 'left' as any,
 };

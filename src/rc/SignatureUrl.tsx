@@ -11,10 +11,11 @@ import {
   saveToStorage,
   getFromStorage,
 } from './utils';
-import { FormValue, HistoryLog } from './types';
+import { FormValue, HistoryLog, ResourceData } from './types';
 import ResourceInput from './components/Resource';
 import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
+// @ts-ignore
 import intl from '../intl';
 import './index.less';
 import moment from 'moment';
@@ -22,7 +23,7 @@ import moment from 'moment';
 const FormItem = Form.Item;
 
 export default () => {
-  const [resourceData, setResourceData] = useState([]);
+  const [resourceData, setResourceData] = useState<ResourceData[]>([]);
   const [headersData, setHeadersData] = useState([]);
   const [expireTime, setExpriretime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
@@ -70,11 +71,11 @@ export default () => {
       const url = buildUrl(
         v.AccessKeyId,
         resourceData[0].value,
-        v.Region,
+        v.Region as string,
         signature,
         resourceData[1].value,
         date,
-        v.STSToken,
+        v.STSToken as string,
         query,
       );
 
@@ -91,7 +92,7 @@ export default () => {
     }
   };
 
-  const onExpireTimeChange = (v) => {
+  const onExpireTimeChange = (v: number) => {
     setExpriretime(v);
   };
 
@@ -119,7 +120,7 @@ export default () => {
                 <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
               </FormItem>
 
-              <ResourceInput setResourceData={setResourceData} required prefix="sigUrl" />
+              <ResourceInput setResourceData={setResourceData} required />
             </Split>
 
             <Split title="其他可选">
