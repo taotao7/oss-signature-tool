@@ -86,7 +86,7 @@ export default () => {
           canon: canonicalString,
           url,
         });
-        setHistoryLog(history);
+        setHistoryLog([...history]);
         saveToStorage(`sig-sigUrl`, JSON.stringify(history));
       }
     }

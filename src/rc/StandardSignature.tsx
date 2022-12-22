@@ -58,7 +58,7 @@ export default (props: PageIndex) => {
           AccessKeyId: v.AccessKeyId,
           AccessKeySecret: v.AccessKeySecret,
         });
-        setHistoryLog(history);
+        setHistoryLog([...history]);
         saveToStorage(`sig-standard`, JSON.stringify(history));
       }
     }
