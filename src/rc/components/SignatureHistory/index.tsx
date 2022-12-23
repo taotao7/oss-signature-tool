@@ -74,12 +74,12 @@ export default (props: SignatureHistoryType) => {
                   >
                     <div>
                       <div>
-                        当前签名字段(canonicalString): <pre>{i.canon}</pre>
+                        当前签名字段: canonicalString <pre>{i.canon}</pre>
                         <div>
                           签名调用函数:
                           Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
                         </div>
-                        <pre> {i?.signature}</pre>
+                        <pre>{i?.signature}</pre>
                         请求头: Authorization=&apos;OSS &apos; + AccessKeyId + &apos;:&apos; +
                         Signature
                         <pre>{i?.auth}</pre>
@@ -128,8 +128,7 @@ export default (props: SignatureHistoryType) => {
                       <div>
                         policy
                         <pre>{i.canon}</pre>
-                        base64 policy 调用函数
-                        <br />
+                        base64 policy 调用函数:
                         crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
                         <pre>{i.signature}</pre>
                         签名调用函数
@@ -137,7 +136,7 @@ export default (props: SignatureHistoryType) => {
                           Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(base64(policy),
                           AccessKeySecret))
                         </div>
-                        <pre> Signature={i.auth}</pre>
+                        <pre>Signature={i.auth}</pre>
                       </div>
                     </div>
                   </CardContainer>
@@ -181,9 +180,9 @@ export default (props: SignatureHistoryType) => {
                   >
                     <div className="contentContainer">
                       <div>
-                        当前签名字段(canonicalString):
+                        当前签名字段: canonicalString
                         <pre>{i.canon}</pre>
-                        签名链接:
+                        签名链接
                         <pre>{i?.url}</pre>
                       </div>
                     </div>

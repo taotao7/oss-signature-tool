@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import RuleBox from './components/Rule';
-import DatePicker from './components/DatePicker';
 import HeadersInput from './components/HeaderInput';
 import ResourceInput from './components/Resource';
 import SignatureHistory from './components/SignatureHistory';
-import { Form, Input, Select } from '@alicloud/console-components';
+import { Form, Input, Select, DatePicker } from '@alicloud/console-components';
 import Split from './components/Split';
 import {
   methods,
@@ -19,6 +18,7 @@ import {
   toGMT,
 } from './utils';
 import { FormValue, HistoryLog, PageIndex } from './types';
+import moment from 'moment';
 import './index.less';
 
 const { Option } = Select;
@@ -64,10 +64,6 @@ export default (props: PageIndex) => {
     }
   };
 
-  const onDateFieldChange = (v: string) => {
-    setDateField(v);
-  };
-
   return (
     <>
       {!hide && <RuleBox types="standard" />}
@@ -110,7 +106,16 @@ export default (props: PageIndex) => {
             </Split>
 
             <Split title="其他" hide>
-              <DatePicker onDateFieldChange={onDateFieldChange} dateField={dateField} />
+              <FormItem label="Date" {...formItemLayout}>
+                <DatePicker
+                  showTime
+                  name="Date"
+                  onChange={(v) => {
+                    setDateField(new Date(v as string).toUTCString());
+                  }}
+                  value={moment(dateField)}
+                />
+              </FormItem>
               <HeadersInput
                 dateField={dateField}
                 setHeadersData={setHeadersData}
