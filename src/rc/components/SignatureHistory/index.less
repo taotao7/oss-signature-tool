@@ -1,40 +1,24 @@
-.titleContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  .title {
-    font-size: 20px;
-    margin-right: 10px;
-  }
-}
-
 .container {
-  position: relative;
-  height: 80vh;
+  max-height: 862px;
   overflow-y: scroll;
-  pre {
-    background-color: #eef2f6;
-    border-radius: 4px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-  }
-  .defaultCard {
+  align-items: center;
+  border: #e5e5e5 solid 1px;
+  padding: 15px;
+  .titleContainer {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
-    :global {
-      .next-card-body {
-        padding-top: 0px;
-      }
+    .cardTitle {
+      font-size: 20px;
+      margin-right: 10px;
+      text-align: center;
     }
   }
-}
-
-
-.contentContainer {
-
-  pre {
-    background-color: #eef2f6;
-    border-radius: 4px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+  .collapseContent {
+    color: #005cc9;
+  }
+  .containerPlaceholder {
+    min-height: 200px;
+    border: #e5e5e5 solid 1px;
   }
 }

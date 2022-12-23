@@ -15,7 +15,6 @@ import { FormValue, HistoryLog, ResourceData } from './types';
 import ResourceInput from './components/Resource';
 import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
-// @ts-ignore
 import intl from '../intl';
 import './index.less';
 import moment from 'moment';
@@ -123,7 +122,7 @@ export default () => {
               <ResourceInput setResourceData={setResourceData} required />
             </Split>
 
-            <Split title="其他可选">
+            <Split title="其他可选" hide>
               <FormItem
                 {...formItemLayout}
                 label="Content-MD5"

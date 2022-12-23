@@ -1,5 +1,7 @@
 import intlFactory from '@ali/intl-factory';
+//@ts-ignore
 import messageCommon from './message';
+//@ts-ignore
 import confGet from '../util/conf/get';
 
 const {
@@ -15,7 +17,7 @@ const {
   confGet('LOCALE'),
 );
 
-const intl = (id, values, extra) => {
+const intl = (id: string, values?: string, extra?: any) => {
   if (/^help:/.test(id)) {
     extra = {
       html: true,
