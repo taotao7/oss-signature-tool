@@ -114,6 +114,7 @@ export default (props: SignatureHistoryType) => {
             )}
           </div>
           <div>
+            {history.length === 0 && <div className="containerPlaceholder" />}
             {history.map((i, k) => (
               <>
                 {(k === 0 || showHistory) && (
@@ -168,6 +169,7 @@ export default (props: SignatureHistoryType) => {
             )}
           </div>
           <div>
+            {history.length === 0 && <div className="containerPlaceholder" />}
             {history.map((i, k) => (
               <>
                 {(k === 0 || showHistory) && (
