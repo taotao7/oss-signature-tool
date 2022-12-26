@@ -4,7 +4,7 @@ import { Button, Icon, Dialog, Message } from '@alicloud/console-components';
 import CardContainer from '../CardContainer';
 import { clearStorage, saveToStorage } from '../../utils';
 import moment from 'moment';
-import './index.less';
+import styles from './index.module.less';
 
 interface SignatureHistoryType {
   history: HistoryLog[];
@@ -52,9 +52,9 @@ export default (props: SignatureHistoryType) => {
   if (prefix === 'standard') {
     return (
       <>
-        <div className="container">
-          <div className="titleContainer">
-            <span className="cardTitle">结果反馈（签名过程）</span>
+        <div className={styles.container}>
+          <div className={styles.titleContainer}>
+            <span className={styles.cardTitle}>结果反馈（签名过程）</span>
             {history.length > 0 && (
               <Button size="small" type="primary" onClick={clearAll}>
                 清除全部
@@ -62,7 +62,7 @@ export default (props: SignatureHistoryType) => {
             )}
           </div>
           <div>
-            {history.length === 0 && <div className="containerPlaceholder" />}
+            {history.length === 0 && <div className={styles.containerPlaceholder} />}
             {history.map((i, k) => (
               <>
                 {(k === 0 || showHistory) && (
@@ -88,7 +88,7 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className="collapseContent" onClick={onCollapseChange}>
+                  <div className={styles.collapseContent} onClick={onCollapseChange}>
                     展开历史记录
                     {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
                   </div>
@@ -104,9 +104,9 @@ export default (props: SignatureHistoryType) => {
   if (prefix === 'postObject') {
     return (
       <>
-        <div className="container">
-          <div className="titleContainer">
-            <span className="cardTitle">结果反馈（签名过程）</span>
+        <div className={styles.container}>
+          <div className={styles.titleContainer}>
+            <span className={styles.cardTitle}>结果反馈（签名过程）</span>
             {history.length > 0 && (
               <Button size="small" type="primary" onClick={clearAll}>
                 清除全部
@@ -114,7 +114,7 @@ export default (props: SignatureHistoryType) => {
             )}
           </div>
           <div>
-            {history.length === 0 && <div className="containerPlaceholder" />}
+            {history.length === 0 && <div className={styles.containerPlaceholder} />}
             {history.map((i, k) => (
               <>
                 {(k === 0 || showHistory) && (
@@ -124,7 +124,7 @@ export default (props: SignatureHistoryType) => {
                     key={k}
                     collapse={k === 0}
                   >
-                    <div className="contentContainer">
+                    <div className={styles.contentContainer}>
                       <div>
                         policy
                         <pre>{i.canon}</pre>
@@ -142,7 +142,7 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className="collapseContent" onClick={onCollapseChange}>
+                  <div className={styles.collapseContent} onClick={onCollapseChange}>
                     展开历史记录
                     {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
                   </div>
@@ -158,9 +158,9 @@ export default (props: SignatureHistoryType) => {
   if (prefix === 'sigUrl') {
     return (
       <>
-        <div className="container">
-          <div className="titleContainer">
-            <span className="cardTitle">结果反馈（签名过程）</span>
+        <div className={styles.container}>
+          <div className={styles.titleContainer}>
+            <span className={styles.cardTitle}>结果反馈（签名过程）</span>
             {history.length > 0 && (
               <Button size="small" type="primary" onClick={clearAll}>
                 清除全部
@@ -168,7 +168,7 @@ export default (props: SignatureHistoryType) => {
             )}
           </div>
           <div>
-            {history.length === 0 && <div className="containerPlaceholder" />}
+            {history.length === 0 && <div className={styles.containerPlaceholder} />}
             {history.map((i, k) => (
               <>
                 {(k === 0 || showHistory) && (
@@ -178,7 +178,7 @@ export default (props: SignatureHistoryType) => {
                     key={k}
                     collapse={k === 0}
                   >
-                    <div className="contentContainer">
+                    <div className={styles.contentContainer}>
                       <div>
                         当前签名字段: canonicalString
                         <pre>{i.canon}</pre>
@@ -189,7 +189,7 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className="collapseContent" onClick={onCollapseChange}>
+                  <div className={styles.collapseContent} onClick={onCollapseChange}>
                     展开历史记录
                     {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
                   </div>

@@ -15,8 +15,8 @@ import { FormValue, HistoryLog, ResourceData } from './types';
 import ResourceInput from './components/Resource';
 import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
-import intl from '../intl';
-import './index.less';
+//import intl from '../intl';
+import styles from './index.module.less';
 import moment from 'moment';
 
 const FormItem = Form.Item;
@@ -97,22 +97,22 @@ export default () => {
 
   return (
     <>
-      <div className="layout">
-        <div className="form">
+      <div className={styles.layout}>
+        <div className={styles.form}>
           <Form useLabelForErrorMessage>
             <Split title="密钥">
               <FormItem {...formItemLayout} label="AccessKeyId" required>
-                <Input placeholder={intl('common.must')} name="AccessKeyId" />
+                <Input placeholder="必填" name="AccessKeyId" />
               </FormItem>
 
               <FormItem {...formItemLayout} label="AccessKeySecret" required>
-                <Input placeholder={intl('common.must')} name="AccessKeySecret" />
+                <Input placeholder="必填" name="AccessKeySecret" />
               </FormItem>
             </Split>
 
             <Split title="其他必填">
               <FormItem {...formItemLayout} label="Bucket Region" required>
-                <Input placeholder={intl('common.must')} name="Region" />
+                <Input placeholder="必填" name="Region" />
               </FormItem>
 
               <FormItem {...formItemLayout} label="过期时间(s)" required help="默认5分钟">
@@ -164,8 +164,8 @@ export default () => {
           </Form>
         </div>
 
-        <div className="view">
-          <div className="history">
+        <div className={styles.view}>
+          <div className={styles.history}>
             <SignatureHistory history={historyLog} prefix="sigUrl" setHistoryLog={setHistoryLog} />
           </div>
         </div>

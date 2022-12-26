@@ -1,8 +1,8 @@
 import AceEditor from 'react-ace';
 import { Balloon, Form, Icon } from '@alicloud/console-components';
 import React from 'react';
-import './index.less';
-import {formItemLayout} from '../../utils'
+import { formItemLayout } from '../../utils';
+import styles from './index.module.less';
 
 const FormItem = Form.Item;
 
@@ -17,14 +17,14 @@ export default (props: JsonEditor) => {
   return (
     <FormItem
       label={
-        <div className="label">
+        <div className={styles.label}>
           Policy
           <Balloon
             closable={false}
             triggerType="hover"
             trigger={
               <Icon
-                className="icon"
+                className={styles.icon}
                 type="help_fill"
                 size="small"
                 onClick={() => {
@@ -50,7 +50,7 @@ export default (props: JsonEditor) => {
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
-          enableSnippets: true
+          enableSnippets: true,
         }}
       />
     </FormItem>

@@ -9,7 +9,7 @@ import { getFromStorage, saveToStorage, formItemLayout } from './utils';
 import { FormValue, HistoryLog, PageIndex } from './types';
 import moment from 'moment';
 import 'ace-builds/src-noconflict/mode-json';
-import './index.less';
+import styles from './index.module.less';
 
 const FormItem = Form.Item;
 
@@ -72,8 +72,8 @@ export default (props: PageIndex) => {
   return (
     <>
       {!hide && <RuleBox types="postObject" />}
-      <div className="layout">
-        <div className="form">
+      <div className={styles.layout}>
+        <div className={styles.form}>
           <Form useLabelForErrorMessage {...formItemLayout}>
             <Split title="密钥">
               <FormItem {...formItemLayout} required label="AccessKeyId">
@@ -88,7 +88,7 @@ export default (props: PageIndex) => {
                 {...formItemLayout}
                 required
                 label="Expiration Date"
-                help={<span className="hint">选择过期时间后会自动填充到Policy</span>}
+                help={<span className={styles.hint}>选择过期时间后会自动填充到Policy</span>}
               >
                 <DatePicker
                   showTime
@@ -115,8 +115,8 @@ export default (props: PageIndex) => {
           </Form>
         </div>
 
-        <div className="view">
-          <div className="history">
+        <div className={styles.view}>
+          <div className={styles.history}>
             <SignatureHistory
               history={historyLog}
               prefix="postObject"

@@ -1,6 +1,6 @@
 import React, { useState, MouseEventHandler } from 'react';
 import { Icon } from '@alicloud/console-components';
-import './index.less';
+import styles from './index.module.less';
 
 interface CardContainer {
   collapse?: boolean;
@@ -19,11 +19,11 @@ export default (props: CardContainer) => {
   };
 
   return (
-    <div className="container">
-      <div className="cardTitle">
+    <div className={styles.container}>
+      <div className={styles.cardTitle}>
         <span style={{ color: '#898989' }}> {content}</span>
-        <div className="buttonPosition">
-          <Icon onClick={clearButton} type="delete" className="trash" />
+        <div className={styles.buttonPosition}>
+          <Icon onClick={clearButton} type="delete" className={styles.trash} />
           {showContent ? (
             <Icon type="collapse" onClick={onCollapseChange} />
           ) : (
@@ -32,7 +32,7 @@ export default (props: CardContainer) => {
         </div>
       </div>
 
-      {showContent && <div className="content">{children}</div>}
+      {showContent && <div className={styles.content}>{children}</div>}
     </div>
   );
 };
