@@ -1,7 +1,7 @@
 {
   "name": "@ali/signature-tool",
-  "main": "lib/dist/signature-tool.umd.js",
-  "module": "lib/dist/signature-tool.es.js",
+  "module": "dist/signature-tool.es.js",
+  "main": "dist/signature-tool.umd.js",
   "version": "0.0.10",
   "scripts": {
     "dev": "vite",
@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "@ali/intl-factory": "^0.0.10",
-    "@alicloud/console-components": "^1.5.10",
+    "@alicloud/console-components": "^1.4.62",
     "@alife/mcms_oss-console_package-recommend-tool": "^0.0.1",
     "crypto-js": "^4.1.1",
     "is": "^3.3.0",
     "moment": "2.24.0",
-    "react": "^16.2.0",
-    "react-ace": "^10.1.0",
-    "react-dom": "^16.2.1",
+    "react": "^16.9.0",
+    "react-ace": "^9.4.0",
+    "react-dom": "^16.9.0",
     "react-intl": "^2.7.2"
   },
   "devDependencies": {
@@ -48,8 +48,5 @@
       "commit-msg": "f2elint commit-msg-scan"
     }
   },
-  "repository": "git@github.com:taotao7/oss-signature-tool.git",
-  "resolutions": {
-    "moment": "2.24.0"
-  }
+  "repository": "git@github.com:taotao7/oss-signature-tool.git"
 }

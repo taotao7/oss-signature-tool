@@ -15,9 +15,9 @@ import { FormValue, HistoryLog, ResourceData } from './types';
 import ResourceInput from './components/Resource';
 import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
-//import intl from '../intl';
 import styles from './index.module.less';
 import moment from 'moment';
+// import intl from '../intl';
 
 const FormItem = Form.Item;
 
