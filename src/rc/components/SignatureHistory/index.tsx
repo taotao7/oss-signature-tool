@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HistoryLog } from '../../types';
-import { Button, Icon, Dialog, Message } from '@alicloud/console-components';
+import { Icon, Dialog, Message } from '@alicloud/console-components';
 import CardContainer from '../CardContainer';
 import { clearStorage, saveToStorage } from '../../utils';
 import moment from 'moment';
