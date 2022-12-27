@@ -55,11 +55,6 @@ export default (props: SignatureHistoryType) => {
         <div className={styles.container}>
           <div className={styles.titleContainer}>
             <span className={styles.cardTitle}>结果反馈（签名过程）</span>
-            {history.length > 0 && (
-              <Button size="small" type="primary" onClick={clearAll}>
-                清除全部
-              </Button>
-            )}
           </div>
           <div>
             {history.length === 0 && <div className={styles.containerPlaceholder} />}
@@ -71,6 +66,7 @@ export default (props: SignatureHistoryType) => {
                     content={`记录时间:${moment(i.timeStamp).format('YYYY年MM月DD日 HH:mm:ss')}`}
                     key={k}
                     collapse={k === 0}
+                    index={k}
                   >
                     <div>
                       <div>
@@ -88,9 +84,16 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className={styles.collapseContent} onClick={onCollapseChange}>
-                    展开历史记录
-                    {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                  <div className={styles.footer}>
+                    <div className={styles.collapseContent} onClick={onCollapseChange}>
+                      展开历史记录
+                      {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                    </div>
+                    {history.length > 0 && (
+                      <div className={styles.footerRight} onClick={clearAll}>
+                        清除全部历史记录
+                      </div>
+                    )}
                   </div>
                 )}
               </>
@@ -107,11 +110,6 @@ export default (props: SignatureHistoryType) => {
         <div className={styles.container}>
           <div className={styles.titleContainer}>
             <span className={styles.cardTitle}>结果反馈（签名过程）</span>
-            {history.length > 0 && (
-              <Button size="small" type="primary" onClick={clearAll}>
-                清除全部
-              </Button>
-            )}
           </div>
           <div>
             {history.length === 0 && <div className={styles.containerPlaceholder} />}
@@ -123,6 +121,7 @@ export default (props: SignatureHistoryType) => {
                     content={`记录时间:${moment(i.timeStamp).format('YYYY年MM月DD日 HH:mm:ss')}`}
                     key={k}
                     collapse={k === 0}
+                    index={k}
                   >
                     <div className={styles.contentContainer}>
                       <div>
@@ -142,9 +141,16 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className={styles.collapseContent} onClick={onCollapseChange}>
-                    展开历史记录
-                    {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                  <div className={styles.footer}>
+                    <div className={styles.collapseContent} onClick={onCollapseChange}>
+                      展开历史记录
+                      {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                    </div>
+                    {history.length > 0 && (
+                      <div className={styles.footerRight} onClick={clearAll}>
+                        清除全部历史记录
+                      </div>
+                    )}
                   </div>
                 )}
               </>
@@ -161,11 +167,6 @@ export default (props: SignatureHistoryType) => {
         <div className={styles.container}>
           <div className={styles.titleContainer}>
             <span className={styles.cardTitle}>结果反馈（签名过程）</span>
-            {history.length > 0 && (
-              <Button size="small" type="primary" onClick={clearAll}>
-                清除全部
-              </Button>
-            )}
           </div>
           <div>
             {history.length === 0 && <div className={styles.containerPlaceholder} />}
@@ -177,6 +178,7 @@ export default (props: SignatureHistoryType) => {
                     content={`记录时间:${moment(i.timeStamp).format('YYYY年MM月DD日 HH:mm:ss')}`}
                     key={k}
                     collapse={k === 0}
+                    index={k}
                   >
                     <div className={styles.contentContainer}>
                       <div>
@@ -189,9 +191,16 @@ export default (props: SignatureHistoryType) => {
                   </CardContainer>
                 )}
                 {k === 0 && (
-                  <div className={styles.collapseContent} onClick={onCollapseChange}>
-                    展开历史记录
-                    {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                  <div className={styles.footer}>
+                    <div className={styles.collapseContent} onClick={onCollapseChange}>
+                      展开历史记录
+                      {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                    </div>
+                    {history.length > 0 && (
+                      <div className={styles.footerRight} onClick={clearAll}>
+                        清除全部历史记录
+                      </div>
+                    )}
                   </div>
                 )}
               </>

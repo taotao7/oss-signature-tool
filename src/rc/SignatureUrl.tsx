@@ -154,12 +154,6 @@ export default () => {
               <Form.Submit validate type="primary" onClick={submit}>
                 提交
               </Form.Submit>
-              {'  '}
-              <Form.Reset
-                names={['AccessKeyId', 'AccessKeySecret', 'Expiration', 'Region', 'STSToken']}
-              >
-                清空
-              </Form.Reset>
             </FormItem>
           </Form>
         </div>

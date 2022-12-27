@@ -128,12 +128,6 @@ export default (props: PageIndex) => {
               <Form.Submit validate type="primary" onClick={submit}>
                 提交
               </Form.Submit>
-              {'  '}
-              <Form.Reset
-                names={['AccessKeyId', 'AccessKeySecret', 'METHOD', 'ContentMD5', 'ContentType']}
-              >
-                清空
-              </Form.Reset>
             </FormItem>
           </Form>
         </div>

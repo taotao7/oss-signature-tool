@@ -7,10 +7,11 @@ interface CardContainer {
   clearButton: MouseEventHandler<HTMLElement>;
   content: string;
   children: JSX.Element;
+  index: number;
 }
 
 export default (props: CardContainer) => {
-  const { collapse = false, clearButton, content, children } = props;
+  const { collapse = false, clearButton, content, children, index } = props;
 
   const [showContent, setShowContent] = useState(collapse);
 
@@ -23,12 +24,10 @@ export default (props: CardContainer) => {
       <div className={styles.cardTitle}>
         <span style={{ color: '#898989' }}> {content}</span>
         <div className={styles.buttonPosition}>
-          <Icon onClick={clearButton} type="delete" className={styles.trash} />
-          {showContent ? (
-            <Icon type="collapse" onClick={onCollapseChange} />
-          ) : (
-            <Icon type="expand" onClick={onCollapseChange} />
-          )}
+          <Icon onClick={clearButton} type="delete" className={styles.trash} size="small" />
+          {showContent
+            ? index !== 0 && <Icon type="collapse" onClick={onCollapseChange} />
+            : index !== 0 && <Icon type="expand" onClick={onCollapseChange} />}
         </div>
       </div>
 

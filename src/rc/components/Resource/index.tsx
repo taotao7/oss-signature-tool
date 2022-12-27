@@ -97,7 +97,8 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
             <Icon
               type="delete"
               onClick={() => del(k)}
-              style={{ marginRight: '10px', marginLeft: '10px' }}
+              style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
+              size="small"
             />
           )}
         </div>

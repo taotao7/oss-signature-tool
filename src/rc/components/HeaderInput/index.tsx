@@ -109,11 +109,12 @@ export default (props: HeaderInputType) => {
               onChange('value', k, v);
             }}
           />
-          {i.key !== 'date' && prefix !== 'sigUrl' && (
+          {i.key !== 'date' && k > 0 && (
             <Icon
               type="delete"
+              size="small"
               onClick={() => del(k)}
-              style={{ marginRight: '10px', marginLeft: '10px' }}
+              style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
             />
           )}
         </div>
