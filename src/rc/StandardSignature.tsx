@@ -30,11 +30,26 @@ export default (props: PageIndex) => {
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
+  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
 
   useEffect(() => {
     const logs = getFromStorage('sig-standard');
     setHistoryLog(logs);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', changeLayout);
+    return () => window.removeEventListener('resize', changeLayout);
+  }, []);
+
+  const changeLayout = () => {
+    if (window.innerWidth < 750) {
+      setLayout('layoutColumn');
+    }
+    if (window.innerWidth > 750) {
+      setLayout('layout');
+    }
+  };
 
   const submit = (v: FormValue, e: any) => {
     if (!e) {
@@ -67,7 +82,7 @@ export default (props: PageIndex) => {
   return (
     <>
       {!hide && <RuleBox types="standard" />}
-      <div className={styles.layout}>
+      <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
             <Split title="密钥">

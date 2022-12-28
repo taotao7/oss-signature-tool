@@ -27,11 +27,26 @@ export default (props: PageIndex) => {
       4,
     ),
   );
+  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
 
   useEffect(() => {
     const logs = getFromStorage('sig-postObject');
     setHistoryLog(logs);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', changeLayout);
+    return () => window.removeEventListener('resize', changeLayout);
+  }, []);
+
+  const changeLayout = () => {
+    if (window.innerWidth < 750) {
+      setLayout('layoutColumn');
+    }
+    if (window.innerWidth > 750) {
+      setLayout('layout');
+    }
+  };
 
   const onPolicyChange = (v: any) => {
     setPolicyData(v);
@@ -72,7 +87,7 @@ export default (props: PageIndex) => {
   return (
     <>
       {!hide && <RuleBox types="postObject" />}
-      <div className={styles.layout}>
+      <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage {...formItemLayout}>
             <Split title="密钥">

@@ -24,13 +24,28 @@ const FormItem = Form.Item;
 export default () => {
   const [resourceData, setResourceData] = useState<ResourceData[]>([]);
   const [headersData, setHeadersData] = useState([]);
-  const [expireTime, setExpriretime] = useState<number>(300);
+  const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
+  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
 
   useEffect(() => {
     const logs = getFromStorage('sig-sigUrl');
     setHistoryLog(logs);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', changeLayout);
+    return () => window.removeEventListener('resize', changeLayout);
+  }, []);
+
+  const changeLayout = () => {
+    if (window.innerWidth < 750) {
+      setLayout('layoutColumn');
+    }
+    if (window.innerWidth > 750) {
+      setLayout('layout');
+    }
+  };
 
   // signature
   const sig = (canon: string, sk: string): string => {
@@ -92,12 +107,12 @@ export default () => {
   };
 
   const onExpireTimeChange = (v: number) => {
-    setExpriretime(v);
+    setExpireTime(v);
   };
 
   return (
     <>
-      <div className={styles.layout}>
+      <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
             <Split title="密钥">
