@@ -105,7 +105,7 @@ export default (props: SignatureHistoryType) => {
               </CardContainer>
             )}
 
-            {!content?.timeStamp && <div className={styles.containerPlaceholder}></div>}
+            {!content?.timeStamp && <div className={styles.containerPlaceholder} />}
 
             <div className={styles.footer}>
               <div className={styles.collapseContent} onClick={onCollapseChange}>
@@ -276,7 +276,7 @@ export default (props: SignatureHistoryType) => {
               </CardContainer>
             )}
 
-            {!content?.timeStamp && <div className={styles.containerPlaceholder}></div>}
+            {!content?.timeStamp && <div className={styles.containerPlaceholder} />}
 
             <div className={styles.footer}>
               <div className={styles.collapseContent} onClick={onCollapseChange}>
