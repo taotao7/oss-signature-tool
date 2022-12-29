@@ -4,17 +4,18 @@ interface SplitContainer {
   title: string;
   children: any;
   hide?: boolean;
+  content?: string;
 }
 
 export default (props: SplitContainer) => {
-  const { children, title , hide=false } = props;
+  const { children, title, hide = false, content } = props;
 
   return (
     <div
       style={{
         borderBottom: hide ? '' : 'solid 1px #E3E4E6',
-        paddingTop: '15px',
-        paddingBottom: '15px'
+        marginBottom: '24px',
+        paddingBottom: '12px',
       }}
     >
       <div
@@ -22,10 +23,22 @@ export default (props: SplitContainer) => {
           fontSize: '14px',
           fontWeight: 500,
           lineHeight: '22px',
-          marginBottom: '15px'
         }}
       >
         {title}
+      </div>
+      <div
+        style={{
+          fontWeight: 400,
+          fontSize: '12px',
+          color: '#808080',
+          textAlign: 'left',
+          lineHeight: '20px',
+          marginTop: '4px',
+          marginBottom: '16px',
+        }}
+      >
+        {content}
       </div>
       {children}
     </div>

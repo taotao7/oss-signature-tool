@@ -7,6 +7,7 @@ import Split from './components/Split';
 import { DatePicker, Form, Input } from '@alicloud/console-components';
 import { getFromStorage, saveToStorage, formItemLayout } from './utils';
 import { FormValue, HistoryLog, PageIndex } from './types';
+import intl from '../intl';
 import moment from 'moment';
 import 'ace-builds/src-noconflict/mode-json';
 import styles from './index.module.less';
@@ -28,6 +29,7 @@ export default (props: PageIndex) => {
     ),
   );
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
 
   useEffect(() => {
     const logs = getFromStorage('sig-postObject');
@@ -74,6 +76,7 @@ export default (props: PageIndex) => {
         AccessKeySecret: v.AccessKeySecret,
       });
       setHistoryLog([...history]);
+      setCurrentHistory(history[0]);
       saveToStorage('sig-postObject', JSON.stringify(history));
     }
   };
@@ -90,24 +93,23 @@ export default (props: PageIndex) => {
       <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage {...formItemLayout}>
-            <Split title="密钥">
+            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
               <FormItem {...formItemLayout} required label="AccessKeyId">
-                <Input placeholder="必填" name="AccessKeyId" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>
               <FormItem {...formItemLayout} required label="AccessKeySecret">
-                <Input placeholder="必填" name="AccessKeySecret" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
             </Split>
-            <Split title="其他" hide>
+            <Split title={intl('common.tool.other')} hide>
               <FormItem
                 {...formItemLayout}
                 required
                 label="Expiration Date"
-                help={<span className={styles.hint}>选择过期时间后会自动填充到Policy</span>}
+                help={<span className={styles.hint}>{intl('common.tool.policy.tooltip')}</span>}
               >
                 <DatePicker
                   showTime
-                  placeholder="必填"
                   name="Expiration"
                   onChange={onDateChange}
                   defaultValue={moment(expirationDate)}
@@ -118,7 +120,7 @@ export default (props: PageIndex) => {
             </Split>
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>
-                提交
+                {intl('common.tool.generateSig')}
               </Form.Submit>
             </FormItem>
           </Form>
@@ -130,6 +132,8 @@ export default (props: PageIndex) => {
               history={historyLog}
               prefix="postObject"
               setHistoryLog={setHistoryLog}
+              content={currentHistory}
+              clearContent={setCurrentHistory}
             />
           </div>
         </div>

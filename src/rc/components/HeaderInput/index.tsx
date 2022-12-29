@@ -1,6 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Form, Input, Icon } from '@alicloud/console-components';
 import { toGMT, formItemLayout } from '../../utils';
+import intl from '../../../intl';
 
 const FormItem = Form.Item;
 
@@ -99,15 +100,18 @@ export default (props: HeaderInputType) => {
             onChange={(v) => {
               onChange('key', k, v);
             }}
+            style={{ maxWidth: '20vw' }}
+            placeholder={intl('common.tooltip.input')}
           />
           <Input
             disabled={i?.disabled}
             value={i.value}
             defaultValue={i.value}
-            style={{ width: '30vw' }}
+            style={{ width: '35vw', borderLeft: '0' }}
             onChange={(v) => {
               onChange('value', k, v);
             }}
+            placeholder={intl('common.tooltip.input')}
           />
           {i.key !== 'date' && k > 0 && (
             <Icon
@@ -126,7 +130,7 @@ export default (props: HeaderInputType) => {
         }}
         style={{ color: '#3581d2', width: '50px' }}
       >
-        +添加
+        +{intl('common.tool.add')}
       </div>
     </FormItem>
   );

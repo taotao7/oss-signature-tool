@@ -17,6 +17,7 @@ import {
   computeSignature,
   toGMT,
 } from './utils';
+import intl from '../intl';
 import { FormValue, HistoryLog, PageIndex } from './types';
 import moment from 'moment';
 import styles from './index.module.less';
@@ -26,11 +27,12 @@ const FormItem = Form.Item;
 
 export default (props: PageIndex) => {
   const { hide = true } = props;
-  const [dateField, setDateField] = useState<string>(new Date().toUTCString());
+  const [dateField, setDateField] = useState<string>();
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
 
   useEffect(() => {
     const logs = getFromStorage('sig-standard');
@@ -56,7 +58,7 @@ export default (props: PageIndex) => {
       // render to process
       const canon = formatForm({
         ...v,
-        Date: toGMT(dateField),
+        Date: dateField ? toGMT(dateField) : toGMT(new Date().toUTCString()),
         headers: formatHeaders(headersData),
         resource: formatResource(resourceData),
       });
@@ -74,6 +76,7 @@ export default (props: PageIndex) => {
           AccessKeySecret: v.AccessKeySecret,
         });
         setHistoryLog([...history]);
+        setCurrentHistory(history[0]);
         saveToStorage(`sig-standard`, JSON.stringify(history));
       }
     }
@@ -85,18 +88,18 @@ export default (props: PageIndex) => {
       <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
-            <Split title="密钥">
+            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
               <FormItem label="AccessKeyId" required {...formItemLayout}>
-                <Input placeholder="必填" name="AccessKeyId" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>
               <FormItem label="AccessKeySecret" required {...formItemLayout}>
-                <Input placeholder="必填" name="AccessKeySecret" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
             </Split>
 
-            <Split title="参数">
+            <Split title={intl('common.tool.param')}>
               <FormItem label="VERB" required {...formItemLayout}>
-                <Select placeholder="请求方法" name="Method" defaultValue="GET">
+                <Select placeholder={intl('common.tool.method')} name="Method" defaultValue="GET">
                   {methods.map((v) => (
                     <Option key={v} value={v}>
                       {v}
@@ -107,28 +110,32 @@ export default (props: PageIndex) => {
               <FormItem
                 label="Content-MD5"
                 {...formItemLayout}
-                help="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
+                help={intl('common.tool.contentMD5.helper')}
               >
-                <Input name="ContentMD5" />
+                <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
               </FormItem>
               <FormItem
                 label="ContentType"
                 {...formItemLayout}
-                help="请求内容的类型，例如: application/octet-stream，也可以为空"
+                help={intl('common.tool.contentType.helper')}
               >
-                <Input name="ContentType" />
+                <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
               </FormItem>
             </Split>
 
-            <Split title="其他" hide>
-              <FormItem label="Date" {...formItemLayout}>
+            <Split title={intl('common.tool.other')} hide>
+              <FormItem label="Date" {...formItemLayout} required>
                 <DatePicker
                   showTime
                   name="Date"
                   onChange={(v) => {
-                    setDateField(new Date(v as string).toUTCString());
+                    if (v) {
+                      setDateField(new Date(v as string).toUTCString());
+                    } else {
+                      setDateField('');
+                    }
                   }}
-                  value={moment(dateField)}
+                  value={dateField ? moment(dateField) : ''}
                 />
               </FormItem>
               <HeadersInput
@@ -141,7 +148,7 @@ export default (props: PageIndex) => {
 
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>
-                提交
+                {intl('common.tool.generateSig')}
               </Form.Submit>
             </FormItem>
           </Form>
@@ -153,6 +160,8 @@ export default (props: PageIndex) => {
               history={historyLog}
               prefix="standard"
               setHistoryLog={setHistoryLog}
+              content={currentHistory}
+              clearContent={setCurrentHistory}
             />
           </div>
         </div>

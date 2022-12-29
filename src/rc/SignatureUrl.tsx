@@ -12,12 +12,12 @@ import {
   getFromStorage,
 } from './utils';
 import { FormValue, HistoryLog, ResourceData } from './types';
+import intl from '../intl';
 import ResourceInput from './components/Resource';
 import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
 import styles from './index.module.less';
 import moment from 'moment';
-// import intl from '../intl';
 
 const FormItem = Form.Item;
 
@@ -27,6 +27,7 @@ export default () => {
   const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
 
   useEffect(() => {
     const logs = getFromStorage('sig-sigUrl');
@@ -57,8 +58,8 @@ export default () => {
       // @ts-ignore
       if (!resourceData[0].value || !resourceData[1].value) {
         return Dialog.alert({
-          title: '警告',
-          content: <>必须填写bucket 和 object名称</>,
+          title: intl('common.tool.warning'),
+          content: <>{intl('common.tool.warning.sigUrl.bucketAndObject')}</>,
         });
       }
 
@@ -101,6 +102,7 @@ export default () => {
           url,
         });
         setHistoryLog([...history]);
+        setCurrentHistory(history[0]);
         saveToStorage(`sig-sigUrl`, JSON.stringify(history));
       }
     }
@@ -115,51 +117,61 @@ export default () => {
       <div className={styles[layout]}>
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
-            <Split title="密钥">
+            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
               <FormItem {...formItemLayout} label="AccessKeyId" required>
-                <Input placeholder="必填" name="AccessKeyId" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>
 
               <FormItem {...formItemLayout} label="AccessKeySecret" required>
-                <Input placeholder="必填" name="AccessKeySecret" />
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
             </Split>
 
-            <Split title="其他必填">
+            <Split title="common.tool.otherMust">
               <FormItem {...formItemLayout} label="Bucket Region" required>
-                <Input placeholder="必填" name="Region" />
+                <Input placeholder={intl('common.tooltip.input')} name="Region" />
               </FormItem>
 
-              <FormItem {...formItemLayout} label="过期时间(s)" required help="默认5分钟">
+              <FormItem
+                {...formItemLayout}
+                label={intl('common.tool.expireTime.s')}
+                required
+                help={intl('common.tool.expireTime.defaultTime')}
+              >
                 <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
+                <Input
+                  style={{ width: '40px', borderLeft: '0' }}
+                  disabled
+                  value={intl('common.tool.second')}
+                />
               </FormItem>
 
               <ResourceInput setResourceData={setResourceData} required />
             </Split>
 
-            <Split title="其他可选" hide>
+            <Split title={intl('common.tool.otherChoice')} hide>
               <FormItem
                 {...formItemLayout}
                 label="Content-MD5"
-                help="请求内容数据的MD5值，例如: eB5eJF1ptWaXm4bijSPyxw==，也可以为空"
+                help={intl('common.tool.contentMD5.helper')}
               >
-                <Input name="ContentMD5" />
+                <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
               </FormItem>
 
               <FormItem
                 {...formItemLayout}
                 label="Content-Type"
-                help="请求内容的类型，例如: application/octet-stream，也可以为空"
+                help={intl('common.tool.contentType.helper')}
               >
-                <Input name="ContentType" />
+                <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
               </FormItem>
 
               <FormItem
                 {...formItemLayout}
                 label="Security-Token"
-                help="如果是STS服务生成的请输入STSToken"
+                help={intl('common.tool.tooltip.stsToken')}
               >
-                <Input name="STSToken" />
+                <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
               </FormItem>
 
               <HeadersInput setHeadersData={setHeadersData} prefix="sigUrl" />
@@ -167,7 +179,7 @@ export default () => {
 
             <FormItem>
               <Form.Submit validate type="primary" onClick={submit}>
-                提交
+                {intl('common.tool.generateUrl')}
               </Form.Submit>
             </FormItem>
           </Form>
@@ -175,7 +187,13 @@ export default () => {
 
         <div className={styles.view}>
           <div className={styles.history}>
-            <SignatureHistory history={historyLog} prefix="sigUrl" setHistoryLog={setHistoryLog} />
+            <SignatureHistory
+              history={historyLog}
+              prefix="sigUrl"
+              setHistoryLog={setHistoryLog}
+              content={currentHistory}
+              clearContent={setCurrentHistory}
+            />
           </div>
         </div>
       </div>

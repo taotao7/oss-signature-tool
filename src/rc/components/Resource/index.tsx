@@ -1,6 +1,7 @@
 import React, { SetStateAction, useState, useEffect } from 'react';
 import { Form, Input, Icon } from '@alicloud/console-components';
 import { formItemLayout } from '../../utils';
+import intl from '../../../intl';
 
 const FormItem = Form.Item;
 
@@ -81,17 +82,20 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
           <Input
             value={i.key}
             disabled={i?.disabled}
+            style={{ minWidth: '20vw' }}
             onChange={(v) => {
               onChange('key', k, v);
             }}
+            placeholder={intl('common.tooltip.input')}
           />
           <Input
             value={i.value}
             defaultValue={i.value}
-            style={{ width: '30vw' }}
+            style={{ width: '35vw', borderLeft: '0' }}
             onChange={(v) => {
               onChange('value', k, v);
             }}
+            placeholder={intl('common.tooltip.input')}
           />
           {!['object', 'bucket'].includes(i.key) && (
             <Icon
@@ -104,7 +108,7 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
         </div>
       ))}
       <div onClick={() => add(value.length)} style={{ color: '#3581d2', width: '50px' }}>
-        +添加
+        +{intl('common.tool.add')}
       </div>
     </FormItem>
   );

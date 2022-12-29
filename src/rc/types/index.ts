@@ -15,9 +15,9 @@ export interface PageIndex {
 }
 
 export interface HistoryLog {
-  timeStamp: number;
+  timeStamp?: number;
   auth?: string;
-  canon: string;
+  canon?: string;
   AccessKeyId?: string;
   AccessKeySecret?: string;
   url?: string;

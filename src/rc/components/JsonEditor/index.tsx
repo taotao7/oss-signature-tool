@@ -3,6 +3,7 @@ import { Balloon, Form, Icon } from '@alicloud/console-components';
 import React from 'react';
 import { formItemLayout } from '../../utils';
 import styles from './index.module.less';
+import intl from '../../../intl';
 
 const FormItem = Form.Item;
 
@@ -33,7 +34,7 @@ export default (props: JsonEditor) => {
               />
             }
           >
-            点击查看更多Policy选项
+            {intl('common.tool.jsonEditor.click')}
           </Balloon>
         </div>
       }
@@ -45,13 +46,14 @@ export default (props: JsonEditor) => {
         name="Policy"
         // editorProps={{ $blockScrolling: true }}
         value={policyData}
-        width="70%"
-        height="20vw"
+        width="100%"
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
           enableSnippets: true,
+          showPrintMargin: false,
         }}
+        style={{ height: '20vw', fontSize: '12px', border: '1px solid #d9d9d9' }}
       />
     </FormItem>
   );
