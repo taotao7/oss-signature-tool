@@ -1,6 +1,7 @@
 import React, { useState, MouseEventHandler } from 'react';
 import { Icon, Button } from '@alicloud/console-components';
 import styles from './index.module.less';
+import intl from '../../../intl';
 
 interface CardContainer {
   collapse?: boolean;
@@ -59,6 +60,7 @@ export default (props: CardContainer) => {
             type={helpful ? 'primary' : undefined}
             onClick={() => {
               setHelpful(true);
+              setNotHelpful(false);
               submitTrue();
             }}
             style={{ color: helpful ? 'white' : '#696969', fontWeight: '500', fontSize: '12px' }}
@@ -82,13 +84,14 @@ export default (props: CardContainer) => {
                 ></path>
               </svg>
             </Icon>
-            有帮助
+            {intl('common.tool.helpful')}
           </Button>
           <Button
             size="small"
             type={notHelpful ? 'primary' : undefined}
             onClick={() => {
               setNotHelpful(true);
+              setHelpful(false);
               submitFalse();
             }}
             style={{
@@ -118,7 +121,7 @@ export default (props: CardContainer) => {
                 ></path>
               </svg>
             </Icon>
-            无帮助
+            {intl('common.tool.notHelpful')}
           </Button>
         </div>
       )}

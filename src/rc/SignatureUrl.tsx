@@ -132,12 +132,7 @@ export default () => {
                 <Input placeholder={intl('common.tooltip.input')} name="Region" />
               </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label={intl('common.tool.expireTime.s')}
-                required
-                help={intl('common.tool.expireTime.defaultTime')}
-              >
+              <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
                 <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
                 <Input
                   style={{ width: '40px', borderLeft: '0' }}

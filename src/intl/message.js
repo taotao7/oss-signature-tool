@@ -15,7 +15,6 @@ let messages_cn = {
   'common.tool.generateSig': '生成签名',
   'common.tool.policy.tooltip': '选择过期时间后会自动填充到Policy',
   'common.tool.expireTime.s': '过期时间(秒)',
-  'common.tool.expireTime.defaultTime': '默认300秒',
   'common.tool.otherMust': '其他必填',
   'common.tool.second': '秒',
   'common.tool.tooltip.stsToken': '如果是STS服务生成,请输入STSToken',
@@ -46,6 +45,8 @@ let messages_cn = {
   'common.tool.signatureHistory.year': '年',
   'common.tool.signatureHistory.month': '月',
   'common.tool.signatureHistory.day': '日',
+  'common.tool.helpful': '有帮助',
+  'common.tool.notHelpful': '无帮助',
 };
 let messages_en = {};
 
