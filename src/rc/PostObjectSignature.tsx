@@ -42,10 +42,11 @@ export default (props: PageIndex) => {
   }, []);
 
   const changeLayout = () => {
-    if (window.innerWidth < 750) {
+    const layoutHW: HTMLElement = document.getElementById('layout') as HTMLElement;
+    if (layoutHW.offsetWidth < 750) {
       setLayout('layoutColumn');
     }
-    if (window.innerWidth > 750) {
+    if (layoutHW.offsetWidth > 750) {
       setLayout('layout');
     }
   };
@@ -90,7 +91,7 @@ export default (props: PageIndex) => {
   return (
     <>
       {!hide && <RuleBox types="postObject" />}
-      <div className={styles[layout]}>
+      <div className={styles[layout]} id="layout">
         <div className={styles.form}>
           <Form useLabelForErrorMessage {...formItemLayout}>
             <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
