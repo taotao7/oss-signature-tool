@@ -127,7 +127,7 @@ export default () => {
               </FormItem>
             </Split>
 
-            <Split title="common.tool.otherMust">
+            <Split title={intl('common.tool.otherMust')}>
               <FormItem {...formItemLayout} label="Bucket Region" required>
                 <Input placeholder={intl('common.tooltip.input')} name="Region" />
               </FormItem>
@@ -149,7 +149,7 @@ export default () => {
               <ResourceInput setResourceData={setResourceData} required />
             </Split>
 
-            <Split title={intl('common.tool.otherChoice')} hide>
+            <Split title={intl('common.tool.other')} hide>
               <FormItem
                 {...formItemLayout}
                 label="Content-MD5"

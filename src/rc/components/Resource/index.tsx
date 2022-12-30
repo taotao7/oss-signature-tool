@@ -108,7 +108,7 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
         </div>
       ))}
       <div onClick={() => add(value.length)} style={{ color: '#3581d2', width: '50px' }}>
-        +{intl('common.tool.add')}
+        +<span style={{ marginLeft: '4px' }}>{intl('common.tool.add')}</span>
       </div>
     </FormItem>
   );

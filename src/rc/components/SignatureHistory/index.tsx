@@ -109,13 +109,27 @@ export default (props: SignatureHistoryType) => {
 
             <div className={styles.footer}>
               <div className={styles.collapseContent} onClick={onCollapseChange}>
-                {intl('common.tool.signatureHistory.collapse')}
-                {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                {showHistory ? (
+                  <>
+                    {intl('common.tool.signatureHistory.expand')}
+                    <Icon type="collapse" />
+                  </>
+                ) : (
+                  <>
+                    {intl('common.tool.signatureHistory.collapse')}
+                    <Icon type="expand" />
+                  </>
+                )}
               </div>
               <div className={styles.footerRight} onClick={clearAll}>
                 {intl('common.tool.signatureHistory.clearAll')}
               </div>
             </div>
+            {history.length <= 0 && showHistory && (
+              <div className={styles.empty}>
+                {intl('common.tool.signatureHistory.notHaveHistory')}
+              </div>
+            )}
             {history.map((i, k) => (
               <>
                 {showHistory && (
@@ -197,14 +211,28 @@ export default (props: SignatureHistoryType) => {
 
             <div className={styles.footer}>
               <div className={styles.collapseContent} onClick={onCollapseChange}>
-                {intl('common.tool.signatureHistory.collapse')}
-                {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                {showHistory ? (
+                  <>
+                    {intl('common.tool.signatureHistory.expand')}
+                    <Icon type="collapse" />
+                  </>
+                ) : (
+                  <>
+                    {intl('common.tool.signatureHistory.collapse')}
+                    <Icon type="expand" />
+                  </>
+                )}
               </div>
               <div className={styles.footerRight} onClick={clearAll}>
                 {intl('common.tool.signatureHistory.clearAll')}
               </div>
             </div>
 
+            {history.length <= 0 && showHistory && (
+              <div className={styles.empty}>
+                {intl('common.tool.signatureHistory.notHaveHistory')}
+              </div>
+            )}
             {history.map((i, k) => (
               <>
                 {showHistory && (
@@ -280,14 +308,28 @@ export default (props: SignatureHistoryType) => {
 
             <div className={styles.footer}>
               <div className={styles.collapseContent} onClick={onCollapseChange}>
-                {intl('common.tool.signatureHistory.collapse')}
-                {showHistory ? <Icon type="collapse" /> : <Icon type="expand" />}
+                {showHistory ? (
+                  <>
+                    {intl('common.tool.signatureHistory.expand')}
+                    <Icon type="collapse" />
+                  </>
+                ) : (
+                  <>
+                    {intl('common.tool.signatureHistory.collapse')}
+                    <Icon type="expand" />
+                  </>
+                )}
               </div>
               <div className={styles.footerRight} onClick={clearAll}>
                 {intl('common.tool.signatureHistory.clearAll')}
               </div>
             </div>
 
+            {history.length <= 0 && showHistory && (
+              <div className={styles.empty}>
+                {intl('common.tool.signatureHistory.notHaveHistory')}
+              </div>
+            )}
             {history.map((i, k) => (
               <>
                 {showHistory && (
