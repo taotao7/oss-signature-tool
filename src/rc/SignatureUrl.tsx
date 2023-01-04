@@ -126,6 +126,14 @@ export default () => {
               <FormItem {...formItemLayout} label="AccessKeySecret" required>
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
+
+              <FormItem
+                {...formItemLayout}
+                label="Security-Token"
+                help={intl('common.tool.tooltip.stsToken')}
+              >
+                <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
+              </FormItem>
             </Split>
 
             <Split title={intl('common.tool.otherMust')}>
@@ -160,14 +168,6 @@ export default () => {
                 help={intl('common.tool.contentType.helper')}
               >
                 <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
-              </FormItem>
-
-              <FormItem
-                {...formItemLayout}
-                label="Security-Token"
-                help={intl('common.tool.tooltip.stsToken')}
-              >
-                <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
               </FormItem>
 
               <HeadersInput setHeadersData={setHeadersData} prefix="sigUrl" />

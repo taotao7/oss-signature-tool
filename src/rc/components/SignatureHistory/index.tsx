@@ -90,16 +90,20 @@ export default (props: SignatureHistoryType) => {
               >
                 <div>
                   <div>
-                    {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>
+                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                    </div>
                     <pre>{content?.canon}</pre>
-                    <div>
+                    <div className={styles.contentView}>
                       {intl('common.tool.signatureHistory.sigFunc')}:
                       Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
                     </div>
                     <pre>{content?.signature}</pre>
-                    {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS &apos;
-                    + AccessKeyId + &apos;:&apos; + Signature
-                    <pre>{content?.auth}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS
+                      &apos; + AccessKeyId + &apos;:&apos; + Signature
+                    </div>
+                    <pre style={{ marginBottom: '0px' }}>{content?.auth}</pre>
                   </div>
                 </div>
               </CardContainer>
@@ -144,18 +148,22 @@ export default (props: SignatureHistoryType) => {
                     )}`}
                     key={k}
                   >
-                    <div className={styles.contentContainer}>
+                    <div>
                       <div>
-                        {intl('common.tool.signatureHistory.sigFunc')}: canonicalString
+                        <div style={{ marginBottom: '16px', color: '#808080' }}>
+                          {intl('common.tool.signatureHistory.sigFunc')}: canonicalString
+                        </div>
                         <pre>{i.canon}</pre>
-                        <div>
+                        <div className={styles.contentView}>
                           {intl('common.tool.signatureHistory.sigFunc')}:
                           Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
                         </div>
                         <pre>{i?.signature}</pre>
-                        {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS
-                        &apos; + AccessKeyId + &apos;:&apos; + Signature
-                        <pre>{i?.auth}</pre>
+                        <div className={styles.contentView}>
+                          {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS
+                          &apos; + AccessKeyId + &apos;:&apos; + Signature
+                        </div>
+                        <pre style={{ marginBottom: '0px' }}>{i?.auth}</pre>
                       </div>
                     </div>
                   </CardContainer>
@@ -189,19 +197,21 @@ export default (props: SignatureHistoryType) => {
                 collapse
                 top
               >
-                <div className={styles.contentContainer}>
+                <div>
                   <div>
-                    policy:
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>policy:</div>
                     <pre>{content?.canon}</pre>
-                    base64 policy ${intl('common.tool.signatureHistory.Func')}:
-                    crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
+                    <div className={styles.contentView}>
+                      base64 policy {intl('common.tool.signatureHistory.Func')}:
+                      crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
+                    </div>
                     <pre>{content?.signature}</pre>
-                    {intl('common.tool.signatureHistory.sigFunc')}:
-                    <div>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.sigFunc')}:
                       Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(base64(policy),
                       AccessKeySecret))
                     </div>
-                    <pre>Signature={content?.auth}</pre>
+                    <pre style={{ marginBottom: '0px' }}>Signature={content?.auth}</pre>
                   </div>
                 </div>
               </CardContainer>
@@ -247,19 +257,21 @@ export default (props: SignatureHistoryType) => {
                     )}`}
                     key={k}
                   >
-                    <div className={styles.contentContainer}>
+                    <div>
                       <div>
-                        policy:
+                        <div style={{ marginBottom: '16px', color: '#808080' }}>policy:</div>
                         <pre>{i.canon}</pre>
-                        base64 policy ${intl('common.tool.signatureHistory.Func')}:
-                        crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
+                        <div className={styles.contentView}>
+                          base64 policy ${intl('common.tool.signatureHistory.Func')}:
+                          crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
+                        </div>
                         <pre>{i.signature}</pre>
-                        {intl('common.tool.signatureHistory.sigFunc')}:
-                        <div>
+                        <div className={styles.contentView}>
+                          {intl('common.tool.signatureHistory.sigFunc')}:
                           Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(base64(policy),
                           AccessKeySecret))
                         </div>
-                        <pre>Signature={i.auth}</pre>
+                        <pre style={{ marginBottom: '0px' }}>Signature={i.auth}</pre>
                       </div>
                     </div>
                   </CardContainer>
@@ -293,12 +305,16 @@ export default (props: SignatureHistoryType) => {
                 collapse
                 top
               >
-                <div className={styles.contentContainer}>
+                <div>
                   <div>
-                    {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>
+                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                    </div>
                     <pre>{content?.canon}</pre>
-                    {intl('common.tool.signatureHistory.link')}
-                    <pre>{content?.url}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.link')}
+                    </div>
+                    <pre style={{ marginBottom: '0px' }}>{content?.url}</pre>
                   </div>
                 </div>
               </CardContainer>
@@ -344,12 +360,16 @@ export default (props: SignatureHistoryType) => {
                     )}`}
                     key={k}
                   >
-                    <div className={styles.contentContainer}>
+                    <div>
                       <div>
-                        {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                        <div style={{ marginBottom: '16px', color: '#808080' }}>
+                          {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                        </div>
                         <pre>{i.canon}</pre>
-                        {intl('common.tool.signatureHistory.link')}
-                        <pre>{i?.url}</pre>
+                        <div className={styles.contentView}>
+                          {intl('common.tool.signatureHistory.link')}
+                        </div>
+                        <pre style={{ marginBottom: '0px' }}>{i?.url}</pre>
                       </div>
                     </div>
                   </CardContainer>

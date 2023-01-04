@@ -9,7 +9,6 @@ import { getFromStorage, saveToStorage, formItemLayout } from './utils';
 import { FormValue, HistoryLog, PageIndex } from './types';
 import intl from '../intl';
 import moment from 'moment';
-import 'ace-builds/src-noconflict/mode-json';
 import styles from './index.module.less';
 
 const FormItem = Form.Item;

@@ -13,6 +13,11 @@ export default defineConfig({
   define: {
     global: 'window',
   },
+  // resolve: {
+  //   alias: {
+  //     CSS_PREFIX: 'osspr-', // 增加@styles 映射
+  //   },
+  // },
   build: {
     lib: {
       entry: resolvePath('src/index.ts'),

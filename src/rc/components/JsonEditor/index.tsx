@@ -4,6 +4,7 @@ import React from 'react';
 import { formItemLayout } from '../../utils';
 import styles from './index.module.less';
 import intl from '../../../intl';
+import 'ace-builds/src-noconflict/mode-json';
 
 const FormItem = Form.Item;
 
@@ -52,6 +53,7 @@ export default (props: JsonEditor) => {
           enableLiveAutocompletion: true,
           enableSnippets: true,
           showPrintMargin: false,
+          useWorker: false,
         }}
         style={{ height: '20vw', fontSize: '12px', border: '1px solid #d9d9d9' }}
       />
