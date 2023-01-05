@@ -16,6 +16,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "node_modules/_@ali_aem-plugin@1.0.5@@ali/aem-plugin/src/global.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

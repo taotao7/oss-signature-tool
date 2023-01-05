@@ -7,17 +7,28 @@ const resolvePath = (str: string) => path.resolve(__dirname, str);
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: [
+      {
+        find: /^~(.*)$/,
+        replacement: '$1',
+      },
+    ],
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/rc/global-variable.scss";`,
+      },
+    },
+  },
   server: {
     host: '0.0.0.0',
   },
   define: {
     global: 'window',
+    CSS_PREFIX: JSON.stringify('osspr-'),
   },
-  // resolve: {
-  //   alias: {
-  //     CSS_PREFIX: 'osspr-', // 增加@styles 映射
-  //   },
-  // },
   build: {
     lib: {
       entry: resolvePath('src/index.ts'),

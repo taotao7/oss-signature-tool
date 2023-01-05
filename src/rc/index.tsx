@@ -2,8 +2,9 @@ import React from 'react';
 import StandardSignature from './StandardSignature';
 import PostObjectSignature from './PostObjectSignature';
 import SignatureUrl from './SignatureUrl';
-import { Tab } from '@alicloud/console-components';
-import '@alicloud/console-components/dist/xconsole.css';
+import { Tab, ConfigProvider } from '@alicloud/console-components';
+// import '@alicloud/console-components/dist/xconsole.css';
+import './xconsole.scss';
 
 const tabs = [
   {
@@ -25,12 +26,14 @@ const tabs = [
 
 export default () => {
   return (
-    <Tab shape="wrapped">
-      {tabs.map((i) => (
-        <Tab.Item key={i.key} title={i.tab}>
-          {i.content}
-        </Tab.Item>
-      ))}
-    </Tab>
+    <ConfigProvider prefix={CSS_PREFIX}>
+      <Tab shape="wrapped">
+        {tabs.map((i) => (
+          <Tab.Item key={i.key} title={i.tab}>
+            {i.content}
+          </Tab.Item>
+        ))}
+      </Tab>
+    </ConfigProvider>
   );
 };

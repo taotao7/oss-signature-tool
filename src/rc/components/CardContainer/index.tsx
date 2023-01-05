@@ -1,6 +1,7 @@
 import React, { useState, MouseEventHandler } from 'react';
 import { Icon } from '@alicloud/console-components';
 import styles from './index.module.less';
+// @ts-ignore
 import { AesSurvey, createAesInstance } from '@ali/aem-plugin';
 import '@ali/aem-plugin/build/style.css';
 

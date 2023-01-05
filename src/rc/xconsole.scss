@@ -1,0 +1,28 @@
+$fontID: '1435786_zhmi0lxius8';
+
+@import '~@alife/theme-xconsole-v4/variables.scss';
+@import '~@alifd/next/index.scss';
+@import '~@alife/theme-xconsole-v4/icons.scss';
+@import '~@alicloud/console-components/lib/common-var.scss';
+
+@font-face {
+  font-family: OssprIcon;
+  src: url('https://at.alicdn.com/t/font_' + $fontID + '.eot');
+  src: url('https://at.alicdn.com/t/font_' + $fontID + '.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_' + $fontID + '.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_' + $fontID + '.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_' + $fontID + '.ttf') format('truetype'),
+  url('https://at.alicdn.com/t/font_' + $fontID + '.svg#NextIcon') format('svg');
+}
+
+$icon-prefix: '.' + 'osspr-' + 'icon';
+
+@import '~@alicloud/console-components/lib/theme/xconsole/legacy-icons.scss';
+@import '~@alicloud/console-components/lib/common.scss';
+@import '~@alicloud/console-components/lib/theme/xconsole/overwrite.scss';
+@import '~@alicloud/console-components/lib/theme/xconsole/css-var-all.scss';
+
+:root {
+  --osspr-icon-font-family: OssprIcon;
+  --btn-font-weight: 'noraml';
+}

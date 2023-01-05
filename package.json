@@ -2,7 +2,7 @@
   "name": "@ali/signature-tool",
   "module": "dist/signature-tool.es.js",
   "main": "dist/signature-tool.umd.js",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "scripts": {
     "dev": "vite --config vite.config.pro.ts",
     "build:lib": "tsc && vite build --config vite.config.lib.ts",
@@ -16,6 +16,7 @@
     "@ali/intl-factory": "^0.0.10",
     "@alicloud/console-components": "^1.4.62",
     "@alife/mcms_oss-console_package-recommend-tool": "^0.0.1",
+    "@alife/theme-xconsole-v4": "^0.10.1",
     "crypto-js": "^4.1.1",
     "is": "^3.3.0",
     "moment": "2.24.0",
@@ -37,6 +38,7 @@
     "f2elint": "^2.2.1",
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
+    "sass": "^1.57.1",
     "tslib": "^2.4.1",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
