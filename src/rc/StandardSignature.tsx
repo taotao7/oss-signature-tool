@@ -19,7 +19,6 @@ import {
 } from './utils';
 import intl from '../intl';
 import { FormValue, HistoryLog, PageIndex } from './types';
-import moment from 'moment';
 import styles from './index.module.less';
 
 const { Option } = Select;
@@ -127,6 +126,10 @@ export default (props: PageIndex) => {
             <Split title={intl('common.tool.other')} hide>
               <FormItem label="Date" {...formItemLayout} required>
                 <DatePicker
+                  format={`YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
+                    'common.tool.signatureHistory.month',
+                  )}DD${intl('common.tool.signatureHistory.day')}`}
+                  hasClear={false}
                   showTime
                   name="Date"
                   onChange={(v) => {
@@ -136,7 +139,6 @@ export default (props: PageIndex) => {
                       setDateField('');
                     }
                   }}
-                  value={dateField ? moment(dateField) : ''}
                 />
               </FormItem>
               <HeadersInput

@@ -101,6 +101,7 @@ export default (props: PageIndex) => {
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
             </Split>
+
             <Split title={intl('common.tool.other')} hide>
               <FormItem
                 {...formItemLayout}
@@ -109,6 +110,9 @@ export default (props: PageIndex) => {
                 help={<span className={styles.hint}>{intl('common.tool.policy.tooltip')}</span>}
               >
                 <DatePicker
+                  format={`YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
+                    'common.tool.signatureHistory.month',
+                  )}DD${intl('common.tool.signatureHistory.month')}`}
                   showTime
                   name="Expiration"
                   onChange={onDateChange}
