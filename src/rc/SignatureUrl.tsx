@@ -41,10 +41,10 @@ export default () => {
 
   const changeLayout = () => {
     const layoutHW: HTMLElement = document.getElementById('layout') as HTMLElement;
-    if (layoutHW.offsetWidth < 750) {
+    if (layoutHW.offsetWidth < 650) {
       setLayout('layoutColumn');
     }
-    if (layoutHW.offsetWidth > 750) {
+    if (layoutHW.offsetWidth > 650) {
       setLayout('layout');
     }
   };
