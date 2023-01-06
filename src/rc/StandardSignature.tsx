@@ -19,6 +19,7 @@ import {
 } from './utils';
 import intl from '../intl';
 import { FormValue, HistoryLog, PageIndex } from './types';
+import { cloneDeep } from 'lodash';
 import styles from './index.module.less';
 
 const { Option } = Select;
@@ -55,11 +56,23 @@ export default (props: PageIndex) => {
 
   const submit = (v: FormValue, e: any) => {
     if (!e) {
+      const tempHeadersData = cloneDeep(headersData);
+
+      // if have sts token
+      if (v?.STSToken) {
+        // @ts-ignore
+        tempHeadersData.push({
+          index: tempHeadersData.length,
+          key: 'security-token',
+          value: v.STSToken,
+        });
+      }
+
       // render to process
       const canon = formatForm({
         ...v,
         Date: dateField ? toGMT(dateField) : toGMT(new Date().toUTCString()),
-        headers: formatHeaders(headersData),
+        headers: formatHeaders(tempHeadersData),
         resource: formatResource(resourceData),
       });
       const auth = getAuth(v.AccessKeyId, v.AccessKeySecret, canon);
@@ -95,6 +108,9 @@ export default (props: PageIndex) => {
               <FormItem label="AccessKeySecret" required {...formItemLayout}>
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
+              <FormItem label="Security-Token" {...formItemLayout}>
+                <Input placeholder={intl('common.tooltip.input')} name="STSToken" />
+              </FormItem>
             </Split>
 
             <Split title={intl('common.tool.param')}>
@@ -115,7 +131,7 @@ export default (props: PageIndex) => {
                 <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
               </FormItem>
               <FormItem
-                label="ContentType"
+                label="Content-Type"
                 {...formItemLayout}
                 help={intl('common.tool.contentType.helper')}
               >

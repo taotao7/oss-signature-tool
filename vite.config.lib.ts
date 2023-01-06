@@ -36,12 +36,13 @@ export default defineConfig({
       fileName: (format) => `signature-tool.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'moment'],
+      external: ['react', 'react-dom', 'moment', 'lodash'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'reactDom',
           moment: 'moment',
+          lodash: 'lodash',
         },
       },
     },

@@ -19,6 +19,7 @@
     "@alife/theme-xconsole-v4": "^0.10.1",
     "crypto-js": "^4.1.1",
     "is": "^3.3.0",
+    "lodash": "^4.17.15",
     "moment": "2.24.0",
     "react": "^16.9.0",
     "react-ace": "^9.4.0",
