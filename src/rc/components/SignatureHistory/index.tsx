@@ -96,7 +96,13 @@ export default (props: SignatureHistoryType) => {
                     <pre>{content?.canon}</pre>
                     <div className={styles.contentView}>
                       {intl('common.tool.signatureHistory.sigFunc')}:
-                      Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
+                      <div>Signature = base64(hmac-sha1(AccessKeySecret,</div>
+                      <div>VERB + "\n" </div>
+                      <div>+ Content-MD5 + "\n"</div>
+                      <div>+ Content-Type + "\n"</div>
+                      <div>+ Date + "\n"</div>
+                      <div>+ CanonicalizedOSSHeaders</div>
+                      <div>+ CanonicalizedResource))</div>
                     </div>
                     <pre>{content?.signature}</pre>
                     <div className={styles.contentView}>
@@ -156,7 +162,13 @@ export default (props: SignatureHistoryType) => {
                         <pre>{i.canon}</pre>
                         <div className={styles.contentView}>
                           {intl('common.tool.signatureHistory.sigFunc')}:
-                          Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(canonicalString,AccessKeySecret))
+                          <div>Signature = base64(hmac-sha1(AccessKeySecret,</div>
+                          <div>VERB + "\n" </div>
+                          <div>+ Content-MD5 + "\n"</div>
+                          <div>+ Content-Type + "\n"</div>
+                          <div>+ Date + "\n"</div>
+                          <div>+ CanonicalizedOSSHeaders</div>
+                          <div>+ CanonicalizedResource))</div>
                         </div>
                         <pre>{i?.signature}</pre>
                         <div className={styles.contentView}>

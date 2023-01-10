@@ -33,6 +33,7 @@ export default (props: PageIndex) => {
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
+  const [resourcePath, setResourcePath] = useState<string>();
 
   useEffect(() => {
     const logs = getFromStorage('sig-standard');
@@ -67,16 +68,18 @@ export default (props: PageIndex) => {
           value: v.STSToken,
         });
       }
+      const resource = formatResource(resourceData);
 
       // render to process
       const canon = formatForm({
         ...v,
         Date: dateField ? toGMT(dateField) : toGMT(new Date().toUTCString()),
         headers: formatHeaders(tempHeadersData),
-        resource: formatResource(resourceData),
+        resource,
       });
       const auth = getAuth(v.AccessKeyId, v.AccessKeySecret, canon);
       const signature = computeSignature(v.AccessKeySecret, canon);
+      setResourcePath(resource);
 
       const history: HistoryLog[] | [] = historyLog;
       if (history instanceof Array) {
@@ -100,6 +103,11 @@ export default (props: PageIndex) => {
       {!hide && <RuleBox types="standard" />}
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
+          <div style={{ float: 'right' }}>
+            <a target="_blank" href="https://help.aliyun.com/document_detail/31951.html">
+              help
+            </a>
+          </div>
           <Form useLabelForErrorMessage>
             <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
               <FormItem label="AccessKeyId" required {...formItemLayout}>
@@ -142,9 +150,11 @@ export default (props: PageIndex) => {
             <Split title={intl('common.tool.other')} hide>
               <FormItem label="Date" {...formItemLayout} required>
                 <DatePicker
+                  style={{ minWidth: '300px' }}
                   format={`YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
                     'common.tool.signatureHistory.month',
                   )}DD${intl('common.tool.signatureHistory.day')}`}
+                  // format={`ddd MMM DD YYYY HH:mm:ss [GMT]Z`}
                   hasClear={false}
                   showTime
                   name="Date"
@@ -162,7 +172,13 @@ export default (props: PageIndex) => {
                 setHeadersData={setHeadersData}
                 prefix="standard"
               />
-              <ResourceInput setResourceData={setResourceData} />
+              <div style={{ marginLeft: '21%' }}>{resourcePath}</div>
+              <ResourceInput
+                setResourceData={setResourceData}
+                setResourcePath={(v: any) => {
+                  setResourcePath(formatResource(v));
+                }}
+              />
             </Split>
 
             <FormItem>

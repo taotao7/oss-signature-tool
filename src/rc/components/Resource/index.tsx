@@ -12,8 +12,12 @@ interface ResourceDataType {
   disabled?: boolean;
 }
 
-export default (props: { setResourceData: SetStateAction<any>; required?: boolean }) => {
-  const { setResourceData, required = false } = props;
+export default (props: {
+  setResourceData: SetStateAction<any>;
+  required?: boolean;
+  setResourcePath: Function;
+}) => {
+  const { setResourceData, required = false, setResourcePath } = props;
 
   const [value, setValue] = useState<ResourceDataType[]>([]);
 
@@ -33,6 +37,7 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
       },
     ];
     setValue([...templateData]);
+    setResourcePath([...templateData]);
     setResourceData([...templateData]);
   }, []);
 
@@ -48,12 +53,10 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
   };
 
   const del = (index: number) => {
-    // 不能删除date
-    if (index !== 0) {
-      const filterValue = value.filter((_, k) => k !== index);
-      setValue(filterValue);
-      setResourceData([...filterValue]);
-    }
+    const filterValue = value.filter((_, k) => k !== index);
+    setValue(filterValue);
+    setResourcePath([...filterValue]);
+    setResourceData([...filterValue]);
   };
 
   const onChange = (type: string, index: number, v: string) => {
@@ -65,6 +68,7 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
       }
     });
     setValue([...tempValue]);
+    setResourcePath([...tempValue]);
     setResourceData([...tempValue]);
   };
 
@@ -97,14 +101,12 @@ export default (props: { setResourceData: SetStateAction<any>; required?: boolea
             }}
             placeholder={intl('common.tooltip.input')}
           />
-          {!['object', 'bucket'].includes(i.key) && (
-            <Icon
-              type="delete"
-              onClick={() => del(k)}
-              style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
-              size="small"
-            />
-          )}
+          <Icon
+            type="delete"
+            onClick={() => del(k)}
+            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
+            size="small"
+          />
         </div>
       ))}
       <div onClick={() => add(value.length)} style={{ color: '#3581d2', width: '50px' }}>

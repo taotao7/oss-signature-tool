@@ -29,6 +29,7 @@ export default () => {
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
+  const [resourcePath, setResourcePath] = useState<string>();
 
   useEffect(() => {
     const logs = getFromStorage('sig-sigUrl');
@@ -154,7 +155,14 @@ export default () => {
                 />
               </FormItem>
 
-              <ResourceInput setResourceData={setResourceData} required />
+              <div style={{ marginLeft: '21%' }}>{resourcePath}</div>
+              <ResourceInput
+                setResourceData={setResourceData}
+                required
+                setResourcePath={(v: any) => {
+                  setResourcePath(formatResource(v));
+                }}
+              />
             </Split>
 
             <Split title={intl('common.tool.other')} hide>
