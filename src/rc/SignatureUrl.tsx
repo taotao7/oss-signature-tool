@@ -20,6 +20,7 @@ import styles from './index.module.less';
 import moment from 'moment';
 
 const FormItem = Form.Item;
+let countCallback: number = 0;
 
 export default () => {
   const [resourceData, setResourceData] = useState<ResourceData[]>([]);
@@ -78,9 +79,12 @@ export default () => {
 
       const signature = sig(canonicalString, v.AccessKeySecret);
 
-      if (signature.includes('+')) {
+      if (signature.includes('+') && countCallback < 50) {
+        countCallback += 1;
         return submit(v, null);
       }
+      countCallback = 0;
+
       const queryArr = resourceData.filter((i) => !['bucket', 'object'].includes(i.key));
       const query = queryArr.map((i) => `&${i.key}=${i.value}`).join('');
 
