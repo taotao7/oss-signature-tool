@@ -116,7 +116,11 @@ export default (props: PageIndex) => {
               <FormItem label="AccessKeySecret" required {...formItemLayout}>
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
               </FormItem>
-              <FormItem label="Security-Token" {...formItemLayout}>
+              <FormItem
+                label="Security-Token"
+                {...formItemLayout}
+                help={intl('common.tool.tooltip.stsToken')}
+              >
                 <Input placeholder={intl('common.tooltip.input')} name="STSToken" />
               </FormItem>
             </Split>
