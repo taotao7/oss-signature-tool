@@ -26,3 +26,9 @@ $icon-prefix: '.' + 'osspr-' + 'icon';
   --osspr-icon-font-family: OssprIcon;
   --btn-font-weight: 'noraml';
 }
+
+.#{$css-prefix}menu-item .#{$css-prefix}menu-item-inner .#{$css-prefix}menu-item-text {
+  margin-left: 10px;
+}
+
+
