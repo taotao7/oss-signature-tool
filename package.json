@@ -7,6 +7,7 @@
     "dev": "vite --config vite.config.pro.ts",
     "build:lib": "tsc && vite build --config vite.config.lib.ts",
     "build:pro": "tsc && vite build --config vite.config.pro.ts",
+    "publish": "npm run build:lib &&  tnpm publish",
     "preview": "vite preview",
     "f2elint-scan": "f2elint scan",
     "f2elint-fix": "f2elint fix"
