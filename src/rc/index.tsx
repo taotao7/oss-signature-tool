@@ -40,7 +40,7 @@ const tabs = [
         >
           {intl('common.tool.postPolicyTip')}
           <a href="https://help.aliyun.com/document_detail/31988.htm" target="_blank">
-            {intl('common.tool.postPolicyTip.link')}
+            PostObject
           </a>
         </Balloon>
       </div>

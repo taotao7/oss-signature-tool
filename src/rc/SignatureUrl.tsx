@@ -152,7 +152,7 @@ export default () => {
                 <>
                   {intl('common.tooltip.akAndSk')}
                   <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
-                    AccessKey
+                    {intl('common.tool.akAndSk.ramPanel')}
                     <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
                   </a>
                 </>
@@ -248,7 +248,7 @@ export default () => {
                 <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
               </FormItem>
 
-              <HeadersInput setHeadersData={setHeadersData} prefix="sigUrl" />
+              <HeadersInput setHeadersData={setHeadersData} />
             </Split>
 
             <FormItem>

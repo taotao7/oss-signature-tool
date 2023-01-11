@@ -99,7 +99,7 @@ export default (props: PageIndex) => {
                 <>
                   {intl('common.tooltip.akAndSk')}
                   <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
-                    AccessKey
+                    {intl('common.tool.akAndSk.ramPanel')}
                     <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
                   </a>
                 </>

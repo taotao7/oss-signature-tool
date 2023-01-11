@@ -1,14 +1,12 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { Form, Input, Icon } from '@alicloud/console-components';
-import { toGMT, formItemLayout } from '../../utils';
+import { formItemLayout } from '../../utils';
 import intl from '../../../intl';
 
 const FormItem = Form.Item;
 
 interface HeaderInputType {
-  dateField?: string;
   setHeadersData: SetStateAction<any>;
-  prefix: string;
 }
 
 interface InputType {
@@ -19,35 +17,14 @@ interface InputType {
 }
 
 export default (props: HeaderInputType) => {
-  const { dateField = '', setHeadersData, prefix } = props;
-  const [value, setValue] = useState<InputType[]>(
-    !['standard'].includes(prefix)
-      ? [
-          {
-            index: 0,
-            key: '',
-            value: '',
-          },
-        ]
-      : [
-          {
-            index: 0,
-            key: 'date',
-            value: dateField,
-            disabled: true,
-          },
-        ],
-  );
-
-  useEffect(() => {
-    if (dateField) {
-      const tempValue = value;
-
-      tempValue[0].value = toGMT(dateField);
-      setValue([...tempValue]);
-      setHeadersData([...tempValue]);
-    }
-  }, [dateField]);
+  const { setHeadersData } = props;
+  const [value, setValue] = useState<InputType[]>([
+    {
+      index: 0,
+      key: '',
+      value: '',
+    },
+  ]);
 
   const add = (index: number) => {
     setValue([
@@ -61,12 +38,9 @@ export default (props: HeaderInputType) => {
   };
 
   const del = (index: number) => {
-    // 不能删除date
-    if (index !== 0) {
-      const filterValue = value.filter((i, k) => k !== index);
-      setValue([...filterValue]);
-      setHeadersData([...filterValue]);
-    }
+    const filterValue = value.filter((i, k) => k !== index);
+    setValue([...filterValue]);
+    setHeadersData([...filterValue]);
   };
 
   const onChange = (type: string, index: number, v: string) => {
@@ -107,20 +81,18 @@ export default (props: HeaderInputType) => {
             disabled={i?.disabled}
             value={i.value}
             defaultValue={i.value}
-            style={{ width: '35vw', borderLeft: '0' }}
+            style={{ width: '32vw', borderLeft: '0' }}
             onChange={(v) => {
               onChange('value', k, v);
             }}
             placeholder={intl('common.tooltip.input')}
           />
-          {i.key !== 'date' && k > 0 && (
-            <Icon
-              type="delete"
-              size={16}
-              onClick={() => del(k)}
-              style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
-            />
-          )}
+          <Icon
+            type="delete"
+            size={16}
+            onClick={() => del(k)}
+            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
+          />
         </div>
       ))}
       <div
