@@ -31,7 +31,7 @@ export default (props: PageIndex) => {
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [layout, setLayout] = useState<string>(window.innerWidth > 650 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourcePath, setResourcePath] = useState<string>();
 

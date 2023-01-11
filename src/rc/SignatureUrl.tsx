@@ -27,7 +27,7 @@ export default () => {
   const [headersData, setHeadersData] = useState([]);
   const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [layout, setLayout] = useState<string>(window.innerWidth > 650 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourcePath, setResourcePath] = useState<string>();
 
@@ -80,7 +80,7 @@ export default () => {
 
       const signature = sig(canonicalString, v.AccessKeySecret);
 
-      if (signature.includes('+') && countCallback < 50) {
+      if (signature.includes('+') && 50 > countCallback) {
         countCallback += 1;
         return submit(v, null);
       }
