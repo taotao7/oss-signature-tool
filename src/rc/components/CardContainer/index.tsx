@@ -1,4 +1,4 @@
-import React, { useState, MouseEventHandler } from 'react';
+import React, { useState, MouseEventHandler, MouseEvent } from 'react';
 import { Icon } from '@alicloud/console-components';
 import styles from './index.module.less';
 // @ts-ignore
@@ -26,26 +26,23 @@ export default (props: CardContainer) => {
     uid: (window as any)?.ALIYUN_OSS_CONSOLE_CONFIG?.USER_ID || 'anonymous',
   });
 
-  const onCollapseChange = () => {
+  const onCollapseChange = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     setShowContent(!showContent);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.cardTitle}>
+      <div className={styles.cardTitle} onClick={onCollapseChange}>
         <span
           style={{ color: '#333333', fontSize: '12px', fontWeight: '600', marginBottom: '4px' }}
         >
           {content}
         </span>
         <div className={styles.buttonPosition}>
-          {!top && <Icon onClick={clearButton} type="delete" size="small" />}
-          {!top && showContent && (
-            <Icon type="collapse" onClick={onCollapseChange} className={styles.collapse} />
-          )}
-          {!top && !showContent && (
-            <Icon type="expand" onClick={onCollapseChange} className={styles.collapse} />
-          )}
+          {!top && <Icon onClick={clearButton} type="delete" size={16} />}
+          {!top && showContent && <Icon type="collapse" size={16} className={styles.collapse} />}
+          {!top && !showContent && <Icon type="expand" size={16} className={styles.collapse} />}
         </div>
       </div>
 

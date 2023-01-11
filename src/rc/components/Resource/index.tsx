@@ -105,7 +105,7 @@ export default (props: {
             type="delete"
             onClick={() => del(k)}
             style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
-            size="small"
+            size={16}
           />
         </div>
       ))}

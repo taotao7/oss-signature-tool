@@ -4,7 +4,7 @@ import crypto from 'crypto-js';
 import JsonEditor from './components/JsonEditor';
 import SignatureHistory from './components/SignatureHistory';
 import Split from './components/Split';
-import { DatePicker, Form, Input } from '@alicloud/console-components';
+import { DatePicker, Form, Input, Icon } from '@alicloud/console-components';
 import { getFromStorage, saveToStorage, formItemLayout } from './utils';
 import { FormValue, HistoryLog, PageIndex } from './types';
 import intl from '../intl';
@@ -93,7 +93,18 @@ export default (props: PageIndex) => {
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
           <Form useLabelForErrorMessage {...formItemLayout}>
-            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
+            <Split
+              title={intl('common.tool.privateKey')}
+              content={
+                <>
+                  {intl('common.tooltip.akAndSk')}
+                  <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
+                    AccessKey
+                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                  </a>
+                </>
+              }
+            >
               <FormItem {...formItemLayout} required label="AccessKeyId">
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>

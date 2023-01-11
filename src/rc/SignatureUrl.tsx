@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, Form, Input, NumberPicker } from '@alicloud/console-components';
+import { Dialog, Form, Input, NumberPicker, Select, Icon } from '@alicloud/console-components';
 import Split from './components/Split';
 import {
   buildUrl,
@@ -30,6 +30,7 @@ export default () => {
   const [layout, setLayout] = useState<string>(window.innerWidth > 650 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourcePath, setResourcePath] = useState<string>();
+  const [level, setLevel] = useState<string>('region');
 
   useEffect(() => {
     const logs = getFromStorage('sig-sigUrl');
@@ -59,14 +60,34 @@ export default () => {
   const submit = (v: FormValue, e: any): any => {
     if (!e) {
       // @ts-ignore
-      if (!resourceData[0].value || !resourceData[1].value) {
+      if (!resourceData[0]?.value || !resourceData[1]?.value) {
         return Dialog.alert({
           title: intl('common.tool.warning'),
           content: <>{intl('common.tool.warning.sigUrl.bucketAndObject')}</>,
         });
       }
 
-      const resource = formatResource(resourceData);
+      let resource;
+
+      try {
+        resource = formatResource(resourceData);
+      } catch (err) {
+        resource = formatResource([
+          {
+            index: 0,
+            key: 'bucket',
+            value: '',
+            disabled: true,
+          },
+          {
+            index: 1,
+            key: 'object',
+            value: '',
+            disabled: true,
+          },
+        ]);
+      }
+
       const headers = formatHeaders(headersData);
       const date = moment().unix() + expireTime;
 
@@ -98,10 +119,12 @@ export default () => {
         date,
         v.STSToken as string,
         query,
+        level,
       );
 
       const history: HistoryLog[] | [] = historyLog;
       if (history instanceof Array) {
+        // @ts-ignore
         history.unshift({
           timeStamp: new Date().valueOf(),
           canon: canonicalString,
@@ -123,7 +146,18 @@ export default () => {
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
-            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
+            <Split
+              title={intl('common.tool.privateKey')}
+              content={
+                <>
+                  {intl('common.tooltip.akAndSk')}
+                  <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
+                    AccessKey
+                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                  </a>
+                </>
+              }
+            >
               <FormItem {...formItemLayout} label="AccessKeyId" required>
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>
@@ -143,7 +177,25 @@ export default () => {
 
             <Split title={intl('common.tool.otherMust')}>
               <FormItem {...formItemLayout} label="Bucket Region" required>
-                <Input placeholder={intl('common.tooltip.input')} name="Region" />
+                <Input
+                  addonBefore={
+                    <Select
+                      value={level}
+                      onChange={(v) => {
+                        setLevel(v);
+                      }}
+                    >
+                      {['region', 'endpoint', 'custom'].map((i, k) => (
+                        <Select.Option key={k} value={i}>
+                          {i}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  }
+                  style={{ borderLeft: '0' }}
+                  placeholder={intl('common.tooltip.input')}
+                  name="Region"
+                />
               </FormItem>
 
               <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
@@ -155,14 +207,28 @@ export default () => {
                 />
               </FormItem>
 
-              <div style={{ marginLeft: '21%' }}>{resourcePath}</div>
               <ResourceInput
                 setResourceData={setResourceData}
                 required
                 setResourcePath={(v: any) => {
-                  setResourcePath(formatResource(v));
+                  if (v?.length < 2) {
+                    setResourcePath('/');
+                  } else {
+                    setResourcePath(formatResource(v));
+                  }
                 }}
               />
+              <pre
+                style={{
+                  marginLeft: '21%',
+                  height: '36px',
+                  borderRadius: '2px',
+                  maxHeight: '320px',
+                  overflowY: 'scroll',
+                }}
+              >
+                {resourcePath}
+              </pre>
             </Split>
 
             <Split title={intl('common.tool.other')} hide>

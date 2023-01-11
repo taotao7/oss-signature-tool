@@ -150,12 +150,31 @@ export const buildUrl = (
   expires: any,
   securityToken: string,
   query: string,
+  level: string,
 ) => {
-  return encodeURI(
-    `https://${bucket}.${region}.aliyuncs.com/${resource}?OSSAccessKeyId=${accessKeyId}&Expires=${expires}&Signature=${signature}${
-      securityToken ? '&security-token=' + securityToken : ''
-    }${query ? query : ''}`,
-  );
+  const url = [
+    'https://',
+    bucket + '.',
+    region,
+    level !== 'region' ? '/' : '.aliyuncs.com/',
+    resource,
+    '?OSSAccessKeyId=',
+    accessKeyId,
+    '&Expires=',
+    expires,
+    '&Signature=',
+    signature,
+    securityToken ? '&security-token=' + securityToken : '',
+    query ? query : '',
+  ];
+
+  return encodeURI(url.join(''));
+
+  // return encodeURI(
+  //   `https://${bucket}.${region}.aliyuncs.com/${resource}?OSSAccessKeyId=${accessKeyId}&Expires=${expires}&Signature=${signature}${
+  //     securityToken ? '&security-token=' + securityToken : ''
+  //   }${query ? query : ''}`,
+  // );
 };
 
 export const formItemLayout = {

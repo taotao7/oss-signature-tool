@@ -3,7 +3,7 @@ import RuleBox from './components/Rule';
 import HeadersInput from './components/HeaderInput';
 import ResourceInput from './components/Resource';
 import SignatureHistory from './components/SignatureHistory';
-import { Form, Input, Select, DatePicker } from '@alicloud/console-components';
+import { Icon, Form, Input, Select, DatePicker } from '@alicloud/console-components';
 import Split from './components/Split';
 import {
   methods,
@@ -68,7 +68,26 @@ export default (props: PageIndex) => {
           value: v.STSToken,
         });
       }
-      const resource = formatResource(resourceData);
+      let resource;
+
+      try {
+        resource = formatResource(resourceData);
+      } catch (err) {
+        resource = formatResource([
+          {
+            index: 0,
+            key: 'bucket',
+            value: '',
+            disabled: true,
+          },
+          {
+            index: 1,
+            key: 'object',
+            value: '',
+            disabled: true,
+          },
+        ]);
+      }
 
       // render to process
       const canon = formatForm({
@@ -103,13 +122,19 @@ export default (props: PageIndex) => {
       {!hide && <RuleBox types="standard" />}
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
-          <div style={{ float: 'right' }}>
-            <a target="_blank" href="https://help.aliyun.com/document_detail/31951.html">
-              help
-            </a>
-          </div>
           <Form useLabelForErrorMessage>
-            <Split title={intl('common.tool.privateKey')} content={intl('common.tooltip.akAndSk')}>
+            <Split
+              title={intl('common.tool.privateKey')}
+              content={
+                <>
+                  {intl('common.tooltip.akAndSk')}
+                  <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
+                    AccessKey
+                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                  </a>
+                </>
+              }
+            >
               <FormItem label="AccessKeyId" required {...formItemLayout}>
                 <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
               </FormItem>
@@ -176,13 +201,27 @@ export default (props: PageIndex) => {
                 setHeadersData={setHeadersData}
                 prefix="standard"
               />
-              <div style={{ marginLeft: '21%' }}>{resourcePath}</div>
               <ResourceInput
                 setResourceData={setResourceData}
                 setResourcePath={(v: any) => {
-                  setResourcePath(formatResource(v));
+                  if (v?.length < 2) {
+                    setResourcePath('/');
+                  } else {
+                    setResourcePath(formatResource(v));
+                  }
                 }}
               />
+              <pre
+                style={{
+                  marginLeft: '21%',
+                  height: '36px',
+                  borderRadius: '2px',
+                  maxHeight: '320px',
+                  overflowY: 'scroll',
+                }}
+              >
+                {resourcePath}
+              </pre>
             </Split>
 
             <FormItem>

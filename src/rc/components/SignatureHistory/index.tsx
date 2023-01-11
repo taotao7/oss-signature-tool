@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import { HistoryLog } from '../../types';
 import { Icon, Dialog, Message } from '@alicloud/console-components';
 import CardContainer from '../CardContainer';
@@ -49,7 +49,8 @@ export default (props: SignatureHistoryType) => {
     }
   };
 
-  const clearAll = () => {
+  const clearAll = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     Dialog.alert({
       title: intl('common.tool.signatureHistory.clearAll.title'),
       content: intl('common.tool.signatureHistory.clearSingle.content'),
@@ -63,20 +64,23 @@ export default (props: SignatureHistoryType) => {
     });
   };
 
-  const onCollapseChange = () => {
+  const onCollapseChange = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     setShowHistory(!showHistory);
   };
 
   if (prefix === 'standard') {
     return (
       <>
-        <div className={styles.container}>
-          <div className={styles.titleContainer}>
-            <span className={styles.cardTitle}>{intl('common.tool.signatureHistory.result')}</span>
-            <Icon onClick={clearCurrentHistory} type="delete" size="small" />
-          </div>
-          <div>
-            {content?.timeStamp && (
+        {content?.timeStamp && (
+          <>
+            <div className={styles.container} style={{ maxHeight: '862px' }}>
+              <div className={styles.titleContainer}>
+                <span className={styles.cardTitle}>
+                  {intl('common.tool.signatureHistory.result')}
+                </span>
+                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+              </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
                   content?.timeStamp,
@@ -113,76 +117,77 @@ export default (props: SignatureHistoryType) => {
                   </div>
                 </div>
               </CardContainer>
-            )}
-
-            {!content?.timeStamp && <div className={styles.containerPlaceholder} />}
-
-            <div className={styles.footer}>
-              <div className={styles.collapseContent} onClick={onCollapseChange}>
-                {showHistory ? (
-                  <>
-                    {intl('common.tool.signatureHistory.expand')}
-                    <Icon type="collapse" />
-                  </>
-                ) : (
-                  <>
-                    {intl('common.tool.signatureHistory.collapse')}
-                    <Icon type="expand" />
-                  </>
-                )}
-              </div>
-              <div className={styles.footerRight} onClick={clearAll}>
-                {intl('common.tool.signatureHistory.clearAll')}
-              </div>
             </div>
-            {history.length <= 0 && showHistory && (
-              <div className={styles.empty}>
-                {intl('common.tool.signatureHistory.notHaveHistory')}
-              </div>
-            )}
-            {history.map((i, k) => (
-              <>
-                {showHistory && (
-                  <CardContainer
-                    clearButton={() => clearHistory(i?.timeStamp)}
-                    content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
-                      i.timeStamp,
-                    ).format(
-                      `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
-                        'common.tool.signatureHistory.month',
-                      )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
-                    )}`}
-                    key={k}
-                  >
-                    <div>
-                      <div>
-                        <div style={{ marginBottom: '16px', color: '#808080' }}>
-                          {intl('common.tool.signatureHistory.sigFunc')}: canonicalString
-                        </div>
-                        <pre>{i.canon}</pre>
-                        <div className={styles.contentView}>
-                          {intl('common.tool.signatureHistory.sigFunc')}:
-                          <div>Signature = base64(hmac-sha1(AccessKeySecret,</div>
-                          <div>VERB + "\n" </div>
-                          <div>+ Content-MD5 + "\n"</div>
-                          <div>+ Content-Type + "\n"</div>
-                          <div>+ Date + "\n"</div>
-                          <div>+ CanonicalizedOSSHeaders</div>
-                          <div>+ CanonicalizedResource))</div>
-                        </div>
-                        <pre>{i?.signature}</pre>
-                        <div className={styles.contentView}>
-                          {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS
-                          &apos; + AccessKeyId + &apos;:&apos; + Signature
-                        </div>
-                        <pre style={{ marginBottom: '0px' }}>{i?.auth}</pre>
-                      </div>
-                    </div>
-                  </CardContainer>
-                )}
-              </>
-            ))}
+            <div style={{ backgroundColor: '#FFFFFF', height: '16px' }} />
+          </>
+        )}
+
+        <div className={styles.container}>
+          <div className={styles.footer} onClick={onCollapseChange}>
+            <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
+            <div className={styles.footerRight} onClick={clearAll}>
+              {showHistory ? (
+                <>
+                  {intl('common.tool.signatureHistory.clearAll')}
+                  <Icon type="collapse" size={16} />
+                </>
+              ) : (
+                <>
+                  {intl('common.tool.signatureHistory.clearAll')}
+                  <Icon type="expand" size={16} />
+                </>
+              )}
+            </div>
           </div>
+
+          {history.length <= 0 && showHistory && (
+            <div className={styles.empty}>
+              {intl('common.tool.signatureHistory.notHaveHistory')}
+            </div>
+          )}
+
+          {showHistory &&
+            history.map((i, k) => (
+              <CardContainer
+                clearButton={(e) => {
+                  e.stopPropagation();
+                  clearHistory(i.timeStamp);
+                }}
+                content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
+                  i.timeStamp,
+                ).format(
+                  `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
+                    'common.tool.signatureHistory.month',
+                  )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
+                )}`}
+                key={k}
+              >
+                <div>
+                  <div>
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>
+                      {intl('common.tool.signatureHistory.sigFunc')}: canonicalString
+                    </div>
+                    <pre>{i.canon}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.sigFunc')}:
+                      <div>Signature = base64(hmac-sha1(AccessKeySecret,</div>
+                      <div>VERB + "\n" </div>
+                      <div>+ Content-MD5 + "\n"</div>
+                      <div>+ Content-Type + "\n"</div>
+                      <div>+ Date + "\n"</div>
+                      <div>+ CanonicalizedOSSHeaders</div>
+                      <div>+ CanonicalizedResource))</div>
+                    </div>
+                    <pre>{i?.signature}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.sigHeader')}: Authorization=&apos;OSS
+                      &apos; + AccessKeyId + &apos;:&apos; + Signature
+                    </div>
+                    <pre style={{ marginBottom: '0px' }}>{i?.auth}</pre>
+                  </div>
+                </div>
+              </CardContainer>
+            ))}
         </div>
       </>
     );
@@ -191,13 +196,15 @@ export default (props: SignatureHistoryType) => {
   if (prefix === 'postObject') {
     return (
       <>
-        <div className={styles.container}>
-          <div className={styles.titleContainer}>
-            <span className={styles.cardTitle}>{intl('common.tool.signatureHistory.result')}</span>
-            <Icon onClick={clearCurrentHistory} type="delete" size="small" />
-          </div>
-          <div>
-            {content?.timeStamp && (
+        {content?.timeStamp && (
+          <>
+            <div className={styles.container} style={{ maxHeight: '862px' }}>
+              <div className={styles.titleContainer}>
+                <span className={styles.cardTitle}>
+                  {intl('common.tool.signatureHistory.result')}
+                </span>
+                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+              </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
                   content?.timeStamp,
@@ -227,70 +234,72 @@ export default (props: SignatureHistoryType) => {
                   </div>
                 </div>
               </CardContainer>
-            )}
+            </div>
+            <div style={{ backgroundColor: '#FFFFFF', height: '16px' }} />
+          </>
+        )}
 
-            {!content?.timeStamp && <div className={styles.containerPlaceholder} />}
-
-            <div className={styles.footer}>
-              <div className={styles.collapseContent} onClick={onCollapseChange}>
+        <div className={styles.container}>
+          <div className={styles.footer} onClick={onCollapseChange}>
+            <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
+            <div className={styles.footerRight} onClick={clearAll}>
+              <div>
                 {showHistory ? (
                   <>
-                    {intl('common.tool.signatureHistory.expand')}
-                    <Icon type="collapse" />
+                    {intl('common.tool.signatureHistory.clearAll')}
+                    <Icon type="collapse" size={16} />
                   </>
                 ) : (
                   <>
-                    {intl('common.tool.signatureHistory.collapse')}
-                    <Icon type="expand" />
+                    {intl('common.tool.signatureHistory.clearAll')}
+                    <Icon type="expand" size={16} />
                   </>
                 )}
               </div>
-              <div className={styles.footerRight} onClick={clearAll}>
-                {intl('common.tool.signatureHistory.clearAll')}
-              </div>
             </div>
-
-            {history.length <= 0 && showHistory && (
-              <div className={styles.empty}>
-                {intl('common.tool.signatureHistory.notHaveHistory')}
-              </div>
-            )}
-            {history.map((i, k) => (
-              <>
-                {showHistory && (
-                  <CardContainer
-                    clearButton={() => clearHistory(i.timeStamp)}
-                    content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
-                      i.timeStamp,
-                    ).format(
-                      `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
-                        'common.tool.signatureHistory.month',
-                      )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
-                    )}`}
-                    key={k}
-                  >
-                    <div>
-                      <div>
-                        <div style={{ marginBottom: '16px', color: '#808080' }}>policy:</div>
-                        <pre>{i.canon}</pre>
-                        <div className={styles.contentView}>
-                          base64 policy ${intl('common.tool.signatureHistory.Func')}:
-                          crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
-                        </div>
-                        <pre>{i.signature}</pre>
-                        <div className={styles.contentView}>
-                          {intl('common.tool.signatureHistory.sigFunc')}:
-                          Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(base64(policy),
-                          AccessKeySecret))
-                        </div>
-                        <pre style={{ marginBottom: '0px' }}>Signature={i.auth}</pre>
-                      </div>
-                    </div>
-                  </CardContainer>
-                )}
-              </>
-            ))}
           </div>
+
+          {history.length <= 0 && showHistory && (
+            <div className={styles.empty}>
+              {intl('common.tool.signatureHistory.notHaveHistory')}
+            </div>
+          )}
+
+          {showHistory &&
+            history.map((i, k) => (
+              <CardContainer
+                clearButton={(e) => {
+                  e.stopPropagation();
+                  clearHistory(i.timeStamp);
+                }}
+                content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
+                  i.timeStamp,
+                ).format(
+                  `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
+                    'common.tool.signatureHistory.month',
+                  )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
+                )}`}
+                key={k}
+              >
+                <div>
+                  <div>
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>policy:</div>
+                    <pre>{i.canon}</pre>
+                    <div className={styles.contentView}>
+                      base64 policy ${intl('common.tool.signatureHistory.Func')}:
+                      crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(policy))
+                    </div>
+                    <pre>{i.signature}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.sigFunc')}:
+                      Signature=crypto.enc.Base64.stringfy(crypto.HmacHSA1(base64(policy),
+                      AccessKeySecret))
+                    </div>
+                    <pre style={{ marginBottom: '0px' }}>Signature={i.auth}</pre>
+                  </div>
+                </div>
+              </CardContainer>
+            ))}
         </div>
       </>
     );
@@ -299,13 +308,15 @@ export default (props: SignatureHistoryType) => {
   if (prefix === 'sigUrl') {
     return (
       <>
-        <div className={styles.container}>
-          <div className={styles.titleContainer}>
-            <span className={styles.cardTitle}>{intl('common.tool.signatureHistory.result')}</span>
-            <Icon onClick={clearCurrentHistory} type="delete" size="small" />
-          </div>
-          <div>
-            {content?.timeStamp && (
+        {content?.timeStamp && (
+          <>
+            <div className={styles.container} style={{ maxHeight: '862px' }}>
+              <div className={styles.titleContainer}>
+                <span className={styles.cardTitle}>
+                  {intl('common.tool.signatureHistory.result')}
+                </span>
+                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+              </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
                   content?.timeStamp,
@@ -330,65 +341,65 @@ export default (props: SignatureHistoryType) => {
                   </div>
                 </div>
               </CardContainer>
-            )}
-
-            {!content?.timeStamp && <div className={styles.containerPlaceholder} />}
-
-            <div className={styles.footer}>
-              <div className={styles.collapseContent} onClick={onCollapseChange}>
-                {showHistory ? (
-                  <>
-                    {intl('common.tool.signatureHistory.expand')}
-                    <Icon type="collapse" />
-                  </>
-                ) : (
-                  <>
-                    {intl('common.tool.signatureHistory.collapse')}
-                    <Icon type="expand" />
-                  </>
-                )}
-              </div>
-              <div className={styles.footerRight} onClick={clearAll}>
-                {intl('common.tool.signatureHistory.clearAll')}
-              </div>
             </div>
+            <div style={{ backgroundColor: '#FFFFFF', height: '16px' }} />
+          </>
+        )}
 
-            {history.length <= 0 && showHistory && (
-              <div className={styles.empty}>
-                {intl('common.tool.signatureHistory.notHaveHistory')}
-              </div>
-            )}
-            {history.map((i, k) => (
-              <>
-                {showHistory && (
-                  <CardContainer
-                    clearButton={() => clearHistory(i.timeStamp)}
-                    content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
-                      content?.timeStamp,
-                    ).format(
-                      `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
-                        'common.tool.signatureHistory.month',
-                      )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
-                    )}`}
-                    key={k}
-                  >
-                    <div>
-                      <div>
-                        <div style={{ marginBottom: '16px', color: '#808080' }}>
-                          {intl('common.tool.signatureHistory.sigCut')}: canonicalString
-                        </div>
-                        <pre>{i.canon}</pre>
-                        <div className={styles.contentView}>
-                          {intl('common.tool.signatureHistory.link')}
-                        </div>
-                        <pre style={{ marginBottom: '0px' }}>{i?.url}</pre>
-                      </div>
-                    </div>
-                  </CardContainer>
-                )}
-              </>
-            ))}
+        <div className={styles.container}>
+          <div className={styles.footer} onClick={onCollapseChange}>
+            <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
+            <div className={styles.footerRight} onClick={clearAll}>
+              {showHistory ? (
+                <>
+                  {intl('common.tool.signatureHistory.clearAll')}
+                  <Icon type="collapse" size={16} />
+                </>
+              ) : (
+                <>
+                  {intl('common.tool.signatureHistory.clearAll')}
+                  <Icon type="expand" size={16} />
+                </>
+              )}
+            </div>
           </div>
+
+          {history.length <= 0 && showHistory && (
+            <div className={styles.empty}>
+              {intl('common.tool.signatureHistory.notHaveHistory')}
+            </div>
+          )}
+
+          {showHistory &&
+            history.map((i, k) => (
+              <CardContainer
+                clearButton={(e) => {
+                  e.stopPropagation();
+                  clearHistory(i.timeStamp);
+                }}
+                content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
+                  content?.timeStamp,
+                ).format(
+                  `YYYY${intl('common.tool.signatureHistory.year')}MM${intl(
+                    'common.tool.signatureHistory.month',
+                  )}DD${intl('common.tool.signatureHistory.day')} HH:mm:ss`,
+                )}`}
+                key={k}
+              >
+                <div>
+                  <div>
+                    <div style={{ marginBottom: '16px', color: '#808080' }}>
+                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                    </div>
+                    <pre>{i.canon}</pre>
+                    <div className={styles.contentView}>
+                      {intl('common.tool.signatureHistory.link')}
+                    </div>
+                    <pre style={{ marginBottom: '0px' }}>{i?.url}</pre>
+                  </div>
+                </div>
+              </CardContainer>
+            ))}
         </div>
       </>
     );

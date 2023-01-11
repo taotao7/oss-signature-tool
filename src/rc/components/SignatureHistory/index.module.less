@@ -1,8 +1,10 @@
 .container {
-  max-height: 862px;
-  overflow-y: scroll;
+  background-color: #f6f6f6;
+  border-radius: 2px;
   align-items: center;
-  border: #e5e5e5 solid 1px;
+  //border: #e5e5e5 solid 1px;
+  max-height: 422px;
+  overflow-y: scroll;
   padding: 16px;
   .titleContainer {
     display: flex;
@@ -21,31 +23,30 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 16px;
-    .collapseContent {
-      align-items: center;
-      color: #005cc9;
+    align-items: center;
+    .footerTitle {
+      font-size: 14px;
+      line-height: 22px;
     }
+
+    //margin-top: 16px;
     .footerRight {
       color: #333333;
       text-align: center;
-      padding-top: 5px;
+      //padding-top: 5px;
     }
   }
-  .empty {
-    font-weight: 400;
-    font-size: 12px;
-    color: #696969;
-    text-align: center;
-    line-height: 120px;
-    height: 120px;
-  }
+}
 
-  .containerPlaceholder {
-    margin-top: 16px;
-    height: 325px;
-    border: #e5e5e5 solid 1px;
-  }
+.empty {
+  font-weight: 400;
+  font-size: 12px;
+  background-color: #f6f6f6;
+  color: #333333;
+  text-align: center;
+  line-height: 350px;
+  height: 350px;
+  border-radius: 2px;
 }
 
 .contentView {

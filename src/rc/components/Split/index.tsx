@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface SplitContainer {
   title: string;
   children: any;
   hide?: boolean;
-  content?: string;
+  content?: string | ReactElement | undefined;
 }
 
 export default (props: SplitContainer) => {

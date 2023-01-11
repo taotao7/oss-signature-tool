@@ -116,7 +116,7 @@ export default (props: HeaderInputType) => {
           {i.key !== 'date' && k > 0 && (
             <Icon
               type="delete"
-              size="small"
+              size={16}
               onClick={() => del(k)}
               style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
             />
