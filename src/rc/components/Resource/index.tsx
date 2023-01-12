@@ -95,7 +95,7 @@ export default (props: {
           <Input
             value={i.value}
             defaultValue={i.value}
-            style={{ width: '35vw', borderLeft: '0' }}
+            style={{ width: '32vw', borderLeft: '0' }}
             onChange={(v) => {
               onChange('value', k, v);
             }}
