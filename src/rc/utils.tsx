@@ -2,6 +2,8 @@
 import moment from 'moment';
 import crypto from 'crypto-js';
 import is from 'is';
+import { Dialog } from '@alicloud/console-components';
+import intl from '../intl';
 
 export const toGMT = (v: string) => {
   return new Date(moment(v as string).toString()).toUTCString();
@@ -143,32 +145,25 @@ export function buildCanonicalString(
 
 export const buildUrl = (
   accessKeyId: string,
-  bucket: string,
-  region: string,
   signature: any,
-  resource: string,
   expires: any,
-  securityToken: string,
-  query: string,
-  level: string,
+  link: string | undefined,
+  query: string | undefined,
+  securityToken: string | undefined,
 ) => {
-  const url = [
-    'https://',
-    bucket + '.',
-    region,
-    level !== 'region' ? '/' : '.aliyuncs.com/',
-    resource,
-    '?OSSAccessKeyId=',
-    accessKeyId,
-    '&Expires=',
-    expires,
-    '&Signature=',
-    signature,
-    securityToken ? '&security-token=' + securityToken : '',
-    query ? query : '',
-  ];
-
-  return encodeURI(url.join(''));
+  return encodeURI(
+    [
+      link,
+      query ? '?' + query + '&' : '?',
+      'OSSAccessKeyId=',
+      accessKeyId,
+      '&Expires=',
+      expires,
+      '&Signature=',
+      signature,
+      securityToken ? '&security-token=' + securityToken : '',
+    ].join(''),
+  );
 
   // return encodeURI(
   //   `https://${bucket}.${region}.aliyuncs.com/${resource}?OSSAccessKeyId=${accessKeyId}&Expires=${expires}&Signature=${signature}${

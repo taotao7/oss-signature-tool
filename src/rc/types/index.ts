@@ -8,6 +8,7 @@ export interface FormValue {
   Expiration?: string;
   Region?: string;
   STSToken?: string;
+  Link?: string;
 }
 
 export interface PageIndex {

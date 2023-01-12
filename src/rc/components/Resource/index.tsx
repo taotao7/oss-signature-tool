@@ -5,8 +5,8 @@ import intl from '../../../intl';
 
 const FormItem = Form.Item;
 
-interface ResourceDataType {
-  index: number;
+export interface ResourceDataType {
+  index: number | string;
   key: string;
   value: string;
   disabled?: boolean;

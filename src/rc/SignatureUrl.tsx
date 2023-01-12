@@ -1,36 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, Form, Input, NumberPicker, Select, Icon } from '@alicloud/console-components';
+import { Form, Input, NumberPicker, Icon, Dialog } from '@alicloud/console-components';
 import Split from './components/Split';
 import {
   buildUrl,
   computeSignature,
   formatForm,
-  formatResource,
+  // formatResource,
   formItemLayout,
-  formatHeaders,
+  // formatHeaders,
   saveToStorage,
   getFromStorage,
 } from './utils';
-import { FormValue, HistoryLog, ResourceData } from './types';
+import { FormValue, HistoryLog } from './types';
 import intl from '../intl';
-import ResourceInput from './components/Resource';
-import HeadersInput from './components/HeaderInput';
+// import ResourceInput from './components/Resource';
+// import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
+import QueryParams from './components/QueryParams';
 import styles from './index.module.less';
 import moment from 'moment';
+import { ResourceDataType } from '../rc/components/Resource';
+import { sortBy } from 'lodash';
 
 const FormItem = Form.Item;
-let countCallback: number = 0;
 
 export default () => {
-  const [resourceData, setResourceData] = useState<ResourceData[]>([]);
-  const [headersData, setHeadersData] = useState([]);
   const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 650 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
-  const [resourcePath, setResourcePath] = useState<string>();
-  const [level, setLevel] = useState<string>('region');
+  const [resourceData, setResourceData] = useState<ResourceDataType[]>([
+    {
+      index: crypto.randomUUID(),
+      key: '',
+      value: '',
+    },
+  ]);
 
   useEffect(() => {
     const logs = getFromStorage('sig-sigUrl');
@@ -59,80 +64,56 @@ export default () => {
 
   const submit = (v: FormValue, e: any): any => {
     if (!e) {
-      // @ts-ignore
-      if (!resourceData[0]?.value || !resourceData[1]?.value) {
-        return Dialog.alert({
-          title: intl('common.tool.warning'),
-          content: <>{intl('common.tool.warning.sigUrl.bucketAndObject')}</>,
-        });
-      }
-
-      let resource;
+      const date = moment().unix() + expireTime;
+      const links = v?.Link?.trim()?.split('\n');
+      const tempResourceData = sortBy(resourceData, (i) => i.key);
+      const urls: string[] = [];
+      const canonicalStrings: string[] = [];
 
       try {
-        resource = formatResource(resourceData);
-      } catch (err) {
-        resource = formatResource([
-          {
-            index: 0,
-            key: 'bucket',
-            value: '',
-            disabled: true,
-          },
-          {
-            index: 1,
-            key: 'object',
-            value: '',
-            disabled: true,
-          },
-        ]);
-      }
+        links?.forEach((i) => {
+          const j = new URL(i);
+          let query;
+          if (tempResourceData[0].value && tempResourceData[0].key) {
+            query = tempResourceData.map((g) => `${g.key}=${g.value}`).join('&');
+          }
 
-      const headers = formatHeaders(headersData);
-      const date = moment().unix() + expireTime;
+          const canonicalString = formatForm({
+            ...v,
+            Method: 'GET',
+            Date: date,
+            headers: [],
+            resource: `/${j.host.split('.')[0]}${j.pathname}${query ? '?' + query : ''}`,
+          });
 
-      const canonicalString = formatForm({
-        ...v,
-        Method: 'GET',
-        Date: date,
-        headers,
-        resource,
-      });
+          const signature = sig(canonicalString, v.AccessKeySecret);
 
-      const signature = sig(canonicalString, v.AccessKeySecret);
+          const url = buildUrl(v.AccessKeyId, signature, date, i, query, v?.STSToken);
 
-      if (signature.includes('+') && 50 > countCallback) {
-        countCallback += 1;
-        return submit(v, null);
-      }
-      countCallback = 0;
-
-      const queryArr = resourceData.filter((i) => !['bucket', 'object'].includes(i.key));
-      const query = queryArr.map((i) => `&${i.key}=${i.value}`).join('');
-
-      const url = buildUrl(
-        v.AccessKeyId,
-        resourceData[0].value,
-        v.Region as string,
-        signature,
-        resourceData[1].value,
-        date,
-        v.STSToken as string,
-        query,
-        level,
-      );
-
-      const history: HistoryLog[] | [] = historyLog;
-      if (history instanceof Array) {
-        // @ts-ignore
-        history.unshift({
-          timeStamp: new Date().valueOf(),
-          canon: canonicalString,
-          url,
+          urls.push(url);
+          canonicalStrings.push(canonicalString);
         });
-        setHistoryLog([...history]);
-        setCurrentHistory(history[0]);
-        saveToStorage(`sig-sigUrl`, JSON.stringify(history));
+
+        const history: HistoryLog[] | [] = historyLog;
+        if (history instanceof Array) {
+          // @ts-ignore
+          history.unshift({
+            timeStamp: new Date().valueOf(),
+            canon:
+              canonicalStrings?.length > 1
+                ? canonicalStrings.join('\n-----------------\n')
+                : canonicalStrings.toString(),
+            url: urls?.length > 1 ? urls.join('\n-----------------\n') : urls.toString(),
+          });
+          setHistoryLog([...history]);
+          setCurrentHistory(history[0]);
+          saveToStorage(`sig-sigUrl`, JSON.stringify(history));
+        }
+      } catch (err) {
+        Dialog.alert({
+          title: intl('common.tool.warning'),
+          content: intl('common.tool.sigUrl.link.regex'),
+        });
       }
     }
   };
@@ -146,6 +127,17 @@ export default () => {
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
+            <Split title={intl('common.tool.sigUrl.link')}>
+              <FormItem
+                {...formItemLayout}
+                label={intl('common.tool.sigUrl.link.label')}
+                required
+                help={intl('common.tool.sigUrl.link.help')}
+              >
+                <Input.TextArea placeholder={intl('common.tooltip.input')} name="Link" />
+              </FormItem>
+            </Split>
+
             <Split
               title={intl('common.tool.privateKey')}
               content={
@@ -176,28 +168,6 @@ export default () => {
             </Split>
 
             <Split title={intl('common.tool.otherMust')}>
-              <FormItem {...formItemLayout} label="Bucket Region" required>
-                <Input
-                  addonBefore={
-                    <Select
-                      value={level}
-                      onChange={(v) => {
-                        setLevel(v);
-                      }}
-                    >
-                      {['region', 'endpoint', 'custom'].map((i, k) => (
-                        <Select.Option key={k} value={i}>
-                          {i}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  }
-                  style={{ borderLeft: '0' }}
-                  placeholder={intl('common.tooltip.input')}
-                  name="Region"
-                />
-              </FormItem>
-
               <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
                 <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
                 <Input
@@ -206,49 +176,22 @@ export default () => {
                   value={intl('common.tool.second')}
                 />
               </FormItem>
-
-              <ResourceInput
-                setResourceData={setResourceData}
-                required
-                setResourcePath={(v: any) => {
-                  if (v?.length < 2) {
-                    setResourcePath('/');
-                  } else {
-                    setResourcePath(formatResource(v));
-                  }
-                }}
-              />
-              <pre
-                style={{
-                  marginLeft: '21%',
-                  height: '36px',
-                  borderRadius: '2px',
-                  maxHeight: '320px',
-                  overflowY: 'scroll',
-                }}
-              >
-                {resourcePath}
-              </pre>
             </Split>
 
-            <Split title={intl('common.tool.other')} hide>
-              <FormItem
-                {...formItemLayout}
-                label="Content-MD5"
-                help={intl('common.tool.contentMD5.helper')}
-              >
-                <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
-              </FormItem>
-
-              <FormItem
-                {...formItemLayout}
-                label="Content-Type"
-                help={intl('common.tool.contentType.helper')}
-              >
-                <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
-              </FormItem>
-
-              <HeadersInput setHeadersData={setHeadersData} />
+            <Split
+              title={intl('common.tool.other')}
+              hide
+              content={
+                <>
+                  {intl('common.tool.sigUrl.link.query.params')}
+                  <a href="https://help.aliyun.com/document_detail/31980.html" target="_blank">
+                    GetObject
+                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                  </a>
+                </>
+              }
+            >
+              <QueryParams resourceData={resourceData} setResourceData={setResourceData} />
             </Split>
 
             <FormItem>

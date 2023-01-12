@@ -15,6 +15,12 @@ let messages_cn = {
   'common.tool.akAndSk.ramPanel': 'RAM控制台获取',
   'common.tooltip.akAndSk':
     'AccessKeyId/AccessKeySecret 不会保留在服务端，只在浏览器记录里保存记录。AccessKeyId/AccessKeySecret 可以在',
+  'common.tool.sigUrl.link.label': '链接',
+  'common.tool.sigUrl.link': 'Object链接',
+  'common.tool.sigUrl.link.help':
+    '支持批量输入，每一行一个链接，例如: https://example.oss-cn-hangzhou.aliyuncs.com/test.txt',
+  'common.tool.sigUrl.link.query.params': '参数说明请看',
+  'common.tool.sigUrl.link.regex': '请输入正确的链接',
 };
 let messages_en = {};
 
