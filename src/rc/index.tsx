@@ -16,7 +16,7 @@ const tabs = [
           closable={false}
           type="primary"
           triggerType="hover"
-          trigger={<Icon type="help" size={16} style={{ marginLeft: '3px' }} />}
+          trigger={<Icon type="question-circle" size={16} style={{ marginLeft: '3px' }} />}
         >
           {intl('common.tool.standardTip')}
           <a href="https://help.aliyun.com/document_detail/31951.html" target="_blank">
@@ -36,7 +36,7 @@ const tabs = [
           closable={false}
           type="primary"
           triggerType="hover"
-          trigger={<Icon type="help" size={16} style={{ marginLeft: '3px' }} />}
+          trigger={<Icon type="question-circle" size={16} style={{ marginLeft: '3px' }} />}
         >
           {intl('common.tool.postPolicyTip')}
           <a href="https://help.aliyun.com/document_detail/31988.htm" target="_blank">
@@ -56,7 +56,7 @@ const tabs = [
           closable={false}
           type="primary"
           triggerType="hover"
-          trigger={<Icon type="help" size={16} style={{ marginLeft: '3px' }} />}
+          trigger={<Icon type="question-circle" size={16} style={{ marginLeft: '3px' }} />}
         >
           {intl('common.tool.sigUrlTip')}
           <a href="https://help.aliyun.com/document_detail/31952.html" target="_blank">
