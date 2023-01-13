@@ -5,16 +5,12 @@ import {
   buildUrl,
   computeSignature,
   formatForm,
-  // formatResource,
   formItemLayout,
-  // formatHeaders,
   saveToStorage,
   getFromStorage,
 } from './utils';
 import { FormValue, HistoryLog } from './types';
 import intl from '../intl';
-// import ResourceInput from './components/Resource';
-// import HeadersInput from './components/HeaderInput';
 import SignatureHistory from './components/SignatureHistory';
 import QueryParams from './components/QueryParams';
 import styles from './index.module.less';
@@ -134,6 +130,39 @@ export default () => {
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
             <Split title={intl('common.tool.sigUrl.link')}>
+              <Split
+                title={intl('common.tool.privateKey')}
+                content={
+                  <>
+                    {intl('common.tooltip.akAndSk')}
+                    <a
+                      target="_blank"
+                      href="https://ram.console.aliyun.com/manage/ak"
+                      rel="noreferrer"
+                    >
+                      {intl('common.tool.akAndSk.ramPanel')}
+                      <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                    </a>
+                  </>
+                }
+              >
+                <FormItem {...formItemLayout} label="AccessKeyId" required>
+                  <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
+                </FormItem>
+
+                <FormItem {...formItemLayout} label="AccessKeySecret" required>
+                  <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
+                </FormItem>
+
+                <FormItem
+                  {...formItemLayout}
+                  label="Security-Token"
+                  help={intl('common.tool.tooltip.stsToken')}
+                >
+                  <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
+                </FormItem>
+              </Split>
+
               <FormItem
                 {...formItemLayout}
                 label={intl('common.tool.sigUrl.link.label')}
@@ -141,50 +170,6 @@ export default () => {
                 help={intl('common.tool.sigUrl.link.help')}
               >
                 <Input.TextArea placeholder={intl('common.tooltip.input')} name="Link" />
-              </FormItem>
-            </Split>
-
-            <Split
-              title={intl('common.tool.privateKey')}
-              content={
-                <>
-                  {intl('common.tooltip.akAndSk')}
-                  <a
-                    target="_blank"
-                    href="https://ram.console.aliyun.com/manage/ak"
-                    rel="noreferrer"
-                  >
-                    {intl('common.tool.akAndSk.ramPanel')}
-                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
-                  </a>
-                </>
-              }
-            >
-              <FormItem {...formItemLayout} label="AccessKeyId" required>
-                <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
-              </FormItem>
-
-              <FormItem {...formItemLayout} label="AccessKeySecret" required>
-                <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
-              </FormItem>
-
-              <FormItem
-                {...formItemLayout}
-                label="Security-Token"
-                help={intl('common.tool.tooltip.stsToken')}
-              >
-                <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
-              </FormItem>
-            </Split>
-
-            <Split title={intl('common.tool.otherMust')}>
-              <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
-                <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
-                <Input
-                  style={{ width: '40px', borderLeft: '0' }}
-                  disabled
-                  value={intl('common.tool.second')}
-                />
               </FormItem>
             </Split>
 
@@ -205,7 +190,15 @@ export default () => {
                 </>
               }
             >
-              <QueryParams resourceData={resourceData} setResourceData={setResourceData} />
+              <QueryParams resourceData={resourceData} setResourceData={setResourceData} />j
+              <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
+                <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
+                <Input
+                  style={{ width: '40px', borderLeft: '0' }}
+                  disabled
+                  value={intl('common.tool.second')}
+                />
+              </FormItem>
             </Split>
 
             <FormItem>
