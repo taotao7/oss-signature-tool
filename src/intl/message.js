@@ -1,27 +1,7 @@
 import confGet, { LOCALE_CODE } from '../util/conf/get';
 import i18n from '@alife/mcms_oss-console_signature_tool';
 
-let messages_cn = {
-  'common.tool.standardSig': '标准签名',
-  'common.tool.postSig': 'PostObject Policy签名',
-  'common.tool.sigUrl': '获取签名链接',
-  'common.tool.clear': '清空',
-  'common.tool.history': '历史记录',
-  'common.tool.standardTip': '标准签名文档，详情查看',
-  'common.tool.standardTip.link': '在Header中包含签名',
-  'common.tool.postPolicyTip': 'policy签名文档，详情查看',
-  'common.tool.sigUrlTip': '获取签名文档，详情查看',
-  'common.tool.sigUrlTip.link': '在URL中包含签名',
-  'common.tool.akAndSk.ramPanel': 'RAM控制台获取',
-  'common.tooltip.akAndSk':
-    'AccessKeyId/AccessKeySecret 不会保留在服务端，只在浏览器记录里保存记录。AccessKeyId/AccessKeySecret 可以在',
-  'common.tool.sigUrl.link.label': '链接',
-  'common.tool.sigUrl.link': 'Object链接',
-  'common.tool.sigUrl.link.help':
-    '支持批量输入，每一行一个链接，例如: https://example.oss-cn-hangzhou.aliyuncs.com/test.txt',
-  'common.tool.sigUrl.link.query.params': '参数说明请看',
-  'common.tool.sigUrl.link.regex': '请输入正确的链接',
-};
+let messages_cn = {};
 let messages_en = {};
 
 const messageAll = {
@@ -58,5 +38,7 @@ if (confGet('LOCALE') === LOCALE_CODE.ZH_CN) {
     messages = i18n[locale];
   }
 }
+
+console.log(messages);
 
 export default messages;

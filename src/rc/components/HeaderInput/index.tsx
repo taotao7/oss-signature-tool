@@ -89,9 +89,9 @@ export default (props: HeaderInputType) => {
           />
           <Icon
             type="delete"
-            size={16}
+            size={12}
             onClick={() => del(k)}
-            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
+            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '10px' }}
           />
         </div>
       ))}

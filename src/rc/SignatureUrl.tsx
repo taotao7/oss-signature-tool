@@ -129,47 +129,66 @@ export default () => {
       <div className={styles[layout]} id="layout">
         <div className={styles.form}>
           <Form useLabelForErrorMessage>
-            <Split title={intl('common.tool.sigUrl.link')}>
-              <Split
-                title={intl('common.tool.privateKey')}
-                content={
+            <Split
+              title={intl('common.tool.privateKey')}
+              content={
+                <>
+                  {intl('common.tooltip.akAndSk')}
+                  <a
+                    target="_blank"
+                    href="https://ram.console.aliyun.com/manage/ak"
+                    rel="noreferrer"
+                  >
+                    <span style={{ color: '#0064C8' }}>{intl('common.tool.akAndSk.ramPanel')}</span>
+                    <Icon
+                      style={{ color: '#0064C8', marginLeft: '4px' }}
+                      type="external_link"
+                      size={12}
+                    />
+                  </a>
+                </>
+              }
+            >
+              <FormItem {...formItemLayout} label="AccessKeyId" required>
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
+              </FormItem>
+
+              <FormItem {...formItemLayout} label="AccessKeySecret" required>
+                <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
+              </FormItem>
+
+              <FormItem
+                {...formItemLayout}
+                label="Security-Token"
+                help={
                   <>
-                    {intl('common.tooltip.akAndSk')}
-                    <a
-                      target="_blank"
-                      href="https://ram.console.aliyun.com/manage/ak"
-                      rel="noreferrer"
-                    >
-                      {intl('common.tool.akAndSk.ramPanel')}
-                      <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                    {intl('common.tool.tooltip.stsToken')}
+                    <a target="_blank" href="https://help.aliyun.com/document_detail/100624.html">
+                      <span style={{ color: '#0064C8' }}>
+                        {intl('common.tool.stsToken.generate')}
+                      </span>
+                      <Icon
+                        style={{ color: '#0064C8', marginLeft: '4px' }}
+                        type="external_link"
+                        size={12}
+                      />
                     </a>
                   </>
                 }
               >
-                <FormItem {...formItemLayout} label="AccessKeyId" required>
-                  <Input placeholder={intl('common.tooltip.input')} name="AccessKeyId" />
-                </FormItem>
-
-                <FormItem {...formItemLayout} label="AccessKeySecret" required>
-                  <Input placeholder={intl('common.tooltip.input')} name="AccessKeySecret" />
-                </FormItem>
-
-                <FormItem
-                  {...formItemLayout}
-                  label="Security-Token"
-                  help={intl('common.tool.tooltip.stsToken')}
-                >
-                  <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
-                </FormItem>
-              </Split>
+                <Input name="STSToken" placeholder={intl('common.tooltip.input')} />
+              </FormItem>
 
               <FormItem
                 {...formItemLayout}
                 label={intl('common.tool.sigUrl.link.label')}
                 required
-                help={intl('common.tool.sigUrl.link.help')}
+                help={<pre>{intl('common.tool.sigUrl.link.help')}</pre>}
               >
-                <Input.TextArea placeholder={intl('common.tooltip.input')} name="Link" />
+                <Input.TextArea
+                  placeholder="https://example.oss-cn-hangzhou.aliyuncs.com/test.txt"
+                  name="Link"
+                />
               </FormItem>
             </Split>
 
@@ -184,13 +203,17 @@ export default () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    GetObject
-                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                    <span style={{ color: '#0064C8' }}>GetObject</span>
+                    <Icon
+                      style={{ color: '#0064C8', marginLeft: '4px' }}
+                      type="external_link"
+                      size={12}
+                    />
                   </a>
                 </>
               }
             >
-              <QueryParams resourceData={resourceData} setResourceData={setResourceData} />j
+              <QueryParams resourceData={resourceData} setResourceData={setResourceData} />
               <FormItem {...formItemLayout} label={intl('common.tool.expireTime.s')} required>
                 <NumberPicker name="Expiration" value={expireTime} onChange={onExpireTimeChange} />
                 <Input

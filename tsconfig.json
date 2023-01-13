@@ -18,7 +18,10 @@
   },
   "include": [
     "src",
-    "node_modules/_@ali_aem-plugin@1.0.5@@ali/aem-plugin/src/global.d.ts"
+    "node_modules/_@ali_aem-plugin@1.0.5@@ali/aem-plugin/src/global.d.ts",
+    "node_modules/_@ali_aem-plugin@1.0.12@@ali/aem-plugin/src/global.d.ts",
+    "node_modules/_@ali_aem-plugin@1.0.15-alpha@@ali/aem-plugin/src/global.d.ts",
+    "node_modules/_@ali_aem-plugin@1.0.16-alpha@@ali/aem-plugin/src/global.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

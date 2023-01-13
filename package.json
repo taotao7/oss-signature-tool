@@ -4,16 +4,17 @@
   "main": "dist/signature-tool.umd.js",
   "version": "0.0.30",
   "scripts": {
-    "dev": "vite --config vite.config.pro.ts",
+    "dev": "vite --config vite.config.pro.ts --force",
     "build:lib": "tsc && vite build --config vite.config.lib.ts",
     "build:pro": "tsc && vite build --config vite.config.pro.ts",
-    "publish:tnpm": "npm run build:lib && tnpm publish",
+    "publish:alpha": "npm run build:lib && tnpm publish --tag alpha",
+    "publish:latest": "npm run build:lib && tnpm publish",
     "preview": "vite preview",
     "f2elint-scan": "f2elint scan",
     "f2elint-fix": "f2elint fix"
   },
   "dependencies": {
-    "@ali/aem-plugin": "latest",
+    "@ali/aem-plugin": "alpha",
     "@ali/intl-factory": "latest",
     "@alicloud/console-components": "^1.4.62",
     "@alife/mcms_oss-console_signature_tool": "latest",

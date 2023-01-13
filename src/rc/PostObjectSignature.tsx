@@ -99,8 +99,12 @@ export default (props: PageIndex) => {
                 <>
                   {intl('common.tooltip.akAndSk')}
                   <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
-                    {intl('common.tool.akAndSk.ramPanel')}
-                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                    <span style={{ color: '#0064C8' }}>{intl('common.tool.akAndSk.ramPanel')}</span>
+                    <Icon
+                      style={{ color: '#0064C8', marginLeft: '4px' }}
+                      type="external_link"
+                      size={12}
+                    />
                   </a>
                 </>
               }
@@ -117,7 +121,7 @@ export default (props: PageIndex) => {
               <FormItem
                 {...formItemLayout}
                 required
-                label="Expiration Date"
+                label={intl('common.tool.expireTime')}
                 help={<span className={styles.hint}>{intl('common.tool.policy.tooltip')}</span>}
               >
                 <DatePicker

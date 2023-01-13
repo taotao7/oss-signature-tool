@@ -104,8 +104,8 @@ export default (props: {
           <Icon
             type="delete"
             onClick={() => del(k)}
-            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '5px' }}
-            size={16}
+            style={{ marginRight: '10px', marginLeft: '10px', marginTop: '10px' }}
+            size={12}
           />
         </div>
       ))}

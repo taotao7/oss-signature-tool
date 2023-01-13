@@ -6,6 +6,7 @@ import { clearStorage, saveToStorage } from '../../utils';
 import moment from 'moment';
 import styles from './index.module.less';
 import intl from '../../../intl';
+import Helper from '../Helper';
 
 interface SignatureHistoryType {
   history: HistoryLog[];
@@ -95,7 +96,7 @@ export default (props: SignatureHistoryType) => {
                 <div>
                   <div>
                     <div style={{ marginBottom: '16px', color: '#808080' }}>
-                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                      {intl('common.tool.signatureHistory.sigCut')}:
                     </div>
                     <pre>{content?.canon}</pre>
                     <div className={styles.contentView}>
@@ -122,19 +123,21 @@ export default (props: SignatureHistoryType) => {
           </>
         )}
 
+        {content?.timeStamp && <Helper />}
+
         <div className={styles.container}>
           <div className={styles.footer} onClick={onCollapseChange}>
             <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
-            <div className={styles.footerRight} onClick={clearAll}>
+            <div className={styles.footerRight}>
               {showHistory ? (
                 <>
-                  {intl('common.tool.signatureHistory.clearAll')}
-                  <Icon type="collapse" size={16} />
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
                 </>
               ) : (
                 <>
-                  {intl('common.tool.signatureHistory.clearAll')}
-                  <Icon type="expand" size={16} />
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
                 </>
               )}
             </div>
@@ -165,7 +168,7 @@ export default (props: SignatureHistoryType) => {
                 <div>
                   <div>
                     <div style={{ marginBottom: '16px', color: '#808080' }}>
-                      {intl('common.tool.signatureHistory.sigFunc')}: canonicalString
+                      {intl('common.tool.signatureHistory.sigFunc')}:
                     </div>
                     <pre>{i.canon}</pre>
                     <div className={styles.contentView}>
@@ -239,23 +242,23 @@ export default (props: SignatureHistoryType) => {
           </>
         )}
 
+        {content?.timeStamp && <Helper />}
+
         <div className={styles.container}>
           <div className={styles.footer} onClick={onCollapseChange}>
             <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
-            <div className={styles.footerRight} onClick={clearAll}>
-              <div>
-                {showHistory ? (
-                  <>
-                    {intl('common.tool.signatureHistory.clearAll')}
-                    <Icon type="collapse" size={16} />
-                  </>
-                ) : (
-                  <>
-                    {intl('common.tool.signatureHistory.clearAll')}
-                    <Icon type="expand" size={16} />
-                  </>
-                )}
-              </div>
+            <div className={styles.footerRight}>
+              {showHistory ? (
+                <>
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
+                </>
+              ) : (
+                <>
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
+                </>
+              )}
             </div>
           </div>
 
@@ -331,7 +334,7 @@ export default (props: SignatureHistoryType) => {
                 <div>
                   <div>
                     <div style={{ marginBottom: '16px', color: '#808080' }}>
-                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                      {intl('common.tool.signatureHistory.sigCut')}:
                     </div>
                     <pre>{content?.canon}</pre>
                     <div className={styles.contentView}>
@@ -346,19 +349,21 @@ export default (props: SignatureHistoryType) => {
           </>
         )}
 
+        {content?.timeStamp && <Helper />}
+
         <div className={styles.container}>
           <div className={styles.footer} onClick={onCollapseChange}>
             <div className={styles.footerTitle}>{intl('common.tool.history')}</div>
-            <div className={styles.footerRight} onClick={clearAll}>
+            <div className={styles.footerRight}>
               {showHistory ? (
                 <>
-                  {intl('common.tool.signatureHistory.clearAll')}
-                  <Icon type="collapse" size={16} />
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
                 </>
               ) : (
                 <>
-                  {intl('common.tool.signatureHistory.clearAll')}
-                  <Icon type="expand" size={16} />
+                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
                 </>
               )}
             </div>
@@ -389,7 +394,7 @@ export default (props: SignatureHistoryType) => {
                 <div>
                   <div>
                     <div style={{ marginBottom: '16px', color: '#808080' }}>
-                      {intl('common.tool.signatureHistory.sigCut')}: canonicalString
+                      {intl('common.tool.signatureHistory.sigCut')}:
                     </div>
                     <pre>{i.canon}</pre>
                     <div className={styles.contentView}>

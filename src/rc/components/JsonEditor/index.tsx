@@ -27,8 +27,8 @@ export default (props: JsonEditor) => {
             trigger={
               <Icon
                 className={styles.icon}
-                type="help_fill"
-                size="small"
+                type="question-circle"
+                size={12}
                 onClick={() => {
                   window.open('https://help.aliyun.com/document_detail/31988.html');
                 }}

@@ -129,8 +129,12 @@ export default (props: PageIndex) => {
                 <>
                   {intl('common.tooltip.akAndSk')}
                   <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
-                    {intl('common.tool.akAndSk.ramPanel')}
-                    <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
+                    <span style={{ color: '#0064C8' }}>{intl('common.tool.akAndSk.ramPanel')}</span>
+                    <Icon
+                      style={{ color: '#0064C8', marginLeft: '4px' }}
+                      type="external_link"
+                      size={12}
+                    />
                   </a>
                 </>
               }
@@ -144,14 +148,28 @@ export default (props: PageIndex) => {
               <FormItem
                 label="Security-Token"
                 {...formItemLayout}
-                help={intl('common.tool.tooltip.stsToken')}
+                help={
+                  <>
+                    {intl('common.tool.tooltip.stsToken')}
+                    <a target="_blank" href="https://help.aliyun.com/document_detail/100624.html">
+                      <span style={{ color: '#0064C8' }}>
+                        {intl('common.tool.stsToken.generate')}
+                      </span>
+                      <Icon
+                        style={{ color: '#0064C8', marginLeft: '4px' }}
+                        type="external_link"
+                        size={12}
+                      />
+                    </a>
+                  </>
+                }
               >
                 <Input placeholder={intl('common.tooltip.input')} name="STSToken" />
               </FormItem>
             </Split>
 
-            <Split title={intl('common.tool.param')}>
-              <FormItem label="VERB" required {...formItemLayout}>
+            <Split title={intl('common.tool.param')} hide>
+              <FormItem label={`${intl('common.tool.method')}(VERB)`} required {...formItemLayout}>
                 <Select placeholder={intl('common.tool.method')} name="Method" defaultValue="GET">
                   {methods.map((v) => (
                     <Option key={v} value={v}>
@@ -163,20 +181,18 @@ export default (props: PageIndex) => {
               <FormItem
                 label="Content-MD5"
                 {...formItemLayout}
-                help={intl('common.tool.contentMD5.helper')}
+                help={intl('common.tool.contentMD5.Helper')}
               >
                 <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
               </FormItem>
               <FormItem
                 label="Content-Type"
                 {...formItemLayout}
-                help={intl('common.tool.contentType.helper')}
+                help={intl('common.tool.contentType.Helper')}
               >
                 <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
               </FormItem>
-            </Split>
 
-            <Split title={intl('common.tool.other')} hide>
               <FormItem label="Date" {...formItemLayout} required>
                 <DatePicker
                   style={{ minWidth: '300px' }}
