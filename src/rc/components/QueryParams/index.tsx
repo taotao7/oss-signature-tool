@@ -24,10 +24,8 @@ const QueryParams = (props: {
   };
 
   const del = (index: number | string) => {
-    if (resourceData.length > 1) {
-      const filterValue = resourceData.filter((i) => i.index !== index);
-      setResourceData([...filterValue]);
-    }
+    const filterValue = resourceData.filter((i) => i.index !== index);
+    setResourceData([...filterValue]);
   };
 
   const onChange = (type: string, index: number | string, v: string) => {
@@ -91,7 +89,10 @@ const QueryParams = (props: {
           />
         </div>
       ))}
-      <div onClick={() => add(crypto.randomUUID())} style={{ color: '#3581d2', width: '50px' }}>
+      <div
+        onClick={() => add(window.crypto.randomUUID())}
+        style={{ color: '#3581d2', width: '50px' }}
+      >
         +<span style={{ marginLeft: '4px' }}>{intl('common.tool.add')}</span>
       </div>
     </FormItem>

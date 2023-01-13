@@ -36,13 +36,21 @@ export default defineConfig({
       fileName: (format) => `signature-tool.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'moment', 'lodash'],
+      external: [
+        'react',
+        'react-dom',
+        'moment',
+        'lodash',
+        '@ali/aem-plugin',
+        '@ali/aem-plugin/build/style.css',
+      ],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'reactDom',
           moment: 'moment',
           lodash: 'lodash',
+          '@ali/aem-plugin': 'aemPlugin',
         },
       },
     },

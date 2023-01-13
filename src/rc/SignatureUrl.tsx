@@ -31,7 +31,7 @@ export default () => {
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourceData, setResourceData] = useState<ResourceDataType[]>([
     {
-      index: crypto.randomUUID(),
+      index: window.crypto.randomUUID(),
       key: '',
       value: '',
     },
@@ -74,7 +74,12 @@ export default () => {
         links?.forEach((i) => {
           const j = new URL(i);
           let query;
-          if (tempResourceData[0].value && tempResourceData[0].key) {
+          console.log(tempResourceData);
+          if (
+            tempResourceData?.length > 0 &&
+            tempResourceData[0].value &&
+            tempResourceData[0].key
+          ) {
             query = tempResourceData.map((g) => `${g.key}=${g.value}`).join('&');
           }
 
@@ -110,6 +115,7 @@ export default () => {
           saveToStorage(`sig-sigUrl`, JSON.stringify(history));
         }
       } catch (err) {
+        console.log(err);
         Dialog.alert({
           title: intl('common.tool.warning'),
           content: intl('common.tool.sigUrl.link.regex'),
