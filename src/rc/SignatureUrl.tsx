@@ -83,7 +83,7 @@ export default () => {
             Method: 'GET',
             Date: date,
             headers: [],
-            resource: `/${j.host.split('.')[0]}${j.pathname}${query ? '?' + query : ''}`,
+            resource: `/${j.host.split('.')[0]}${j.pathname}${query ? `?${query}` : ''}`,
           });
 
           const signature = sig(canonicalString, v.AccessKeySecret);
@@ -143,7 +143,11 @@ export default () => {
               content={
                 <>
                   {intl('common.tooltip.akAndSk')}
-                  <a target="_blank" href="https://ram.console.aliyun.com/manage/ak">
+                  <a
+                    target="_blank"
+                    href="https://ram.console.aliyun.com/manage/ak"
+                    rel="noreferrer"
+                  >
                     {intl('common.tool.akAndSk.ramPanel')}
                     <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
                   </a>
@@ -184,7 +188,11 @@ export default () => {
               content={
                 <>
                   {intl('common.tool.sigUrl.link.query.params')}
-                  <a href="https://help.aliyun.com/document_detail/31980.html" target="_blank">
+                  <a
+                    href="https://help.aliyun.com/document_detail/31980.html"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     GetObject
                     <Icon style={{ color: '#0064C8' }} type="external_link" size={16} />
                   </a>
