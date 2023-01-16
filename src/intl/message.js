@@ -1,7 +1,9 @@
 import confGet, { LOCALE_CODE } from '../util/conf/get';
 import i18n from '@alife/mcms_oss-console_signature_tool';
 
-let messages_cn = {};
+let messages_cn = {
+  'tool.common.sigUrl.bucket.tip': '如果使用了自定义域名,请输入对应bucket',
+};
 let messages_en = {};
 
 const messageAll = {

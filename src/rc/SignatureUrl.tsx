@@ -54,11 +54,11 @@ export default () => {
   };
 
   // signature
-  const sig = (canon: string, sk: string): string => {
+  const sig = (canon: string, sk: string | undefined): string => {
     return computeSignature(sk, canon);
   };
 
-  const submit = (v: FormValue, e: any): any => {
+  const submit = (v: Partial<FormValue>, e: any): any => {
     if (!e) {
       const date = moment().unix() + expireTime;
       const links = v?.Link?.trim()?.split('\n');
@@ -84,7 +84,9 @@ export default () => {
             Method: 'GET',
             Date: date,
             headers: [],
-            resource: `/${j.host.split('.')[0]}${j.pathname}${query ? `?${query}` : ''}`,
+            resource: `/${v?.Bucket ? v.Bucket : j.host.split('.')[0]}${j.pathname}${
+              query ? `?${query}` : ''
+            }`,
           });
 
           const signature = sig(canonicalString, v.AccessKeySecret);
@@ -189,6 +191,14 @@ export default () => {
                   placeholder="https://example.oss-cn-hangzhou.aliyuncs.com/test.txt"
                   name="Link"
                 />
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="Bucket"
+                help={intl('tool.common.sigUrl.bucket.tip')}
+                name="Bucket"
+              >
+                <Input type="text" />
               </FormItem>
             </Split>
 

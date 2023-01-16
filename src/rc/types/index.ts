@@ -9,6 +9,7 @@ export interface FormValue {
   Region?: string;
   STSToken?: string;
   Link?: string;
+  Bucket?: string;
 }
 
 export interface PageIndex {
