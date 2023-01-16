@@ -27,7 +27,7 @@ export default (props: PageIndex) => {
       4,
     ),
   );
-  const [layout, setLayout] = useState<string>(window.innerWidth > 650 ? 'layout' : 'layoutColumn');
+  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
 
   useEffect(() => {
@@ -36,16 +36,17 @@ export default (props: PageIndex) => {
   }, []);
 
   useEffect(() => {
+    changeLayout();
     window.addEventListener('resize', changeLayout);
     return () => window.removeEventListener('resize', changeLayout);
   }, []);
 
   const changeLayout = () => {
     const layoutHW: HTMLElement = document.getElementById('layout') as HTMLElement;
-    if (layoutHW.offsetWidth < 650) {
+    if (layoutHW.offsetWidth < 750) {
       setLayout('layoutColumn');
     }
-    if (layoutHW.offsetWidth > 650) {
+    if (layoutHW.offsetWidth > 750) {
       setLayout('layout');
     }
   };
