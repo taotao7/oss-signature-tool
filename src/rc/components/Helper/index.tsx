@@ -3,7 +3,8 @@ import intl from '../../../intl';
 import { Button } from '@alicloud/console-components';
 import styles from './index.module.less';
 // @ts-ignore
-import { AesSurvey, createAesInstance } from '@ali/aem-plugin/src/index';
+import { AesSurvey, createAesInstance } from '@ali/aem-plugin';
+import '@ali/aem-plugin/build/style.css';
 
 const Helper = () => {
   createAesInstance({

@@ -2,7 +2,7 @@
   "name": "@ali/signature-tool",
   "module": "dist/signature-tool.es.js",
   "main": "dist/signature-tool.umd.js",
-  "version": "0.0.31",
+  "version": "0.0.33",
   "scripts": {
     "dev": "vite --config vite.config.pro.ts --force",
     "build:lib": "tsc && vite build --config vite.config.lib.ts",
@@ -14,7 +14,7 @@
     "f2elint-fix": "f2elint fix"
   },
   "dependencies": {
-    "@ali/aem-plugin": "alpha",
+    "@ali/aem-plugin": "^1.0.17-alpha",
     "@ali/intl-factory": "latest",
     "@alicloud/console-components": "^1.4.62",
     "@alife/mcms_oss-console_signature_tool": "latest",

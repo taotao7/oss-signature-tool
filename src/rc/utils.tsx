@@ -67,8 +67,8 @@ export function authorization(
   return `OSS ${accessKeyId}:${computeSignature(accessKeySecret, canonicalString)}`;
 }
 
-export function computeSignature(accessKeySecret: string, canonicalString: string) {
-  return crypto.enc.Base64.stringify(crypto.HmacSHA1(canonicalString, accessKeySecret));
+export function computeSignature(accessKeySecret: string | undefined, canonicalString: string) {
+  return crypto.enc.Base64.stringify(crypto.HmacSHA1(canonicalString, accessKeySecret as string));
 }
 
 export function buildCanonicalizedResource(resourcePath: string, parameters: any) {
@@ -144,7 +144,7 @@ export function buildCanonicalString(
 }
 
 export const buildUrl = (
-  accessKeyId: string,
+  accessKeyId: string | undefined,
   signature: any,
   expires: any,
   link: string | undefined,
