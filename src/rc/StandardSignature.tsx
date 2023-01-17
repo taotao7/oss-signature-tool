@@ -114,6 +114,9 @@ export default (props: PageIndex) => {
         setHistoryLog([...history]);
         setCurrentHistory(history[0]);
         saveToStorage(`sig-standard`, JSON.stringify(history));
+        if (props?.onStateChange) {
+          props.onStateChange('fulfilled');
+        }
       }
     }
   };

@@ -14,6 +14,7 @@ export interface FormValue {
 
 export interface PageIndex {
   hide?: boolean;
+  onStateChange?: Function;
 }
 
 export interface HistoryLog {

@@ -9,7 +9,7 @@ import {
   saveToStorage,
   getFromStorage,
 } from './utils';
-import { FormValue, HistoryLog } from './types';
+import { FormValue, HistoryLog, PageIndex } from './types';
 import intl from '../intl';
 import SignatureHistory from './components/SignatureHistory';
 import QueryParams from './components/QueryParams';
@@ -20,7 +20,7 @@ import { sortBy } from 'lodash';
 
 const FormItem = Form.Item;
 
-export default () => {
+export default (props: PageIndex) => {
   const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
@@ -112,6 +112,10 @@ export default () => {
           setHistoryLog([...history]);
           setCurrentHistory(history[0]);
           saveToStorage(`sig-sigUrl`, JSON.stringify(history));
+
+          if (props?.onStateChange) {
+            props.onStateChange('fulfilled');
+          }
         }
       } catch (err) {
         console.log(err);

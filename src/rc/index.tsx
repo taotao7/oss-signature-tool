@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import StandardSignature from './StandardSignature';
 import PostObjectSignature from './PostObjectSignature';
 import SignatureUrl from './SignatureUrl';
@@ -88,13 +88,13 @@ const tabs = [
   },
 ];
 
-export default () => {
+export default (props: any) => {
   return (
     <ConfigProvider prefix={CSS_PREFIX}>
       <Tab shape="wrapped">
         {tabs.map((i) => (
           <Tab.Item key={i.key} title={i.tab}>
-            {i.content}
+            {cloneElement(i.content, { ...props })}
           </Tab.Item>
         ))}
       </Tab>
