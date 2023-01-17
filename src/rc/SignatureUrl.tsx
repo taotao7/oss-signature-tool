@@ -23,7 +23,7 @@ const FormItem = Form.Item;
 export default (props: PageIndex) => {
   const [expireTime, setExpireTime] = useState<number>(300);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [layout, setLayout] = useState<string>(window.innerWidth > 750 ? 'layout' : 'layoutColumn');
+  const [layout, setLayout] = useState<string>(window.innerWidth > 800 ? 'layout' : 'layoutColumn');
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourceData, setResourceData] = useState<ResourceDataType[]>([
     {
@@ -46,10 +46,10 @@ export default (props: PageIndex) => {
 
   const changeLayout = () => {
     const layoutHW: HTMLElement = document.getElementById('layout') as HTMLElement;
-    if (layoutHW.offsetWidth < 750) {
+    if (layoutHW.offsetWidth < 800) {
       setLayout('layoutColumn');
     }
-    if (layoutHW.offsetWidth > 750) {
+    if (layoutHW.offsetWidth > 800) {
       setLayout('layout');
     }
   };
