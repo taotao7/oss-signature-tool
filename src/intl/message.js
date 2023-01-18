@@ -41,6 +41,4 @@ if (confGet('LOCALE') === LOCALE_CODE.ZH_CN) {
   }
 }
 
-console.log(messages);
-
 export default messages;
