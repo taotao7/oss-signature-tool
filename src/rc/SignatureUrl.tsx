@@ -201,7 +201,7 @@ export default (props: PageIndex) => {
               </FormItem>
               <FormItem
                 {...formItemLayout}
-                label="Bucket"
+                label={`Bucket ${intl('name')}`}
                 help={intl('tool.common.sigUrl.bucket.tip')}
                 name="Bucket"
               >

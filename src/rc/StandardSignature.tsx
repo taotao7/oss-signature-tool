@@ -156,7 +156,8 @@ export default (props: PageIndex) => {
                 {...formItemLayout}
                 help={
                   <>
-                    {intl('common.tool.tooltip.stsToken')}
+                    {/*TODO 更改文案*/}
+                    {intl('common.tool.tooltip.stsToken')}，
                     <a target="_blank" href="https://help.aliyun.com/document_detail/100624.html">
                       <span style={{ color: '#0064C8' }}>
                         {intl('common.tool.stsToken.generate')}

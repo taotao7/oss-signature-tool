@@ -2,6 +2,7 @@ import React, { SetStateAction, useState } from 'react';
 import { Form, Input, Icon } from '@alicloud/console-components';
 import { formItemLayout } from '../../utils';
 import intl from '../../../intl';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -20,7 +21,7 @@ export default (props: HeaderInputType) => {
   const { setHeadersData } = props;
   const [value, setValue] = useState<InputType[]>([
     {
-      index: 0,
+      index: moment().valueOf(),
       key: '',
       value: '',
     },
@@ -38,7 +39,7 @@ export default (props: HeaderInputType) => {
   };
 
   const del = (index: number) => {
-    const filterValue = value.filter((i, k) => k !== index);
+    const filterValue = value.filter((i) => i.index !== index);
     setValue([...filterValue]);
     setHeadersData([...filterValue]);
   };
@@ -58,21 +59,21 @@ export default (props: HeaderInputType) => {
 
   return (
     <FormItem label="Canonicalized Headers" {...formItemLayout}>
-      {value.map((i, k) => (
+      {value.map((i) => (
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             marginBottom: '10px',
           }}
-          key={k}
+          key={i.index}
         >
           <Input
             addonTextBefore="x-oss-"
             value={i.key}
             disabled={i?.disabled}
             onChange={(v) => {
-              onChange('key', k, v);
+              onChange('key', i.index, v);
             }}
             style={{ maxWidth: '20vw' }}
             placeholder={intl('common.tooltip.input')}
@@ -83,14 +84,14 @@ export default (props: HeaderInputType) => {
             defaultValue={i.value}
             style={{ width: '32vw', borderLeft: '0' }}
             onChange={(v) => {
-              onChange('value', k, v);
+              onChange('value', i.index, v);
             }}
             placeholder={intl('common.tooltip.input')}
           />
           <Icon
             type="delete"
             size={12}
-            onClick={() => del(k)}
+            onClick={() => del(i.index)}
             style={{ marginRight: '10px', marginLeft: '10px', marginTop: '10px' }}
           />
         </div>
@@ -98,7 +99,7 @@ export default (props: HeaderInputType) => {
       <div
         onClick={(e) => {
           e.stopPropagation();
-          add(value.length);
+          add(moment().valueOf());
         }}
         style={{ color: '#3581d2', width: '50px' }}
       >
