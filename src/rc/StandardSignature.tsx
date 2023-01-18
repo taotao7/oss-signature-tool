@@ -31,7 +31,9 @@ export default (props: PageIndex) => {
   const [headersData, setHeadersData] = useState([]);
   const [resourceData, setResourceData] = useState([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [layout, setLayout] = useState<string>(window.innerWidth > 800 ? 'layout' : 'layoutColumn');
+  const [layout, setLayout] = useState<string>(
+    window.innerWidth > 1100 ? 'layout' : 'layoutColumn',
+  );
   const [currentHistory, setCurrentHistory] = useState<HistoryLog>({});
   const [resourcePath, setResourcePath] = useState<string>();
 
@@ -48,10 +50,10 @@ export default (props: PageIndex) => {
 
   const changeLayout = () => {
     const layoutHW: HTMLElement = document.getElementById('layout') as HTMLElement;
-    if (layoutHW.offsetWidth < 800) {
+    if (layoutHW.offsetWidth < 1100) {
       setLayout('layoutColumn');
     }
-    if (layoutHW.offsetWidth > 800) {
+    if (layoutHW.offsetWidth > 1100) {
       setLayout('layout');
     }
   };
@@ -185,14 +187,14 @@ export default (props: PageIndex) => {
               <FormItem
                 label="Content-MD5"
                 {...formItemLayout}
-                help={intl('common.tool.contentMD5.Helper')}
+                help={intl('common.tool.contentMD5.helper')}
               >
                 <Input name="ContentMD5" placeholder={intl('common.tooltip.input')} />
               </FormItem>
               <FormItem
                 label="Content-Type"
                 {...formItemLayout}
-                help={intl('common.tool.contentType.Helper')}
+                help={intl('common.tool.contentType.helper')}
               >
                 <Input name="ContentType" placeholder={intl('common.tooltip.input')} />
               </FormItem>

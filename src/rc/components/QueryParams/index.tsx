@@ -3,6 +3,7 @@ import { Icon, Input, Form, Select } from '@alicloud/console-components';
 import intl from '../../../intl';
 import React, { SetStateAction } from 'react';
 import { ResourceDataType } from '../Resource';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -12,7 +13,7 @@ const QueryParams = (props: {
 }) => {
   const { resourceData, setResourceData } = props;
 
-  const add = (index: string) => {
+  const add = (index: string | number) => {
     setResourceData([
       ...resourceData,
       {
@@ -89,10 +90,7 @@ const QueryParams = (props: {
           />
         </div>
       ))}
-      <div
-        onClick={() => add(window.crypto.randomUUID())}
-        style={{ color: '#3581d2', width: '50px' }}
-      >
+      <div onClick={() => add(moment().valueOf())} style={{ color: '#3581d2', width: '50px' }}>
         +<span style={{ marginLeft: '4px' }}>{intl('common.tool.add')}</span>
       </div>
     </FormItem>

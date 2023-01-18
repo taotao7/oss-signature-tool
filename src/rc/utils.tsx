@@ -2,8 +2,6 @@
 import moment from 'moment';
 import crypto from 'crypto-js';
 import is from 'is';
-import { Dialog } from '@alicloud/console-components';
-import intl from '../intl';
 
 export const toGMT = (v: string) => {
   return new Date(moment(v as string).toString()).toUTCString();
