@@ -3,6 +3,7 @@ import { Form, Input, Icon } from '@alicloud/console-components';
 import { formItemLayout } from '../../utils';
 import intl from '../../../intl';
 import moment from 'moment';
+import styles from './index.module.less';
 
 const FormItem = Form.Item;
 
@@ -89,6 +90,7 @@ export default (props: HeaderInputType) => {
             placeholder={intl('common.tooltip.input')}
           />
           <Icon
+            className={styles.pointer}
             type="delete"
             size={12}
             onClick={() => del(i.index)}
@@ -97,6 +99,7 @@ export default (props: HeaderInputType) => {
         </div>
       ))}
       <div
+        className={styles.pointer}
         onClick={(e) => {
           e.stopPropagation();
           add(moment().valueOf());

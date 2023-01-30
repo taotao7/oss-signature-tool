@@ -30,7 +30,9 @@ export default (props: CardContainer) => {
           {content}
         </span>
         <div className={styles.buttonPosition}>
-          {!top && <Icon onClick={clearButton} type="delete" size={12} />}
+          {!top && (
+            <Icon onClick={clearButton} type="delete" size={12} className={styles.pointer} />
+          )}
           {!top && showContent && <Icon type="collapse" size={12} className={styles.collapse} />}
           {!top && !showContent && <Icon type="expand" size={12} className={styles.collapse} />}
         </div>

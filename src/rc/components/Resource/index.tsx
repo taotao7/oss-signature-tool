@@ -3,6 +3,7 @@ import { Form, Input, Icon } from '@alicloud/console-components';
 import { formItemLayout } from '../../utils';
 import intl from '../../../intl';
 import moment from 'moment';
+import styles from './index.module.less';
 
 const FormItem = Form.Item;
 
@@ -103,6 +104,7 @@ export default (props: {
             placeholder={intl('common.tooltip.input')}
           />
           <Icon
+            className={styles.pointer}
             type="delete"
             onClick={() => del(i.index)}
             style={{ marginRight: '10px', marginLeft: '10px', marginTop: '10px' }}
@@ -110,7 +112,11 @@ export default (props: {
           />
         </div>
       ))}
-      <div onClick={() => add(moment().valueOf())} style={{ color: '#3581d2', width: '50px' }}>
+      <div
+        className={styles.pointer}
+        onClick={() => add(moment().valueOf())}
+        style={{ color: '#3581d2', width: '50px' }}
+      >
         +<span style={{ marginLeft: '4px' }}>{intl('common.tool.add')}</span>
       </div>
     </FormItem>

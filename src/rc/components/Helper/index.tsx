@@ -41,6 +41,7 @@ const Helper = () => {
                       overflow: 'hidden',
                       textAlign: 'center',
                       alignItems: 'center',
+                      boxShadow: 'none',
                     }}
                     onClick={() => {
                       setScore(5);
@@ -49,7 +50,7 @@ const Helper = () => {
                   >
                     {type === 'up' ? (
                       <img
-                        src="https://img.alicdn.com/imgextra/i3/O1CN01ZNzbTD25erthxjCCu_!!6000000007552-55-tps-14-14.svg"
+                        src="https://img.alicdn.com/imgextra/i1/O1CN0106RonM20PEI5JQSxP_!!6000000006841-55-tps-16-16.svg"
                         alt="up"
                       />
                     ) : (
@@ -87,6 +88,7 @@ const Helper = () => {
                       overflow: 'hidden',
                       textAlign: 'center',
                       alignItems: 'center',
+                      boxShadow: 'none',
                     }}
                     onClick={() => {
                       setScore(1);
@@ -96,7 +98,7 @@ const Helper = () => {
                     {type === 'down' ? (
                       <img
                         style={{ marginLeft: '4px' }}
-                        src="https://img.alicdn.com/imgextra/i2/O1CN01scr9xJ25utl6AI6it_!!6000000007587-55-tps-14-14.svg"
+                        src="https://img.alicdn.com/imgextra/i2/O1CN01NgJMLM1JGVGfDSRUL_!!6000000001001-55-tps-16-16.svg"
                         alt=""
                       />
                     ) : (

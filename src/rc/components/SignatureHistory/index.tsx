@@ -80,7 +80,9 @@ export default (props: SignatureHistoryType) => {
                 <span className={styles.cardTitle}>
                   {intl('common.tool.signatureHistory.result')}
                 </span>
-                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+                <div onClick={clearCurrentHistory} className={styles.pointer}>
+                  {intl('common.tool.clear')}
+                </div>
               </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
@@ -131,12 +133,16 @@ export default (props: SignatureHistoryType) => {
             <div className={styles.footerRight}>
               {showHistory ? (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
                 </>
               ) : (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
                 </>
               )}
@@ -206,7 +212,10 @@ export default (props: SignatureHistoryType) => {
                 <span className={styles.cardTitle}>
                   {intl('common.tool.signatureHistory.result')}
                 </span>
-                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+                <div onClick={clearCurrentHistory} className={styles.pointer}>
+                  {' '}
+                  {intl('common.tool.clear')}
+                </div>
               </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
@@ -250,12 +259,16 @@ export default (props: SignatureHistoryType) => {
             <div className={styles.footerRight}>
               {showHistory ? (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
                 </>
               ) : (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
                 </>
               )}
@@ -318,7 +331,10 @@ export default (props: SignatureHistoryType) => {
                 <span className={styles.cardTitle}>
                   {intl('common.tool.signatureHistory.result')}
                 </span>
-                <div onClick={clearCurrentHistory}> {intl('common.tool.clear')}</div>
+                <div onClick={clearCurrentHistory} className={styles.pointer}>
+                  {' '}
+                  {intl('common.tool.clear')}
+                </div>
               </div>
               <CardContainer
                 content={`${intl('common.tool.signatureHistory.sigDate')}:${moment(
@@ -357,12 +373,16 @@ export default (props: SignatureHistoryType) => {
             <div className={styles.footerRight}>
               {showHistory ? (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="collapse" size={12} style={{ marginLeft: '16px' }} />
                 </>
               ) : (
                 <>
-                  <span onClick={clearAll}>{intl('common.tool.signatureHistory.clearAll')}</span>
+                  <span onClick={clearAll} className={styles.pointer}>
+                    {intl('common.tool.signatureHistory.clearAll')}
+                  </span>
                   <Icon type="expand" size={12} style={{ marginLeft: '16px' }} />
                 </>
               )}
